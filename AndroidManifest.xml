@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.dennis.vitalsigns"
+      android:versionCode="1"
+      android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+      <uses-permission
+        android:name="android.permission.INTERNET" />
+        
+    <!-- <uses-sdk android:minSdkVersion="8" /> uncomment only if necessary. On some phone if this varaible is there it does not install--> 
+<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.SEND_SMS" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <service android:name="AccService"/>     <!-- ENTRY FOR SERVICE-->
+        <activity android:name=".VitalSigns"
+                  android:label="@string/app_name" android:exported="true">
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+                      
+        </activity>	
+
+    </application>
+</manifest>
