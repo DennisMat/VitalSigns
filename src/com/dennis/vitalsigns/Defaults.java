@@ -1,19 +1,17 @@
 package com.dennis.vitalsigns;
 
 public class Defaults {
-	public static final int HistorySize=500;
-	public static final int Threshold=250;
-	public static final int  TimerPeriod=10;//seconds
-	public static final int  TimerSleep=10;//milli seconds
-	public static final int  MonitorTime=1;//minutes
-	public static final int  HibernateTime=0;//minutes//zero always works
-	public static final int CountDown=10;
-	//public static String[] PhoneNumberArray={"5556","5556","5556"};
-	public static String[] PhoneNumberArray={"777-777-7777","777-777-7777","777-777-7777"};
-	public static boolean[] DialArray={false,false,false};
+	public static final int historySize=500;
+	public static final int deltaThreshold=350;
+	public static final int statusThreshold=200;
+	public static final int  hibernateTime=0;//minutes//zero always works
+	public static final int timeBetweenMonitoringSessions=20;//seconds
+	public static final int countDown=10;
+	public static String[] phoneNumberArray={"777-777-7777","777-777-7777","777-777-7777"};
+	public static boolean[] dialArray={false,false,false};
 	public static boolean[] SMSArray={false,false,false};
-	public static final int  TimeBetweenDialing=10;//seconds
+	public static final int  timeBetweenDialing=10;//seconds
 	public static final boolean  messageShowInPopup=false;
-	public static final boolean  RemoteLog=false;
-	public static final int GPSWait=10;//seconds Time spent waiting to get a value form the GPS
+	public static final boolean  remoteLog=false;
+	public static final int GPSWait=10;//seconds Time spent waiting to get a value from the GPS
 }

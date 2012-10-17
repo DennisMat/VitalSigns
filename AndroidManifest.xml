@@ -15,15 +15,20 @@
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-    <service android:name="AccService"/>     <!-- ENTRY FOR SERVICE-->
-        <activity android:name=".VitalSigns"
+    <receiver android:name=".MonitorSessionInitBroadcastReciever" />
+    <service android:name=".VitalSignsService"/>
+        <activity android:name=".VitalSignsActivity"
                   android:label="@string/app_name" android:exported="true">
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
                       
-        </activity>	
+        </activity>
+        
+        <activity
+        android:name=".Preferences">
+		</activity>
 
     </application>
 </manifest>

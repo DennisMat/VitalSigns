@@ -1,254 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- author: dennisfreethinker[(at]]yahoo([dot)]com: -->
 
-
-
-    <TabHost android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/tabHost"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <TabWidget
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@android:id/tabs"
-    />
-     <FrameLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@android:id/tabcontent"
-     >
-      
-    
-         
-     <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/tabMain"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="80dp"
-     > <!-- start of main tab -->
-     
-         
-		<TableLayout android:id="@+id/tableLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
-			
-			  <TableRow android:id="@+id/tableRowStartStop" android:layout_height="wrap_content" android:layout_width="match_parent">         
-			          <Button android:layout_height="wrap_content" android:id="@+id/buttonStart" android:layout_width="wrap_content" android:text="Start"></Button>
-			        <Button android:text="Stop" android:id="@+id/buttonStop" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-			        
-			   </TableRow>
-			   
-			   
-			  <TableRow android:id="@+id/tableRowSnooze" android:layout_width="match_parent" android:layout_height="wrap_content">
-			            <Button android:layout_height="wrap_content" android:id="@+id/buttonSnooze" android:layout_width="wrap_content" android:text="Snooze(min)"></Button>
-			            <EditText android:text="TBD later" android:id="@+id/editTextSnooze" android:layout_width="wrap_content" android:layout_height="wrap_content" android:width="150dp" android:editable="false"></EditText>
-			  </TableRow>
-			          
+    android:paddingTop="80dp" >
 
-			      
-			   </TableLayout>
+    <LinearLayout 
+        android:id="@+id/LinearLayoutStartStop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" >
+
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Start" >
+        </Button>
+
+        <Button
+            android:id="@+id/buttonStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Stop" >
+        </Button>
+    </LinearLayout>
+
    
-     
-     
-    </LinearLayout><!-- end of main tab -->
-         
-         
-	<LinearLayout 
-	    android:orientation="vertical"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:id="@+id/tabContacts"
-	    android:paddingTop="80dp"
-	    > <!-- start of contacts tab -->         
-	    
-			<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/scroll" android:layout_width="fill_parent"
-			    android:layout_height="wrap_content">
-			
-			     <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" android:layout_height="fill_parent">
-					<LinearLayout 
-					    android:orientation="vertical"
-					    android:layout_width="fill_parent"
-					    android:layout_height="fill_parent"
-					    >
-					 <TableLayout android:id="@+id/tableLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
-					
-
-					 
-					   <TableLayout android:id="@+id/tableLayoutMessage" android:layout_height="wrap_content" android:layout_width="match_parent">
-					     <TableRow android:id="@+id/tableRowMessage" android:layout_width="wrap_content" android:layout_height="wrap_content">
-					           <TextView android:layout_width="wrap_content" android:text="" android:layout_height="wrap_content" android:id="@+id/textViewMessage"></TextView>
-					     </TableRow>
-					    </TableLayout> 
-					    
-					    
-					     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#4D4D4D"> 
-					         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-				                android:layout_width="fill_parent"
-				                android:layout_height="wrap_content">					           
-						        <TextView android:text="Phone number 1"  android:id="@+id/textViewph1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-						        <EditText android:layout_height="wrap_content" android:layout_toRightOf="@id/textViewph1" android:inputType="phone" android:minWidth="150dp" android:layout_width="match_parent" android:text="" android:id="@+id/editTextPhoneNumber1"></EditText>
-								<CheckBox android:text="Dial"  android:id="@+id/checkBoxDial1" android:layout_below="@id/editTextPhoneNumber1" android:layout_alignLeft="@id/editTextPhoneNumber1" android:layout_width="wrap_content"  android:layout_height="wrap_content"></CheckBox>				        
-						        <CheckBox android:text="SMS" android:id="@+id/checkBoxSMS1" android:layout_below="@id/editTextPhoneNumber1" android:layout_toRightOf="@id/checkBoxDial1"  android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>						        
-					         </RelativeLayout>						   					       
-					     </TableRow>
-					     
-					     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content"> 
-					         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				                android:layout_width="fill_parent"
-				                android:layout_height="wrap_content">					           
-						        <TextView android:text="Phone number 2"  android:id="@+id/textViewph2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-						        <EditText android:layout_height="wrap_content" android:layout_toRightOf="@id/textViewph2" android:inputType="phone" android:minWidth="150dp" android:layout_width="match_parent" android:text="" android:id="@+id/editTextPhoneNumber2"></EditText>
-								<CheckBox android:text="Dial"  android:id="@+id/checkBoxDial2" android:layout_below="@id/editTextPhoneNumber2" android:layout_alignLeft="@id/editTextPhoneNumber2" android:layout_width="wrap_content"  android:layout_height="wrap_content"></CheckBox>				        
-						        <CheckBox android:text="SMS" android:id="@+id/checkBoxSMS2" android:layout_below="@id/editTextPhoneNumber2" android:layout_toRightOf="@id/checkBoxDial2"  android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>						        
-					         </RelativeLayout>						   					       
-					     </TableRow>
-					    
-					     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#4D4D4D"> 
-					         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				                android:layout_width="fill_parent"
-				                android:layout_height="wrap_content">					           
-						        <TextView android:text="Phone number 3"  android:id="@+id/textViewph3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-						        <EditText android:layout_height="wrap_content" android:layout_toRightOf="@id/textViewph3" android:inputType="phone" android:minWidth="150dp" android:layout_width="match_parent" android:text="" android:id="@+id/editTextPhoneNumber3"></EditText>
-								<CheckBox android:text="Dial"  android:id="@+id/checkBoxDial3" android:layout_below="@id/editTextPhoneNumber3" android:layout_alignLeft="@id/editTextPhoneNumber3" android:layout_width="wrap_content"  android:layout_height="wrap_content"></CheckBox>				        
-						        <CheckBox android:text="SMS" android:id="@+id/checkBoxSMS3" android:layout_below="@id/editTextPhoneNumber3" android:layout_toRightOf="@id/checkBoxDial3"  android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>						        
-					         </RelativeLayout>						   					       
-					     </TableRow>
-					    
-					   <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">       
-					        <TextView android:text="Time between \ndialing attempts (sec)" android:id="@+id/textViewTimeBetweenDialing" android:layout_width="wrap_content" android:layout_height="wrap_content" android:width="10dp"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:text="" android:inputType="number" android:id="@+id/editTextTimeBetweenDialing"></EditText>
-					    </TableRow>  
-					     
-					       
-					       <TableRow android:id="@+id/tableRowThreshold" android:layout_width="match_parent" android:layout_height="wrap_content">
-					            <TextView android:layout_width="wrap_content" android:text="Threshold. Values typically range\nfrom 50 to 300. Try in\nincrements/decrements of 5 units\nset the 'Showmessage in popup'\n setting to see typical values from your phone" android:layout_height="wrap_content" android:id="@+id/textViewThreshold"></TextView>
-					            <EditText android:text="" android:id="@+id/editTextThreshold" android:layout_width="wrap_content" android:inputType="number" android:layout_height="wrap_content"></EditText>
-					          </TableRow> 
-					          
-					   <TableRow android:layout_width="match_parent" android:id="@+id/tableRowCountdown" android:layout_height="wrap_content">
-					        <TextView android:text="Countdown before dialing" android:id="@+id/textViewCountdown" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:inputType="number" android:layout_width="match_parent" android:text="" android:id="@+id/editTextCountdown"></EditText>					               
-					    </TableRow>
-					       
-					           <!--  
-					     <TableRow android:layout_width="match_parent" android:id="@+id/tableRowSocialNetwork1" android:layout_height="wrap_content">
-					        <TextView android:text="Social Network 1" android:id="@+id/textViewPhoneSocialNetwork1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:text="TBD later" android:id="@+id/editTextSocialNetwork1" android:editable="false"></EditText>       
-					    </TableRow>
-					    
-					         <TableRow android:layout_width="match_parent" android:id="@+id/tableRowSocialNetwork2" android:layout_height="wrap_content">
-					        <TextView android:text="Social Network 2" android:id="@+id/textViewPhoneSocialNetwork2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:text="TBD later" android:id="@+id/editTextSocialNetwork2" android:editable="false"></EditText>       
-					    </TableRow>
-					    
-					    <TableRow android:layout_width="match_parent" android:id="@+id/tableRowSocialNetwork3" android:layout_height="wrap_content">
-					        <TextView android:text="Social Network 3" android:id="@+id/textViewPhoneSocialNetwork3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:text="TBD later" android:id="@+id/editTextSocialNetwork3" android:editable="false"></EditText>       
-					    </TableRow>
-					    -->
-					       <TableRow android:layout_width="match_parent" android:id="@+id/tableRowShow" android:layout_height="wrap_content">       
-					        <TextView android:text="Show message in popup" android:id="@+id/textViewshow" android:layout_width="wrap_content" android:layout_height="wrap_content" ></TextView>
-					        
-					        <CheckBox android:text="" android:id="@+id/checkBoxShowPopup" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
-					    </TableRow> 
-					    
-					     <TableRow android:layout_width="match_parent" android:id="@+id/tableRowRemoteLog" android:layout_height="wrap_content">       
-					        <TextView android:text="Remote Log" android:id="@+id/textViewRemoteLog" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>					        
-					        <CheckBox android:text="" android:id="@+id/checkBoxRemoteLog" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
-					         
-					    </TableRow> 
-					    		
-					    
-					    
-					    <TableRow android:id="@+id/tableRowsave" android:layout_height="wrap_content" android:layout_width="match_parent">
-					        <Button android:text="Save" android:id="@+id/buttonSaveContact" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-					    </TableRow>
-
-					    
-					    </TableLayout>
-					   		
-					</LinearLayout>
-			
-				</HorizontalScrollView>	    
-					    
-			</ScrollView>
-    </LinearLayout> <!-- end of contacts tab -->
-
-
-	<LinearLayout 
-	    android:orientation="vertical"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:id="@+id/tabSettings"
-	    android:paddingTop="80dp"
-	    > <!-- start of settings tab -->
-		<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/scrollSettings" android:layout_width="fill_parent"
-			    android:layout_height="wrap_content">
-			     
-					     <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" android:layout_height="fill_parent">
-					<LinearLayout 
-					    android:orientation="vertical"
-					    android:layout_width="fill_parent"
-					    android:layout_height="fill_parent"
-					    >
-					 <TableLayout android:id="@+id/tableLayoutSettings" android:layout_height="wrap_content" android:layout_width="match_parent">
-					
-					     
-					     
- 
-					        <TableRow android:id="@+id/tableRowHistory" android:layout_width="match_parent" android:layout_height="wrap_content">    
-					            <TextView android:layout_width="wrap_content" android:text="HistorySize" android:layout_height="wrap_content" android:id="@+id/textView2"></TextView>
-					            <EditText android:layout_width="wrap_content" android:inputType="number" android:text="" android:id="@+id/editTextHistorySize" android:layout_height="wrap_content"></EditText>
-					        </TableRow>
-					 
-					    
-					    <TableRow android:layout_width="match_parent" android:id="@+id/tableRow5" android:layout_height="wrap_content">
-					        <TextView android:text="Timer Period(sec)" android:id="@+id/textViewTimerPeriod" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent"  android:inputType="number" android:text="" android:id="@+id/editTextTimerPeriod"></EditText>
-					         </TableRow>
-					 <TableRow android:layout_width="match_parent" android:id="@+id/tableRowThreadSleep" android:layout_height="wrap_content">       
-					<TextView android:text="Thread Sleep(milli sec)" android:id="@+id/textViewTimerSleep" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:layout_height="wrap_content" android:layout_width="match_parent"  android:inputType="number" android:text="" android:id="@+id/editTextTimerSleep"></EditText>
-					    </TableRow>
-					    
-					    <TableRow android:id="@+id/tableRow3" android:layout_height="wrap_content" android:layout_width="match_parent">
-					        <TextView android:text="Monitor time (min)" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:text="" android:id="@+id/editTextMonitorTime" android:inputType="number" android:layout_width="wrap_content" android:layout_height="wrap_content"></EditText>
-					        </TableRow>
-					        
-					        
-					         <TableRow android:layout_width="match_parent" android:id="@+id/tableRowHibernate" android:layout_height="wrap_content">
-					        <TextView android:text="Hibernate time(min)" android:id="@+id/textViewHibernateTime" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					        <EditText android:text="" android:id="@+id/editTextHibernateTime" android:layout_width="wrap_content" android:inputType="number" android:layout_height="wrap_content"></EditText>
-					    </TableRow>
-					    
-
-					    
-					     					     <TableRow android:layout_width="match_parent" android:id="@+id/tableRowMessage" android:layout_height="wrap_content">
-					        <TextView android:text="" android:id="@+id/textViewErrorMessage" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#FF0000" android:textStyle="bold" android:textSize="15dp" android:background="#FFFFFF"></TextView>        
-					    </TableRow>
-					
-					    
-					    
-					    <TableRow android:id="@+id/tableRow4" android:layout_height="wrap_content" android:layout_width="match_parent">
-					        <Button android:text="Save" android:id="@+id/buttonSave" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-					        <Button android:text="Reset to default values" android:id="@+id/buttonResetDefaults" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-					    </TableRow>   
-			
-					     
-					</TableLayout>
-					
-					</LinearLayout> <!-- end of settings tab -->
-			
-				</HorizontalScrollView>	    
-					    
-			</ScrollView>
-
-	</LinearLayout> 
-
- 
-     
-     </FrameLayout>
+        
     
-    </TabHost>
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+                android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonSnooze"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Snooze(min)" >
+        </Button>
+
+        <EditText
+            android:id="@+id/editTextSnooze"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:editable="false"
+            android:text="TBD later"
+            android:width="150dp" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+                android:layout_height="0dp"
+        android:layout_weight="1" >
+        <Button
+            android:id="@+id/buttonPreference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Open Settings" >
+        </Button>
+      </LinearLayout>
+    
+
+</LinearLayout>

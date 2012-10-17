@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, VitalSigns!</string>
     <string name="app_name">Vital Signs</string>
-    <string name="local_service_started">Vital Signs app Started</string>
-    <string name="local_service_label">Vital Signs app Running</string>
-    <string name="local_service_stopped">Vital Signs app Stopped</string>
+    <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
+    
 </resources>
