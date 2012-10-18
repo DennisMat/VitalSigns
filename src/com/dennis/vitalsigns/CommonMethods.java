@@ -79,7 +79,7 @@ private int uniqueId = R.string.for_unique_number;
 	}
 
 	/*
-	 * TODO:dennisfreethinker[(at]]yahoo([dot)]com: If the battery is charging
+	 * TODO:dennis: If the battery is charging
 	 * the app should go into a snooze for 2 hours before it reverts to its
 	 * normal functioning.
 	 */

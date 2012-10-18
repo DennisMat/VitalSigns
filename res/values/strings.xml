@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Vital Signs</string>
     <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
-    <string name="pref_ph">777-777-1234</string>
+    <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
     <string name="pref_deltathreshold">275</string>
@@ -12,7 +12,7 @@
     <string name="pref_statusthreshold">200</string>
     <string name="pref_timebetweenmonitoring">20</string><!-- seconds -->
     <string name="pref_hibernatetime">10</string><!-- minutes -->
-    <string name="pref_showpopup">true</string>
+    <string name="pref_showpopup">false</string>
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string><!-- seconds -->
 </resources>

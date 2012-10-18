@@ -72,7 +72,7 @@
             android:defaultValue="@string/pref_countdown"
             android:inputType="number"
             android:key="key_countdown"
-            android:summary="Number of beeps before dialing. Each beep is approximately 2 seconds apart."
+            android:summary="Number of beeps before dialing. Each beep is approximately 20 seconds apart."
             android:title="Countdown before dialing" />
         <EditTextPreference
             android:defaultValue="@string/pref_timebetweendialing"

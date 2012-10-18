@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.telephony.TelephonyManager;
 
-/* author: dennisfreethinker[(at]]yahoo([dot)]com:
+/* author: dennis
  */
 public class VitalSignsActivity extends Activity {
 

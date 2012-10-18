@@ -173,7 +173,7 @@ public class SMS {
 			locationManager.requestLocationUpdates( bestProvider, MINIMUM_TIME_BETWEEN_UPDATES, MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, mlocListener,context.getMainLooper());
 	
 			Location location=null;
-			for(int i=0;i<10;i++){// dennisfreethinker[(at]]yahoo([dot)]com: waiting for a location value. But will timeout after a certain time defined by the loop
+			for(int i=0;i<10;i++){// dennis: waiting for a location value. But will timeout after a certain time defined by the loop
 				//Log("In wait loop");
 				location = locationManager.getLastKnownLocation(bestProvider); 
 				if(location!=null){
