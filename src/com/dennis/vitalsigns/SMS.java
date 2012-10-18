@@ -179,7 +179,7 @@ public class SMS {
 				if(location!=null){
 					break;
 				}
-				Thread.sleep(Defaults.GPSWait*1000);
+				Thread.sleep(Integer.parseInt(context.getString(R.string.pref_countdown))*1000);
 			}
 			if(location!=null){
 				lat=location.getLatitude();

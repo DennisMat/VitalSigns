@@ -151,21 +151,22 @@ public class VitalSignsService extends Service {
 	private void loadValuesFromStorage() {
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		for(int i=0;i<arraySize;i++){
-			phoneNumberArray[i]=settings.getString("key_ph"+i,Defaults.phoneNumberArray[i]);
-			dialArray[i]=settings.getBoolean("key_dial"+i,Defaults.dialArray[i]);
-			SMSArray[i]=settings.getBoolean("key_sms"+i,Defaults.SMSArray[i]);
+			
+			phoneNumberArray[i]=settings.getString("key_ph"+(i+1),getString(R.string.pref_ph));
+			dialArray[i]=settings.getBoolean("key_dial"+(i+1),Boolean.parseBoolean(getString(R.string.pref_dial)));
+			SMSArray[i]=settings.getBoolean("key_sms"+(i+1),Boolean.parseBoolean(getString(R.string.pref_sms)));
 		}
 
-		historySize=Integer.parseInt(settings.getString("key_historysize",Defaults.historySize+""));
-		deltaThreshold=Integer.parseInt(settings.getString("key_deltathreshold",Defaults.deltaThreshold+""));
-		statusThreshold=Integer.parseInt(settings.getString("key_statusthreshold",Defaults.statusThreshold+""));
-		timeBetweenDialing=Integer.parseInt(settings.getString("key_timebetweendialing",Defaults.timeBetweenDialing+""));
-		hibernateTime=Integer.parseInt(settings.getString("key_hibernatetime",Defaults.hibernateTime+""));
-		countDown=Integer.parseInt(settings.getString("key_countdown",Defaults.countDown+""));
-		timeBetweenMonitoringSessions=Integer.parseInt(settings.getString("key_timebetweenmonitoring",Defaults.timeBetweenMonitoringSessions+""));
+		historySize=Integer.parseInt(settings.getString("key_historysize",getString(R.string.pref_historysize)));
+		deltaThreshold=Integer.parseInt(settings.getString("key_deltathreshold",getString(R.string.pref_deltathreshold)));
+		statusThreshold=Integer.parseInt(settings.getString("key_statusthreshold",getString(R.string.pref_statusthreshold)));
+		timeBetweenDialing=Integer.parseInt(settings.getString("key_timebetweendialing",getString(R.string.pref_timebetweendialing)));
+		hibernateTime=Integer.parseInt(settings.getString("key_hibernatetime",getString(R.string.pref_hibernatetime)));
+		countDown=Integer.parseInt(settings.getString("key_countdown",getString(R.string.pref_countdown)));
+		timeBetweenMonitoringSessions=Integer.parseInt(settings.getString("key_timebetweenmonitoring",getString(R.string.pref_timebetweenmonitoring)));
 		
-		messageShowInPopup=settings.getBoolean("key_showpopup", Defaults.messageShowInPopup);
-		remoteLog=settings.getBoolean("key_remotelog", Defaults.remoteLog);
+		messageShowInPopup=settings.getBoolean("key_showpopup", Boolean.parseBoolean(getString(R.string.pref_showpopup)));
+		remoteLog=settings.getBoolean("key_remotelog", Boolean.parseBoolean(getString(R.string.pref_remotelog)));
 
 	}
 	
@@ -384,9 +385,9 @@ public class VitalSignsService extends Service {
 			}
 			showToast("Count down="+(countDown-beepCount)+" . When the count down become zero your phone will start dialing");
 			
-			if (isNotify) {
-				// notifyPeople();//now call and sms people
+			if (isNotify) {			
 				cm.playAudio(context);// We need a different sound. It should wake up a dead person if necessary :)
+				notifyPeople();//now call and sms people
 				Log("notifyPeople() called");			
 				cm.removeNotification(context);				
 				resetButtons();

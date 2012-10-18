@@ -48,7 +48,7 @@ private int uniqueId = R.string.for_unique_number;
 
 	public void scheduleRepeatingMonitoringSessions(Context context) {
 		VitalSignsService.Log("in scheduleRepeatingMonitoringSessions");
-		int hibernateTime=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("key_hibernatetime",Defaults.hibernateTime+""));		
+		int hibernateTime=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("key_hibernatetime",context.getString(R.string.pref_hibernatetime)));		
 		long checkInterval = hibernateTime * 60 * 1000;//  this figure is in minutes so convert it into milliseconds
 		long triggerAtTime = System.currentTimeMillis() - checkInterval; 
 		// this is an arbitrary time just to make sure that the trigger time is well before the current time. This is when the alarm manager starts.

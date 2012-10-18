@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceScreen
+        android:summary="Phone Numbers"
+        android:title="Contacts" >
+        <PreferenceCategory android:title="Phone number 1" >
+            <EditTextPreference
+                android:defaultValue="@string/pref_ph"
+                android:key="key_ph1"
+                android:summary=""
+                android:title="Phone number" />
+
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_dial"
+                android:key="key_dial1"
+                android:summary=""
+                android:title="Dial" />
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_sms"
+                android:key="key_sms1"
+                android:summary=""
+                android:title="SMS" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="Phone number 2" >
+            <EditTextPreference
+                android:defaultValue="@string/pref_ph"
+                android:key="key_ph2"
+                android:summary=""
+                android:title="Phone number" />
+
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_dial"
+                android:key="key_dial2"
+                android:summary=""
+                android:title="Dial" />
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_sms"
+                android:key="key_sms2"
+                android:summary=""
+                android:title="SMS" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="Phone number 3" >
+            <EditTextPreference
+                android:defaultValue="@string/pref_ph"
+                android:key="key_ph3"
+                android:summary=""
+                android:title="Phone number" />
+
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_dial"
+                android:key="key_dial3"
+                android:summary=""
+                android:title="Dial" />
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_sms"
+                android:key="key_sms3"
+                android:summary=""
+                android:title="SMS" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:summary="Settings"
+        android:title="Settings" >
+        <EditTextPreference
+            android:defaultValue="@string/pref_deltathreshold"
+            android:inputType="number"
+            android:key="key_deltathreshold"
+            android:summary="Threshold. Values typically range from 50 to 300. Try inincrements/decrements of 5 units. Set the &apos;Showmessage in popup&apos; setting to see typical values from your phone"
+            android:title="Threshold" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_countdown"
+            android:inputType="number"
+            android:key="key_countdown"
+            android:summary="Number of beeps before dialing. Each beep is approximately 2 seconds apart."
+            android:title="Countdown before dialing" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_timebetweendialing"
+            android:inputType="number"
+            android:key="key_timebetweendialing"
+            android:summary="Time between dialing attempts in seconds"
+            android:title="Time between dialing attempts" />
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:summary="Advanced Settings"
+        android:title="Advanced Settings" >
+        <EditTextPreference
+            android:defaultValue="@string/pref_historysize"
+            android:inputType="number"
+            android:key="key_historysize"
+            android:summary="History Size"
+            android:title="History Size" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_statusthreshold"
+            android:inputType="number"
+            android:key="key_statusthreshold"
+            android:summary="Status Threshold"
+            android:title="Status Threshold" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_timebetweenmonitoring"
+            android:inputType="number"
+            android:key="key_timebetweenmonitoring"
+            android:summary="Time in seconds between each monitoring sessions"
+            android:title="Time between monitoring" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_hibernatetime"
+            android:inputType="number"
+            android:key="key_hibernatetime"
+            android:summary="Used to save battery life"
+            android:title="Hibernate time in minutes" />
+
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_showpopup"
+            android:key="key_showpopup"
+            android:summary="Use for testing only"
+            android:title="Show message in popup" />
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_remotelog"
+            android:key="key_remotelog"
+            android:summary="Use for testing only"
+            android:title="Remote log" />
+    </PreferenceScreen>
+
+</PreferenceScreen>
