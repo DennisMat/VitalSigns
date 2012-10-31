@@ -69,7 +69,15 @@ public class VitalSignsActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		VitalSignsService.Log("onResume called" );
 		updateButtonStatus();
+	}
+
+	@Override
+	protected void onPause() {
+		VitalSignsService.Log("onPause called" );
+		// TODO Auto-generated method stub
+		super.onPause();
 	}
 
 	private void initializeScreenVariables() throws Exception {

@@ -135,6 +135,7 @@ private int uniqueId = R.string.for_unique_number;
 				e.printStackTrace();
 			}
 		}
+		mMediaPlayer.reset();//for whatver reason not calling gives the error:mediaplayer went away with unhandled events
 		mMediaPlayer.release();
 	}
 

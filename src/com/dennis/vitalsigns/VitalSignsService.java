@@ -11,6 +11,7 @@ import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
@@ -37,7 +38,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class VitalSignsService extends Service {
 
-	private String phoneNumber;
+
 	private String[] phoneNumberArray;
 	private boolean[] dialArray;
 	private boolean[] SMSArray;
@@ -387,8 +388,10 @@ public class VitalSignsService extends Service {
 			
 			if (isNotify) {			
 				cm.playAudio(context);// We need a different sound. It should wake up a dead person if necessary :)
+				Log("before calling notifyPeople()");
+				//notifyPeople() takes a lot of time and the screen is totally unresponsive when notifyPeople()
 				notifyPeople();//now call and sms people
-				Log("notifyPeople() called");			
+				Log("after calling notifyPeople()");			
 				cm.removeNotification(context);				
 				resetButtons();
 				(new CommonMethods()).cancelRepeatingMonitoringSessions(context);
@@ -462,8 +465,12 @@ public class VitalSignsService extends Service {
 
 
 
-	public boolean notifyPeople() {
-
+	private void notifyPeople() {
+		
+		NotifyPeopleAsyncTask mNotifyPeopleAsyncTask = new NotifyPeopleAsyncTask();
+		mNotifyPeopleAsyncTask.execute();
+		
+/*
 		for (int i = 0; i < phoneNumberArray.length; i++) {
 			try {
 				if (dialArray[i]) {
@@ -491,31 +498,65 @@ public class VitalSignsService extends Service {
 		}
 
 		return true;
+		
+		*/
+		
+
+		
+		
+		
+
+		
+		  
+			
+		
 	}
 
-	public void dialNumber(String phno) {
-		if (phno == null) {
-			return;
-		}
-		if (phno.trim().compareTo("") == 0) {
-			return;
+	
+	  private class NotifyPeopleAsyncTask extends AsyncTask<Void, Void, Void> {
+		  
+		  @Override
+		  protected void onPreExecute(){
+			  
+		  }
+		  
+		  @Override
+		  protected Void doInBackground(Void... args) {	
+			  Phone phone = new Phone(getApplicationContext());
+			  for (int i = 0; i < phoneNumberArray.length; i++) {
+					try {
+						if (dialArray[i]) {
+							phone.dialNumber(phoneNumberArray[i]);
+						}
+						if (SMSArray[i]) {
+							phone.sendSMS(phoneNumberArray[i], phone.getMessageForSMS());
+						}
+						//put some kind of cancel dialing feature.
+						//Thread.sleep(timeBetweenDialing * 1000); // seconds between dialing
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						Log("InterruptedException " + e.getMessage());
+					}
+				}
+
+			  return null;
+		  }
+		  
+		  @Override
+		protected void onProgressUpdate(Void... values) {
+			  //do stuff here
+			super.onProgressUpdate(values);// this line is always the last
 		}
 
-		try {
-			showToast("Dialing: " + phoneNumber);
-			// Log("Dialing: "+ PhoneNumber);
-			Intent CallIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-					+ phno));
-			CallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			showToast("About to dial");
-			startActivity(CallIntent);
-			Log("Dialed number successfully");
-		} catch (Exception e) {
-			Log("Exception in DialNumber " + e.getMessage());
+		@Override
+		  protected void onPostExecute(Void result) {
+			//do stuff here
+		  }
+		  
+	  }
+	
 
-		}
-
-	}
 
 	private void aquirePartialWakeLock() throws Exception {
 		if (mWakeLock == null) {
