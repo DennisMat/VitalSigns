@@ -45,13 +45,19 @@ private int uniqueId = R.string.for_unique_number;
 			VitalSignsService.Log(e.getMessage());
 		}
 	}
-
 	public void scheduleRepeatingMonitoringSessions(Context context) {
+		scheduleRepeatingMonitoringSessions(context,0);
+	}
+
+	public void scheduleRepeatingMonitoringSessions(Context context, long triggerAtTime) {
 		VitalSignsService.Log("in scheduleRepeatingMonitoringSessions");
 		int hibernateTime=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("key_hibernatetime",context.getString(R.string.pref_hibernatetime)));		
 		long checkInterval = hibernateTime * 60 * 1000;//  this figure is in minutes so convert it into milliseconds
-		long triggerAtTime = System.currentTimeMillis() - checkInterval; 
+		if(triggerAtTime==0){//start right away, like yesterday :)
 		// this is an arbitrary time just to make sure that the trigger time is well before the current time. This is when the alarm manager starts.
+		 triggerAtTime = System.currentTimeMillis() - checkInterval;
+		}
+		
 		AlarmManager mAlarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent monitorIntent = new Intent(context,
@@ -67,6 +73,8 @@ private int uniqueId = R.string.for_unique_number;
 		}
 
 	}
+	
+	
 
 	public void cancelRepeatingMonitoringSessions(Context context) {
 		VitalSignsService.Log("cancelRepeatingMonitoringSessions has been called");
@@ -80,7 +88,7 @@ private int uniqueId = R.string.for_unique_number;
 
 	/*
 	 * TODO:dennis: If the battery is charging
-	 * the app should go into a snooze for 2 hours before it reverts to its
+	 * the app should go into a snooze for 1/2 hours before it reverts to its
 	 * normal functioning.
 	 */
 	public boolean isBatteryCharging(Context context) {

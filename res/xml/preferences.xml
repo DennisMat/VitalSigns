@@ -108,7 +108,12 @@
             android:key="key_hibernatetime"
             android:summary="Used to save battery life"
             android:title="Hibernate time in minutes" />
-
+          <EditTextPreference
+            android:defaultValue="@string/pref_charging_pausetime"
+            android:inputType="number"
+            android:key="key_chargingpausetime"
+            android:summary="Pause time in minutes when phone put on charge"
+            android:title="Paause time while charging" />
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"
             android:key="key_showpopup"

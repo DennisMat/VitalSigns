@@ -31,6 +31,9 @@ public class VitalSignsActivity extends Activity {
 	private static Button buttonStart;
 	private static Button buttonStop;
 	private Button buttonPreference;
+	/**
+	 * When app is running this is false.
+	 */
 	public static boolean startButtonStatus=true;//when one opens the app for the very first time
 
 	public static Handler buttonStatusUpdateHandler;
@@ -101,7 +104,6 @@ public class VitalSignsActivity extends Activity {
 			}
 		});
 
-
 		
 		buttonPreference.setOnClickListener(new View.OnClickListener() {
 
@@ -153,54 +155,7 @@ public class VitalSignsActivity extends Activity {
 		}
 	}
 	
-	/*
-	private void startApp() {
-		try {
-			MonitorAsyncTask mMonitorAsyncTask = new MonitorAsyncTask();
-			mMonitorAsyncTask.execute();
-		} catch (Exception e) {
-			
-		}
-	}
 
-	
-	
-	  private class MonitorAsyncTask extends AsyncTask<Void, Void, Void> {
-		  
-		  @Override
-		  protected void onPreExecute(){
-			  setStartButtonStatus(false);
-		  }
-		  
-		  @Override
-		  protected Void doInBackground(Void... args) {	
-
-				CommonMethods cm=new CommonMethods();
-				// make sure the service is stopped before it's started again
-				if (cm.isVitalSignsServiceRunning(VitalSignsActivity.this)) {
-					VitalSignsService.Log("Stopping service");
-					stopApp();
-				}
-				cm.scheduleRepeatingMonitoringSessions(VitalSignsActivity.this);
-				cm.playBeep(100);
-				setStartButtonStatus(false);
-			  return null;
-		  }
-		  
-		  @Override
-		protected void onProgressUpdate(Void... values) {
-			  //do stuff here
-			super.onProgressUpdate(values);// this line is always the last
-		}
-
-		@Override
-		  protected void onPostExecute(Void result) {
-			//do stuff here
-		  }
-		  
-	  }
-	
-*/
 	private void stopApp() {
 		VitalSignsService.Log("stopService called");
 		try { 
