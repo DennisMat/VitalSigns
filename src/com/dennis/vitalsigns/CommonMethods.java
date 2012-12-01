@@ -86,22 +86,8 @@ private int uniqueId = R.string.for_unique_number;
 		AlarmManager.cancel(monitorPendingIntent);
 	}
 
-	/*
-	 * TODO:dennis: If the battery is charging
-	 * the app should go into a snooze for 1/2 hours before it reverts to its
-	 * normal functioning.
-	 */
-	public boolean isBatteryCharging(Context context) {
-		Intent intent = context.registerReceiver(null, new IntentFilter(
-				Intent.ACTION_BATTERY_CHANGED));
-		int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-		return plugged == BatteryManager.BATTERY_PLUGGED_AC
-				|| plugged == BatteryManager.BATTERY_PLUGGED_USB;
-	}
 	
-
-	
-	/*
+	/**
 	 * show notification on task bar of the phone
 	 */
 	public void showNotification(Context context){

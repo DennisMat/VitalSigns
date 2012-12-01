@@ -26,6 +26,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".VitalSignsService" />
+        <service android:name=".GeneralService" />
         <activity
             android:name=".VitalSignsActivity"
             android:exported="true"
