@@ -1,3 +1,9 @@
 # Ignore these files #
+
 *.class
-bin/
+
+#exclude entire classes folder recursively#
+classes/
+
+#bin/#
+#we want the apk file to be uploaded hence I'm not excluding the entire bin directory.
