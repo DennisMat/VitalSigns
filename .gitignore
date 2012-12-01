@@ -7,3 +7,7 @@ classes/
 
 #bin/#
 #we want the apk file to be uploaded hence I'm not excluding the entire bin directory.
+
+bin/res/
+bin/classes.dex
+bin/resources.ap_
