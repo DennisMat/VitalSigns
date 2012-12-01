@@ -30,6 +30,9 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int for_unique_number=0x7f060001;
+        /**  seconds 
+         */
+        public static final int pref_charging_pausetime=0x7f06000f;
         public static final int pref_countdown=0x7f060006;
         public static final int pref_deltathreshold=0x7f060005;
         public static final int pref_dial=0x7f060003;
