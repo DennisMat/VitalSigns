@@ -10,17 +10,23 @@ package com.dennis.vitalsigns;
 
 import java.util.Calendar;
 
+import com.dennis.vitalsigns.Monitors.Statuses;
+
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 
 /* author: dennis
@@ -30,13 +36,16 @@ public class VitalSignsActivity extends Activity {
 
 	private static Button buttonStart;
 	private static Button buttonStop;
+	public static boolean flagShutDown=true;
 	private Button buttonPreference;
+	private CommonMethods mCommonMethods = null;
+
+
 	/**
 	 * When app is running this is false.
 	 */
-	public static boolean startButtonStatus=true;//when one opens the app for the very first time
-
-	public static Handler buttonStatusUpdateHandler;
+	private static boolean isAppRunning=false;//when one opens the app for the very first time
+	public static final String BUTTON_UPDATE = "buttonUpdate";
 
 	private Intent VitalSignsServiceIntent;
 
@@ -47,9 +56,9 @@ public class VitalSignsActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.main);
 
-			VitalSignsService.Log("in onCreate()");
+			CommonMethods.Log("in onCreate()");
 
-			initializeScreenVariables();
+			initializeVariables();
 
 			// get device id
 			Context context = getApplicationContext();
@@ -59,8 +68,6 @@ public class VitalSignsActivity extends Activity {
 
 
 			updateButtonStatus();
-			// just pass the reference to the service
-			VitalSignsService.setMainActivity(this);
 			VitalSignsServiceIntent = new Intent(this, VitalSignsService.class);
 			initializeButtonListeners();
 
@@ -69,25 +76,38 @@ public class VitalSignsActivity extends Activity {
 
 	}
 
+
+	private BroadcastReceiver receiverButtonStatusUpdateEvent = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			CommonMethods.Log("receiverButtonStatusUpdateEvent onReceive() called" );
+			updateButtonStatus();
+			
+		}
+	};
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		VitalSignsService.Log("onResume called" );
+		//registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
+		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
 	}
 
 	@Override
 	protected void onPause() {
-		VitalSignsService.Log("onPause called" );
-		// TODO Auto-generated method stub
+		CommonMethods.Log("onPause called" );
+		//unregisterReceiver(receiverButtonStatusUpdateEvent);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverButtonStatusUpdateEvent);
 		super.onPause();
 	}
 
-	private void initializeScreenVariables() throws Exception {
+	private void initializeVariables() throws Exception {
 		buttonStart = (Button) findViewById(R.id.buttonStart);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonPreference = (Button) findViewById(R.id.buttonPreference);
-
+		mCommonMethods= new CommonMethods(this);
 	}
 
 	private void initializeButtonListeners() {
@@ -100,116 +120,190 @@ public class VitalSignsActivity extends Activity {
 
 		buttonStop.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				flagShutDown=true;
 				stopApp();
 			}
 		});
 
-		
+
 		buttonPreference.setOnClickListener(new View.OnClickListener() {
 
-                public void onClick(View v) {
-                        Intent settingsActivity = new Intent(getBaseContext(),
-                                        Preferences.class);
-                        startActivity(settingsActivity);
-                }
-        });
-
-		buttonStatusUpdateHandler = new Handler() {
-			@Override
-			public void dispatchMessage(Message msg) {
-				super.dispatchMessage(msg);
-				setStartButtonStatus(true);
-				VitalSignsService.Log("buttons  reset");
+			public void onClick(View v) {
+				Intent settingsActivity = new Intent(VitalSignsActivity.this,
+						Preferences.class);
+				startActivity(settingsActivity);
 			}
-		};
+		});
 
 	}
+
+
+
 
 	private void startApp() {
 		try {
-
+			CommonMethods.Log("VitalSignsActivity.startApp() called 1");
 			Calendar calExpiry = Calendar.getInstance();
-			calExpiry.set(2015, Calendar.APRIL, 10);
+			calExpiry.set(2020, Calendar.APRIL, 10);
 			Calendar currentcal = Calendar.getInstance();
 
 			if (currentcal.before(calExpiry)) {
-				CommonMethods cm=new CommonMethods();
 				// make sure the service is stopped before it's started again
-				if (cm.isVitalSignsServiceRunning(this)) {
-					VitalSignsService.Log("Stopping service");
+				if (mCommonMethods.isVitalSignsServiceRunning()) {
+					CommonMethods.Log("Stopping service");
 					stopApp();
 				}
-				cm.scheduleRepeatingMonitoringSessions(this);
-				cm.playBeep(100);
-				setStartButtonStatus(false);
+				flagShutDown=false;
+				mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
+				mCommonMethods.playBeep(100);
 				// remove or hide the app
 				// finish();
 			} else {
-				showMessage("This software is past it's expiration date. Please contact the developer");
+				showMessage("This software is past it's expiration date. Please contact the developer - and part with your wealth!");
 			}
-
-		} catch (Exception e) {
-			VitalSignsService.releasePartialWakeLock();
-			VitalSignsService.Log("Error: " + e);
-			setStartButtonStatus(true);
+			CommonMethods.Log("VitalSignsActivity.startApp() called 2");
+		} catch (Exception e) {			
+			CommonMethods.releasePartialWakeLock();
+			flagShutDown=true;
+			CommonMethods.Log("Error: " + e);
 		}
+		updateButtonStatus();
 	}
-	
+
 
 	private void stopApp() {
-		VitalSignsService.Log("stopService called");
-		try { 
-			setStartButtonStatus(true); // the loop is to be stopped using this variable
-			CommonMethods cm=new CommonMethods();
-			cm.playBeep(100);
-			cm.cancelRepeatingMonitoringSessions(this);
-			cm.removeNotification(this);	
+		CommonMethods.Log("stopApp called 1");
+		try {
+			flagShutDown=true;// 
+			mCommonMethods.playBeep(100);
+			mCommonMethods.cancelRepeatingMonitoringSessions();
+			mCommonMethods.removeNotification();	
+
 			/* this does not stop the other methods in the service if they happened to be in a loop
-			 * So the loop must be stopped by some other manner
+			 * So the loop must be stopped by some other manner. We use flagShutDown for this purpose. 
 			 */
 			stopService(VitalSignsServiceIntent);			
-			VitalSignsService.releasePartialWakeLock();
-			if (!cm.isVitalSignsServiceRunning(this)) {
-				setStartButtonStatus(true);
-			}
+			CommonMethods.releasePartialWakeLock();
+			CommonMethods.Log("stopApp called 2");
+			updateButtonStatus();
 			// remove or hide the app
 			// finish();
 		} catch (Exception e) {
-			VitalSignsService.releasePartialWakeLock();
+			CommonMethods.releasePartialWakeLock();
+		}
+	}
+
+
+	/**
+	 * This method is called from checkAllTasksAndUpdateButtons only. It is not on the main UI thread. 
+	 * @param pressed
+	 */
+	private void setStartButtonPressed(final boolean pressed) {
+		CommonMethods.Log("in setStartButtonPressed()" );
+		runOnUiThread(new Runnable() {// because this is always called from a thread.
+		     public void run() {
+		 		try {
+					if (buttonStart != null && buttonStop != null) {				
+						buttonStart.setEnabled(!pressed);
+						buttonStop.setEnabled(pressed);
+						if(pressed){
+							CommonMethods.Log("setStartButtonPressed called and startButton is pressed down" );
+						}else{
+							CommonMethods.Log("setStartButtonPressed called and startButton is pressable" );
+						}						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+		    }
+		});
+
+	}
+
+	/**
+	 * When app is running:<br/>
+	 * The isStartButtonEnabled returns false<br/>
+	 * The Start button is in the disabled state
+	 * 
+	 */
+	public static boolean isStartButtonEnabled(){
+		return buttonStart.isEnabled();
+	}
+
+	private void updateButtonStatus(){
+		/* the buttons may take time to update depending on what is running 
+		in the background and we don't want to hold up the UI hence the thread.
+		*/
+		try {
+			Runnable r1=new Runnable() {
+				public void run() {
+					CommonMethods.Log("in updateButtonStatus()" );
+					checkAllTasksAndUpdateButtons();					
+				}
+			};
+			new Thread(r1).start();			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * This method is not on the main UI thread
+	 */
+	public void checkAllTasksAndUpdateButtons(){
+		
+		for (int i = 0; i < 10; i++) {// periodically monitor the variables.			
+			boolean allTasksNotRunning=false;
+			CommonMethods.Log("Service running= " + mCommonMethods.isVitalSignsServiceRunning());
+			CommonMethods.Log("isHeartRateMonitorRunning = " + Monitors.Statuses.isHeartRateMonitorRunning);
+			CommonMethods.Log("isBodyTemperatureMonitorRunning = " + Monitors.Statuses.isBodyTemperatureMonitorRunning);
+			if (!mCommonMethods.isVitalSignsServiceRunning()
+					&& !Monitors.Statuses.isHeartRateMonitorRunning
+					&& !Monitors.Statuses.isBodyTemperatureMonitorRunning
+					){
+				allTasksNotRunning=true;
+			}
+			if(allTasksNotRunning){
+				CommonMethods.Log("Hallelujah! All task have ended");
+			}
 
+			if(flagShutDown && allTasksNotRunning){
+				setStartButtonPressed(false);
+				break;
+			}else if(!flagShutDown){
+				setStartButtonPressed(true);
+				break;
+			}else{//cases where flagShutDown is true and allTasksNotRunning is false
+				// do not break, continue on the loop
+				CommonMethods.Log("some tasks are  still running");
+			}
+			
+			CommonMethods.Log("in loop " + i);
+			try {
+				Thread.sleep(10000);// 10 sec pause between checks.
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
-	public static void setStartButtonStatus(boolean status) {
-		startButtonStatus=status;
-		if (buttonStart != null && buttonStop != null) {
-			buttonStart.setEnabled(status);
-			buttonStop.setEnabled(!status);
 		}
 	}
-
-	public void updateButtonStatus(){
-		buttonStart.setEnabled(startButtonStatus);
-		buttonStop.setEnabled(!startButtonStatus);
+	
+	private AlertDialog.Builder showMessage(String mess){
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this); 
+		alertDialog.setMessage(mess);	      	
+		alertDialog
+		.setIcon(0)
+		.setTitle("")
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				return; //don't do anything.
+			}
+		})
+		.create();
+		alertDialog.show();	
+		return alertDialog;
 	}
-
-	  private AlertDialog.Builder showMessage(String mess){
-	      	AlertDialog.Builder alertDialog = new AlertDialog.Builder(this); 
-	      	alertDialog.setMessage(mess);	      	
-	      	alertDialog
-	      	.setIcon(0)
-	      	.setTitle("")
-	      	.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	    	              public void onClick(DialogInterface dialog, int whichButton) {
-	    	              	return; //don't do anything.
-	    	              }
-	    	  })
-	        .create();
-	      	 alertDialog.show();	
-	      	 return alertDialog;
-		  }
-
-
 
 }

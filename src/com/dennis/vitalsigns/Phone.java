@@ -39,11 +39,12 @@ import android.content.res.Resources.NotFoundException;
 public class Phone {
 
 	private Context context;
-	
+	private CommonMethods mCommonMethods=null;
 	
 	
 	public Phone(Context context) {
 		this.context=context;
+		mCommonMethods=new CommonMethods(context);
 	}
 
 	void sendSMS(String phoneNumber, String message)throws Exception
@@ -125,7 +126,7 @@ public class Phone {
 			context.unregisterReceiver(smsDeliveredReceiver);//is there a point in doing this so soon?
 	
 		} catch (Exception e) {
-			VitalSignsService.Log("Exception in sendSMS "+e.getMessage());
+			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
 	
 		}
 	}
@@ -156,7 +157,7 @@ public class Phone {
 	
 			Location location=null;
 			for(int i=0;i<10;i++){// dennis: waiting for a location value. But will timeout after a certain time defined by the loop
-				//Log("In wait loop");
+				//CommonMethods.Log("In wait loop");
 				location = locationManager.getLastKnownLocation(bestProvider); 
 				if(location!=null){
 					break;
@@ -172,7 +173,7 @@ public class Phone {
 	
 			message= String.format("Emergency. Please Call:"+phoneNumber+". To find the location of the person in google MAPS, search for "+lat+", "+ lon);
 		} catch (Exception e) {
-			VitalSignsService.Log("Exception in sendSMS "+e.getMessage());
+			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
 	
 		}
 		if(message.length()>160){
@@ -215,17 +216,16 @@ public class Phone {
 		}
 
 		try {
-			VitalSignsService.Log("Dialing: "+ phoneNumber);
-			Intent CallIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+			CommonMethods.Log("Dialing: "+ phoneNumber);
+			Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 					+ phoneNumber));
-			CallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			Toast toast = Toast.makeText(context,
-					"About to dial" +phoneNumber, Toast.LENGTH_SHORT);
-			toast.show();
-			context.startActivity(CallIntent);
-			VitalSignsService.Log("Dialed number successfully");
+			callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			
+			mCommonMethods.showToast("About to dial" +phoneNumber,Toast.LENGTH_SHORT);
+			context.startActivity(callIntent);
+			CommonMethods.Log("Dialed number successfully");
 		} catch (Exception e) {
-			VitalSignsService.Log("Exception in DialNumber " + e.getMessage());
+			CommonMethods.Log("Exception in DialNumber " + e.getMessage());
 
 		}
 

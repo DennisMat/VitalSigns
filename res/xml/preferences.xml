@@ -63,12 +63,6 @@
         android:summary="Settings"
         android:title="Settings" >
         <EditTextPreference
-            android:defaultValue="@string/pref_deltathreshold"
-            android:inputType="number"
-            android:key="key_deltathreshold"
-            android:summary="Threshold. Values typically range from 50 to 300. Try inincrements/decrements of 5 units. Set the &apos;Showmessage in popup&apos; setting to see typical values from your phone"
-            android:title="Threshold" />
-        <EditTextPreference
             android:defaultValue="@string/pref_countdown"
             android:inputType="number"
             android:key="key_countdown"
@@ -84,18 +78,6 @@
     <PreferenceScreen
         android:summary="Advanced Settings"
         android:title="Advanced Settings" >
-        <EditTextPreference
-            android:defaultValue="@string/pref_historysize"
-            android:inputType="number"
-            android:key="key_historysize"
-            android:summary="History Size"
-            android:title="History Size" />
-        <EditTextPreference
-            android:defaultValue="@string/pref_statusthreshold"
-            android:inputType="number"
-            android:key="key_statusthreshold"
-            android:summary="Status Threshold"
-            android:title="Status Threshold" />
         <EditTextPreference
             android:defaultValue="@string/pref_timebetweenmonitoring"
             android:inputType="number"
@@ -113,7 +95,7 @@
             android:inputType="number"
             android:key="key_chargingpausetime"
             android:summary="Pause time in minutes when phone put on charge"
-            android:title="Paause time while charging" />
+            android:title="Pause time while charging" />
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"
             android:key="key_showpopup"

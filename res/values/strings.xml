@@ -5,15 +5,14 @@
     <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
-    <string name="pref_deltathreshold">275</string>
-    <string name="pref_countdown">10</string>
+    <string name="pref_countdown">10</string><!-- number of beeps -->
     <string name="pref_timebetweendialing">30</string><!-- seconds -->
-    <string name="pref_historysize">500</string>
-    <string name="pref_statusthreshold">200</string>
     <string name="pref_timebetweenmonitoring">20</string><!-- seconds -->
     <string name="pref_hibernatetime">10</string><!-- minutes -->
     <string name="pref_showpopup">false</string>
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string><!-- seconds -->
     <string name="pref_charging_pausetime">30</string><!-- minutes -->
+    <string name="emergency_threshhold_level">2</string><!-- how many vitalssigns have to be missing/low before hich calls/sms are initiated -->
+    
 </resources>

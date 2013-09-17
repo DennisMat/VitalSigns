@@ -143,7 +143,7 @@ public class SMS {
 			context.unregisterReceiver(smsDeliveredReceiver);//is there a point in doing this so soon?
 	
 		} catch (Exception e) {
-			VitalSignsService.Log("Exception in sendSMS "+e.getMessage());
+			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
 	
 		}
 	}
@@ -174,7 +174,7 @@ public class SMS {
 	
 			Location location=null;
 			for(int i=0;i<10;i++){// dennis: waiting for a location value. But will timeout after a certain time defined by the loop
-				//Log("In wait loop");
+				//CommonMethods.Log("In wait loop");
 				location = locationManager.getLastKnownLocation(bestProvider); 
 				if(location!=null){
 					break;
@@ -190,7 +190,7 @@ public class SMS {
 	
 			message= String.format("Emergency. Please Call:"+phoneNumber+". To find the location of the person in google MAPS, search for "+lat+", "+ lon);
 		} catch (Exception e) {
-			VitalSignsService.Log("Exception in sendSMS "+e.getMessage());
+			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
 	
 		}
 		if(message.length()>160){

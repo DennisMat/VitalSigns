@@ -10,14 +10,15 @@ public class MonitorSessionInitBroadcastReciever extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {		
 		try {
-			VitalSignsService.aquirePartialWakeLock(context);
-			VitalSignsService.Log("in MonitorSessionInitBroadcastReciever");
-			if(!((new CommonMethods()).isVitalSignsServiceRunning(context))){
+			CommonMethods mCommonMethods=new CommonMethods(context);
+			CommonMethods.aquirePartialWakeLock(context);
+			CommonMethods.Log("in MonitorSessionInitBroadcastReciever");
+			if(!(mCommonMethods.isVitalSignsServiceRunning())){
 			Intent VitalSignsServiceIntent = new Intent(context, VitalSignsService.class);
 			context.startService(VitalSignsServiceIntent);			
 			}
 		} catch (Exception e) {
-			VitalSignsService.releasePartialWakeLock();
+			CommonMethods.releasePartialWakeLock();
 		}
 	}
 

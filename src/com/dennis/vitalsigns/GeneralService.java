@@ -12,14 +12,14 @@ import android.widget.Toast;
 /**
  * 
  * @author dennis
- * A class that does some tasks in the background so to take the load of Broadcast receivers
+ * A class that does some tasks in the background so to take the load off Broadcast receivers
  */
 public class GeneralService extends Service {
 
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		VitalSignsService.Log("Power cord connected or disconnected.");
+		CommonMethods.Log("Power cord connected or disconnected.");
 
 		String pluggedStatus =intent.getStringExtra("pluggedStatus");
 
@@ -38,11 +38,11 @@ public class GeneralService extends Service {
 				triggerAtTime = 0;
 			}
 
-			if(!VitalSignsActivity.startButtonStatus){//process only if start button is in the pressed state
+			if(!VitalSignsActivity.isStartButtonEnabled()){//process only if start button is in the pressed state
 				Toast toast = Toast.makeText(getApplicationContext(),toastMessage, Toast.LENGTH_SHORT);
 				toast.show();
-				CommonMethods cm=new CommonMethods();
-				cm.scheduleRepeatingMonitoringSessions(getApplicationContext(),triggerAtTime);
+				CommonMethods cm=new CommonMethods(getApplicationContext());
+				cm.scheduleRepeatingMonitoringSessions(triggerAtTime);
 			}
 		}
 

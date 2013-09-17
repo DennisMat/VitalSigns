@@ -1,9 +1,7 @@
 package com.dennis.vitalsigns;
 
 public class Defaults {
-	public static final int historySize=500;
-	public static final int deltaThreshold=350;
-	public static final int statusThreshold=200;
+	/*
 	public static final int  hibernateTime=0;//minutes//zero always works
 	public static final int timeBetweenMonitoringSessions=20;//seconds
 	public static final int countDown=10;
@@ -14,4 +12,5 @@ public class Defaults {
 	public static final boolean  messageShowInPopup=false;
 	public static final boolean  remoteLog=false;
 	public static final int GPSWait=10;//seconds Time spent waiting to get a value from the GPS
+	*/
 }
