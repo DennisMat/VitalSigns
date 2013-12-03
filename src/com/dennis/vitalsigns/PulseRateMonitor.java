@@ -30,7 +30,7 @@ public class PulseRateMonitor {
 		mCommonMethods= new CommonMethods(context);
 	}
 	
-	public boolean getPersonEmergencyStatus() {
+	public boolean getPersonPulseEmergencyStatus() {
 
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		int pulseRateLow=Integer.parseInt(settings.getString("key_pulse_rate_low",context.getString(R.string.pref_pulse_rate_low)));

@@ -257,10 +257,10 @@ public class VitalSignsActivity extends Activity {
 		for (int i = 0; i < 10; i++) {// periodically monitor the variables.			
 			boolean allTasksNotRunning=false;
 			CommonMethods.Log("Service running= " + mCommonMethods.isVitalSignsServiceRunning());
-			CommonMethods.Log("isHeartRateMonitorRunning = " + Monitors.Statuses.isHeartRateMonitorRunning);
+			CommonMethods.Log("isHeartRateMonitorRunning = " + Monitors.Statuses.isPulseRateMonitorRunning);
 			CommonMethods.Log("isBodyTemperatureMonitorRunning = " + Monitors.Statuses.isBodyTemperatureMonitorRunning);
 			if (!mCommonMethods.isVitalSignsServiceRunning()
-					&& !Monitors.Statuses.isHeartRateMonitorRunning
+					&& !Monitors.Statuses.isPulseRateMonitorRunning
 					&& !Monitors.Statuses.isBodyTemperatureMonitorRunning
 					){
 				allTasksNotRunning=true;

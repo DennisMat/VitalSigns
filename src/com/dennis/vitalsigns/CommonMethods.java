@@ -116,7 +116,8 @@ public class CommonMethods {
 		AlarmManager.cancel(monitorPendingIntent);
 	}
 
-
+	
+	//TODO: Dennis: The notifications are not working properly. Fix them up later.
 	/**
 	 * show notification on task bar of the phone
 	 */

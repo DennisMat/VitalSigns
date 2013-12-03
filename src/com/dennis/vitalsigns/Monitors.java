@@ -15,7 +15,7 @@ public class Monitors {
 	
 	
 	public static class Statuses{
-		public static boolean isHeartRateMonitorRunning=false;
+		public static boolean isPulseRateMonitorRunning=false;
 		public static boolean isBodyTemperatureMonitorRunning=false;
 	}
 
@@ -42,18 +42,19 @@ public class Monitors {
 	}
 	
 	/**It's between the startMonitoringSession() and stopMonitoringSession() that actual monitoring is done.
-	 * Between the stopMonitoringSession() and startMonitoringSession() - sometimes hibernation is done to save on battery life.
+	 * Between the stopMonitoringSession() and startMonitoringSession() - there may be a hibernation time,
+	 *  this hibernation time will save on battery life. The phone is woken up form the hibernation state by the alarm manager.
 	 * 
 	 */
 	public void startMonitoringSession(){
 		if(VitalSignsActivity.flagShutDown){
 			return;
 		}
-		// write code here to receive bluetooth 4.0 sgnals
-		Statuses.isHeartRateMonitorRunning=true;
-		PulseRateMonitor mBlueToothMonitor=new PulseRateMonitor(context);
-		boolean emergencyStatusPulseRate=mBlueToothMonitor.getPersonEmergencyStatus();// this method may take time
-		Statuses.isHeartRateMonitorRunning=false;
+
+		Statuses.isPulseRateMonitorRunning=true;
+		PulseRateMonitor mPulseRateMonitor=new PulseRateMonitor(context);
+		boolean emergencyStatusPulseRate=mPulseRateMonitor.getPersonPulseEmergencyStatus();// this method may take time
+		Statuses.isPulseRateMonitorRunning=false;
 
 		Statuses.isBodyTemperatureMonitorRunning=true;//set true before reading values
 		boolean emergencyStatusBodyTemp=false;//Todo later
@@ -187,7 +188,6 @@ public class Monitors {
 
 	
 	private void updateButtons(){
-		//context.sendBroadcast(new Intent(VitalSignsActivity.BUTTON_UPDATE));
 		LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(VitalSignsActivity.BUTTON_UPDATE));
 		CommonMethods.Log("after sending the broadcast to update  buttons");
 
@@ -206,6 +206,8 @@ public class Monitors {
 			return;
 		}
 		try {
+			CommonMethods.Log("Time between monitoring sessions =" + pref.timeBetweenMonitoringSessions + " seconds.\n "
+					+ "This is non-zero even for a zero hibernate time.");
 			Thread.sleep(pref.timeBetweenMonitoringSessions * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -235,21 +237,21 @@ public class Monitors {
 					if(VitalSignsActivity.flagShutDown){
 						return null;//abruptly ending dialing/sms because stop button was clicked.
 					}
+					if (pref.SMSArray[i]) {
+						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
+					}
 					if (pref.dialArray[i]) {
 						phone.dialNumber(pref.phoneNumberArray[i]);
 					}
 					if(VitalSignsActivity.flagShutDown){
 						return null;
 					}
-					if (pref.SMSArray[i]) {
-						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
-					}
+
 					//put some kind of cancel dialing feature.
-					//Thread.sleep(timeBetweenDialing * 1000); // seconds between dialing
+					Thread.sleep(pref.timeBetweenDialing * 1000);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					CommonMethods.Log("InterruptedException " + e.getMessage());
+					CommonMethods.Log("Exception " + e.getMessage());
 				}
 			}
 
