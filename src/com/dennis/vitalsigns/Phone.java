@@ -7,32 +7,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.PowerManager;
-import android.hardware.SensorManager;
+
 import android.net.Uri;
-import android.os.IBinder;
-import android.provider.Settings; 
+
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.widget.TextView;
+
 import android.widget.Toast;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.media.MediaPlayer;
-import  android.media.ToneGenerator;
-
 import android.app.Activity;
-import android.app.ActivityManager.RunningServiceInfo;
-
 import android.content.BroadcastReceiver;
-import android.content.res.Resources.NotFoundException;
 
 
 

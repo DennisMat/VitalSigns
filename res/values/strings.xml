@@ -13,6 +13,10 @@
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string><!-- seconds -->
     <string name="pref_charging_pausetime">30</string><!-- minutes -->
-    <string name="emergency_threshhold_level">2</string><!-- how many vitalssigns have to be missing/low before hich calls/sms are initiated -->
-    
+    <string name="emergency_threshhold_level">2</string><!-- how many vitalssigns have to be missing/low before hich calls/sms are initiated -->    
+    <string name="title_devices">BLE Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="pref_pulse_rate_low">40</string>
+    <string name="pref_pulse_rate_high">150</string>    
 </resources>

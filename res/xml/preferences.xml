@@ -62,6 +62,23 @@
     <PreferenceScreen
         android:summary="Settings"
         android:title="Settings" >
+        
+         <EditTextPreference
+            android:defaultValue="@string/pref_pulse_rate_low"
+            android:inputType="number"
+            android:key="key_pulse_rate_low"
+            android:summary="Set the pulse rate below which an alert should be sent"
+            android:title="Lowest Pulse Rate" />
+                  
+         <EditTextPreference
+            android:defaultValue="@string/pref_pulse_rate_high"
+            android:inputType="number"
+            android:key="key_pulse_rate_high"
+            android:summary="Set the pulse rate above which an alert should be sent"
+            android:title="Highest Pulse Rate" />
+         
+
+        
         <EditTextPreference
             android:defaultValue="@string/pref_countdown"
             android:inputType="number"
@@ -74,6 +91,7 @@
             android:key="key_timebetweendialing"
             android:summary="Time between dialing attempts in seconds"
             android:title="Time between dialing attempts" />
+                
     </PreferenceScreen>
     <PreferenceScreen
         android:summary="Advanced Settings"

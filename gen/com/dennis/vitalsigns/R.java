@@ -29,9 +29,11 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060000;
+        public static final int ble_not_supported=0x7f060010;
         /**  minutes 
          */
         public static final int emergency_threshhold_level=0x7f06000d;
+        public static final int error_bluetooth_not_supported=0x7f06000f;
         public static final int for_unique_number=0x7f060001;
         /**  seconds 
          */
@@ -43,6 +45,8 @@ public final class R {
          */
         public static final int pref_hibernatetime=0x7f060008;
         public static final int pref_ph=0x7f060002;
+        public static final int pref_pulse_rate_high=0x7f060012;
+        public static final int pref_pulse_rate_low=0x7f060011;
         public static final int pref_remotelog=0x7f06000a;
         /**  minutes 
          */
@@ -54,6 +58,9 @@ public final class R {
         /**  seconds 
          */
         public static final int pref_timebetweenmonitoring=0x7f060007;
+        /**  how many vitalssigns have to be missing/low before hich calls/sms are initiated 
+         */
+        public static final int title_devices=0x7f06000e;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

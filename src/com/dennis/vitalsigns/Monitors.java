@@ -11,6 +11,9 @@ public class Monitors {
 	private Context context;
 	private boolean[] beepHistory;
 	private CommonMethods mCommonMethods = null;
+	private int emergencylevelThreshold=0;
+	
+	
 	public static class Statuses{
 		public static boolean isHeartRateMonitorRunning=false;
 		public static boolean isBodyTemperatureMonitorRunning=false;
@@ -48,8 +51,8 @@ public class Monitors {
 		}
 		// write code here to receive bluetooth 4.0 sgnals
 		Statuses.isHeartRateMonitorRunning=true;
-		BlueToothLEMonitor mBlueToothMonitor=new BlueToothLEMonitor(context);
-		boolean emergencyStatusHeartRate=mBlueToothMonitor.getPersonEmergencyStatus();// this method may take time
+		PulseRateMonitor mBlueToothMonitor=new PulseRateMonitor(context);
+		boolean emergencyStatusPulseRate=mBlueToothMonitor.getPersonEmergencyStatus();// this method may take time
 		Statuses.isHeartRateMonitorRunning=false;
 
 		Statuses.isBodyTemperatureMonitorRunning=true;//set true before reading values
@@ -58,8 +61,8 @@ public class Monitors {
 
 		boolean emergencyStatusBreathing=false;//Todo later
 		int emergencylevel=0;
-		int emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));
-		if(emergencyStatusHeartRate){ 
+		
+		if(emergencyStatusPulseRate){ 
 			emergencylevel++;
 		}
 
@@ -70,7 +73,7 @@ public class Monitors {
 			emergencylevel++;
 		}
 
-		if(emergencylevel>emergencylevelThreshold){
+		if(emergencylevel>=emergencylevelThreshold){
 
 			mCommonMethods.playBeep(100);
 			// shift beep history values
@@ -114,7 +117,7 @@ public class Monitors {
 				CommonMethods.Log("ContinueMonitoring called because no Vitalsigns above threshold level detected");
 				continueMonitoring();
 			}
-		} else {//if sumStatus > statusThreshold i.e if alive
+		} else {
 			if (pref.hibernateTime == 0) {
 				CommonMethods.Log("continueMonitoring called because of 0 hibernate time");
 				//clear all past beep history.
@@ -136,13 +139,17 @@ public class Monitors {
 	private void setValuesForTesting() {
 		
 		pref.timeBetweenDialing=30;
-		pref.hibernateTime=1;
-		pref.countDown=3;
+		pref.hibernateTime=0;
+		pref.countDown=4;
 		pref.timeBetweenMonitoringSessions=10;
+		for(int i=0;i<pref.arraySize;i++){
 
+			pref.dialArray[i]=false;
+			pref.SMSArray[i]=false;
+		}
 		pref.messageShowInPopup=true;
 		pref.remoteLog=false;
-
+		emergencylevelThreshold=1;
 	}
 
 	private void initializeVariables() throws Exception {
@@ -153,6 +160,7 @@ public class Monitors {
 		pref.phoneNumberArray= new String[pref.arraySize];
 		pref.dialArray= new boolean[pref.arraySize];
 		pref.SMSArray= new boolean[pref.arraySize];
+		emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));
 		pref.loadValuesFromStorage();// loads  historySize, countDown etc.
 		setValuesForTesting();//overrrides some of the above variables.
 
@@ -161,6 +169,8 @@ public class Monitors {
 		for (int i = 0; i < beepHistory.length; i++) {
 			beepHistory[i] = false;
 		}
+		
+		
 
 	}
 

@@ -1,10 +1,3 @@
-/*adb install <full path>\sensorsimulator-1.1.1\bin\SensorSimulatorSettings-1.1.1.apk
-
-cd <fullpath>\android-sdk_r12-windows\android-sdk-windows\platform-tools
- * 
- * 
- * 
- * */
 
 package com.dennis.vitalsigns;
 
@@ -200,8 +193,9 @@ public class VitalSignsActivity extends Activity {
 	 */
 	private void setStartButtonPressed(final boolean pressed) {
 		CommonMethods.Log("in setStartButtonPressed()" );
-		runOnUiThread(new Runnable() {// because this is always called from a thread.
-		     public void run() {
+		Runnable r1=new Runnable() {// because this is always called from a thread.
+			@Override 
+			public void run() {
 		 		try {
 					if (buttonStart != null && buttonStop != null) {				
 						buttonStart.setEnabled(!pressed);
@@ -217,7 +211,12 @@ public class VitalSignsActivity extends Activity {
 				}
 
 		    }
-		});
+		};
+		/*
+		Handler buttonHandler = new Handler(this.getMainLooper());
+		buttonHandler.post(r1);
+		*/
+		runOnUiThread(r1);
 
 	}
 
@@ -237,6 +236,7 @@ public class VitalSignsActivity extends Activity {
 		*/
 		try {
 			Runnable r1=new Runnable() {
+				@Override
 				public void run() {
 					CommonMethods.Log("in updateButtonStatus()" );
 					checkAllTasksAndUpdateButtons();					

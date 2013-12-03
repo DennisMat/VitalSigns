@@ -156,6 +156,16 @@ public class CommonMethods {
 			}
 		});
 	}
+	
+	public void showToast(final int msgstr,final int toastLength) {
+		Handler toastHandler = new Handler(context.getMainLooper());
+		toastHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(context,msgstr,toastLength).show();
+			}
+		});
+	}
 
 	public void showToast(String msgstr) {
 		showToast(msgstr,Toast.LENGTH_LONG);

@@ -1,58 +1,22 @@
 package com.dennis.vitalsigns;
 
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.PowerManager;
-import android.hardware.SensorManager;
-import android.net.Uri;
-import android.os.IBinder;
-import android.provider.Settings; 
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.media.MediaPlayer;
-import  android.media.ToneGenerator;
 
 import android.app.Activity;
-import android.app.ActivityManager.RunningServiceInfo;
 
 import android.content.BroadcastReceiver;
-import android.content.res.Resources.NotFoundException;
 
-
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.*;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.*;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.util.EntityUtils;
 
 public class SMS {
 
