@@ -118,7 +118,7 @@ public class Phone {
 		}
 	}
 
-	String getMessageForSMS()throws Exception{
+	String getMessageForSMS(){
 	
 		long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 0; // in Meters
 		long MINIMUM_TIME_BETWEEN_UPDATES = 10000; // in Milliseconds

@@ -1,7 +1,6 @@
 package com.dennis.vitalsigns;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 import android.app.ActivityManager;
@@ -9,7 +8,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.IBinder;
 
 import android.app.ActivityManager.RunningServiceInfo;
@@ -60,12 +58,6 @@ public class VitalSignsService extends Service {
 
 		@Override
 		protected Void doInBackground(Void... args) {
-			/*Dennis: we no longer need this this, the accelerometer will not be monitored.
-			 * 
-			AccMonitor mAccMonitor=new AccMonitor(getApplicationContext());
-			mAccMonitor.start();
-			 */
-
 			Monitors mMonitors=new Monitors(mContext,pref);
 			mMonitors.start();//this step takes time
 			CommonMethods.Log("MonitorAsyncTask.doInBackground() completed");

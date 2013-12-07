@@ -77,7 +77,7 @@ public class PulseRateMonitor {
 
 			String inputLine;
 			while ((inputLine = in.readLine()) != null){
-				CommonMethods.Log("pulse rate read form file is " + inputLine);
+				CommonMethods.Log("pulse rate read from file is " + inputLine);
 				pulseRate=Integer.parseInt(inputLine);
 			}
 			in.close();

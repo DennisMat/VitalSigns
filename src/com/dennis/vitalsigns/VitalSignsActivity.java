@@ -4,19 +4,18 @@ package com.dennis.vitalsigns;
 import java.util.Calendar;
 
 import com.dennis.vitalsigns.Monitors.Statuses;
+import android.content.*;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ActivityManager.RunningServiceInfo;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.support.v4.content.LocalBroadcastManager;
@@ -29,17 +28,16 @@ public class VitalSignsActivity extends Activity {
 
 	private static Button buttonStart;
 	private static Button buttonStop;
+	/**
+	 * A global variable used to co-ordinate various things throughout the app, for example:
+	 * <br/> The enabled/disabled states of the start and stop button.
+	 * <br/>The running of the services in the background
+	 *  <br/> <br/> This variable is also stored in the local storage, in case the phone is rebooted.
+	 */
 	public static boolean flagShutDown=true;
 	private Button buttonPreference;
 	private CommonMethods mCommonMethods = null;
-
-
-	/**
-	 * When app is running this is false.
-	 */
-	private static boolean isAppRunning=false;//when one opens the app for the very first time
 	public static final String BUTTON_UPDATE = "buttonUpdate";
-
 	private Intent VitalSignsServiceIntent;
 
 	@Override
@@ -82,7 +80,6 @@ public class VitalSignsActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
 		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
@@ -91,7 +88,6 @@ public class VitalSignsActivity extends Activity {
 	@Override
 	protected void onPause() {
 		CommonMethods.Log("onPause called" );
-		//unregisterReceiver(receiverButtonStatusUpdateEvent);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverButtonStatusUpdateEvent);
 		super.onPause();
 	}
@@ -113,7 +109,6 @@ public class VitalSignsActivity extends Activity {
 
 		buttonStop.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				flagShutDown=true;
 				stopApp();
 			}
 		});
@@ -146,7 +141,8 @@ public class VitalSignsActivity extends Activity {
 					CommonMethods.Log("Stopping service");
 					stopApp();
 				}
-				flagShutDown=false;
+				flagShutDown=false;				 
+				mCommonMethods.setFlagShutDown(flagShutDown);				 
 				mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
 				mCommonMethods.playBeep(100);
 				// remove or hide the app
@@ -158,6 +154,7 @@ public class VitalSignsActivity extends Activity {
 		} catch (Exception e) {			
 			CommonMethods.releasePartialWakeLock();
 			flagShutDown=true;
+			mCommonMethods.setFlagShutDown(flagShutDown);
 			CommonMethods.Log("Error: " + e);
 		}
 		updateButtonStatus();
@@ -167,7 +164,8 @@ public class VitalSignsActivity extends Activity {
 	private void stopApp() {
 		CommonMethods.Log("stopApp called 1");
 		try {
-			flagShutDown=true;// 
+			flagShutDown=true;
+			mCommonMethods.setFlagShutDown(flagShutDown);			 
 			mCommonMethods.playBeep(100);
 			mCommonMethods.cancelRepeatingMonitoringSessions();
 			mCommonMethods.removeNotification();	

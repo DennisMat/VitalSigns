@@ -1,10 +1,15 @@
 package com.dennis.vitalsigns;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
+
 public class Monitors {
 
 	Preferences pref;
@@ -26,15 +31,16 @@ public class Monitors {
 
 	public void start() {
 		try {
+			CommonMethods.aquirePartialWakeLock(context);
 			VitalSignsActivity.flagShutDown=false;
 			updateButtons();//The steps below may takes time so update button before this
 			CommonMethods.Log("Monitors.start() started");
 			initializeVariables();
 			startMonitoringSession();
 			mCommonMethods.showNotification(); 
-			CommonMethods.aquirePartialWakeLock(context);
 		} catch (Exception e) {
 			VitalSignsActivity.flagShutDown=true;
+			mCommonMethods.setFlagShutDown(VitalSignsActivity.flagShutDown);	
 			updateButtons();
 			CommonMethods.Log("Exception: " + e.getMessage());
 		}
@@ -42,8 +48,8 @@ public class Monitors {
 	}
 	
 	/**It's between the startMonitoringSession() and stopMonitoringSession() that actual monitoring is done.
-	 * Between the stopMonitoringSession() and startMonitoringSession() - there may be a hibernation time,
-	 *  this hibernation time will save on battery life. The phone is woken up form the hibernation state by the alarm manager.
+	 * After the  the stopMonitoringSession() - there may be a hibernation time before startMonitoringSession() is called again.
+	 *  This hibernation time will save on battery life. The phone is woken up from the hibernation state by the alarm manager.
 	 * 
 	 */
 	public void startMonitoringSession(){
@@ -106,10 +112,11 @@ public class Monitors {
 				mCommonMethods.playAudio();// We need a different sound. It should wake up a dead person if necessary :)
 				CommonMethods.Log("before calling notifyPeople()");
 				CommonMethods.Log("notifyPeople() commented - uncommentlater");
-				//notifyPeople();//now call and sms people
+				notifyPeople();//now call and sms people
 				CommonMethods.Log("after calling notifyPeople()");			
 				mCommonMethods.removeNotification();
 				VitalSignsActivity.flagShutDown=true;
+				mCommonMethods.setFlagShutDown(VitalSignsActivity.flagShutDown);
 				updateButtons();			
 
 				mCommonMethods.cancelRepeatingMonitoringSessions();
@@ -128,7 +135,10 @@ public class Monitors {
 				continueMonitoring();
 			}else{
 				stopMonitoringSession();
-				CommonMethods.Log("VitalSignsService will be called again by alarm manager");
+				//SimpleDateFormat timingFormat = new SimpleDateFormat("h:mm a");
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.MINUTE,pref.hibernateTime);
+				CommonMethods.Log("VitalSignsService will be called again by alarm manager at approximately " + cal.getTime());
 			}
 
 		}
@@ -140,7 +150,7 @@ public class Monitors {
 	private void setValuesForTesting() {
 		
 		pref.timeBetweenDialing=30;
-		pref.hibernateTime=0;
+		pref.hibernateTime=1;
 		pref.countDown=4;
 		pref.timeBetweenMonitoringSessions=10;
 		for(int i=0;i<pref.arraySize;i++){
@@ -156,14 +166,15 @@ public class Monitors {
 	private void initializeVariables() throws Exception {
 
 		mCommonMethods= new CommonMethods(context);
-
+		/*
 		pref.arraySize=3;
 		pref.phoneNumberArray= new String[pref.arraySize];
 		pref.dialArray= new boolean[pref.arraySize];
 		pref.SMSArray= new boolean[pref.arraySize];
+		*/
 		emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));
 		pref.loadValuesFromStorage();// loads  historySize, countDown etc.
-		setValuesForTesting();//overrrides some of the above variables.
+		//setValuesForTesting();//overrrides some of the above variables.
 
 		beepHistory = new boolean[pref.countDown];
 
@@ -232,13 +243,26 @@ public class Monitors {
 		@Override
 		protected Void doInBackground(Void... args) {	
 			Phone phone = new Phone(context);
+			CommonMethods.Log("sms for sending = " + phone.getMessageForSMS());
+			// we send the smses first before dialing. Dialling is  to be more error prone than sms.
+			//For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialer.
+			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
+				try {
+
+					if (pref.SMSArray[i]) {
+						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
+					}
+
+				} catch (Exception e) {
+					CommonMethods.Log("Exception " + e.getMessage());
+				}
+			}
+			
+			//By now the horse has left the stable (via sms)- we can start leisurely  start dialling.
 			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
 				try {
 					if(VitalSignsActivity.flagShutDown){
 						return null;//abruptly ending dialing/sms because stop button was clicked.
-					}
-					if (pref.SMSArray[i]) {
-						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
 					}
 					if (pref.dialArray[i]) {
 						phone.dialNumber(pref.phoneNumberArray[i]);
@@ -247,7 +271,7 @@ public class Monitors {
 						return null;
 					}
 
-					//put some kind of cancel dialing feature.
+					//TODO:put some kind of cancel dialing feature here.
 					Thread.sleep(pref.timeBetweenDialing * 1000);
 
 				} catch (Exception e) {

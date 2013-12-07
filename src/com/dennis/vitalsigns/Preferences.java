@@ -18,41 +18,49 @@ public class Preferences
     extends PreferenceActivity 
     implements OnSharedPreferenceChangeListener {
 	
+	private CommonMethods mCommonMethods = null;
+	//most variable are static because when a setting is changed we want it to take effect right away.
+	public static int arraySize=3;
+	public static String[] phoneNumberArray=new String[arraySize];
+	public static boolean[] dialArray= new boolean[arraySize];
+	public static boolean[] SMSArray= new boolean[arraySize];
 	
-	
-	public String[] phoneNumberArray;
-	public boolean[] dialArray;
-	public boolean[] SMSArray;
-	public int arraySize=0;
 	/** in seconds.	 * 
 	 */
-	public int timeBetweenDialing = 0;
-	public boolean messageShowInPopup = false;
+	public static int timeBetweenDialing = 0;
+	public static boolean messageShowInPopup = false;
 	public static String logTag = "VitalSignsTag";
 	public static boolean  remoteLog;
 
 	/** The number of beeps before which the dialing and sms'ing starts.
 	 */
-	public int countDown = 0; // Count down before dialing.
+	public static int countDown = 0; // Count down before dialing.
 	/** in seconds.
 	 *  time between monitoring session when in continous monitoring mode.
 	 */
-	public int timeBetweenMonitoringSessions = 0;
+	public static int timeBetweenMonitoringSessions = 0;
 	/** in minutes.
 	 *  time during which the phone does not monitor for signal. Used for saving batter life. 
 	 *   Set zero for continous monitoring, but this will drain the smartphone battery faster.
 	 */
-	public int hibernateTime=0;
+	public static int hibernateTime=0;
 	public Context context = null;
 
 	
 	
 	public Preferences(Context context) {
         this.context = context;
+        mCommonMethods = new CommonMethods(context);
     } 
 	
+/**
+ * Dennis: and empty constructor is needed, without which an exception is thrown if the pref activity is opened from the app
+ */
 	public Preferences() {
+		context =this;
+		mCommonMethods = new CommonMethods(context);
     } 
+	
 
    @SuppressWarnings("deprecation")
 @Override
@@ -116,6 +124,9 @@ public class Preferences
   public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
     Preference pref = findPreference(key);
     this.setSummary(pref);
+    //if the hibernatetime has changed then we need to reschedule the alarm manager
+    mCommonMethods.scheduleRepeatingMonitoringSessions();
+    loadValuesFromStorage();// we want all the values to take effect right away.
   }
   
   

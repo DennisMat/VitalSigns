@@ -9,11 +9,13 @@ import android.os.BatteryManager;
 /**
  * 
  * @author dennis
- *Buggy not tested.
+ * On second thoughts this class and its functionality may not be required.
  */
 public class PowerConnectionBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		CommonMethods.Log("in PowerConnectionBroadcastReceiver");
+		/*
 		String action = intent.getAction();    	
 		int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 		String pluggedStatus= "";
@@ -28,6 +30,6 @@ public class PowerConnectionBroadcastReceiver extends BroadcastReceiver {
 		Intent GeneralServicesIntent = new Intent(context, GeneralService.class);		
 		GeneralServicesIntent.putExtra("pluggedStatus", pluggedStatus);
 		context.startService(GeneralServicesIntent);
-
+*/
 	}
 }

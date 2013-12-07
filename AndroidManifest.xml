@@ -4,8 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
-    
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- <uses-sdk android:minSdkVersion="8" /> uncomment only if necessary. On some phone if this variable is there it does not install -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
@@ -16,10 +18,16 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Dennis added to start app if necessary after rebooting -->
 
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
+        <receiver android:name=".BootupBroadcastReceiver" > <!-- Dennis the full path seems necessary -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".MonitorSessionInitBroadcastReciever" /> <!-- requires no filter -->
         <receiver android:name=".PowerConnectionBroadcastReceiver" >
             <intent-filter>
@@ -27,14 +35,17 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
+
         <service android:name=".VitalSignsService" />
         <service android:name=".GeneralService" />
+
         <activity
             android:name=".VitalSignsActivity"
             android:exported="true"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -22,14 +22,12 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.ToneGenerator;
-import android.os.BatteryManager;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -86,7 +84,7 @@ public class CommonMethods {
 		
 		//for logging
 		SimpleDateFormat timingFormat = new SimpleDateFormat("h:mm a");
-		CommonMethods.Log("in scheduleRepeatingMonitoringSessions. The vital signs service will be started at " + timingFormat.format(new Date(triggerAtTime)));
+		CommonMethods.Log("in scheduleRepeatingMonitoringSessions. The VitalSignsService will be started at " + timingFormat.format(new Date(triggerAtTime)));
 		
 		AlarmManager mAlarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
@@ -195,6 +193,7 @@ public class CommonMethods {
 		try {
 			mWakeLock.release();
 			mWakeLock = null;
+			CommonMethods.Log("WakeLock released");
 		} catch (Exception e) {
 		}
 
@@ -207,10 +206,39 @@ public class CommonMethods {
 					.getSystemService(Context.POWER_SERVICE);
 			mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, Preferences.logTag);
 			mWakeLock.acquire();
+			CommonMethods.Log("WakeLock aquired");
+		}
+
+	}
+	/**Called in the following situations: 
+	 * <br/>-- pressing the start(flagShutDown=false) or stop button(flagShutDown=true)
+	 * <br/>-- after the alert is sent out. (flagShutDown=true)
+	 * 
+	 * @param flagShutDown
+	 * @throws Exception
+	 */
+	public void setFlagShutDown(boolean flagShutDown){
+		 try {
+			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+			 SharedPreferences.Editor editor = settings.edit();
+			 editor.putBoolean("flagShutDown", flagShutDown);
+			 editor.putString("ddffcc", "str1");
+			 CommonMethods.Log("Value is set");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
 
+	public boolean getFlagShutDown()
+			throws Exception {
+		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+		boolean flagShutDown=settings.getBoolean("flagShutDown", false);
+		CommonMethods.Log("Value of ddffcc is" + settings.getString("ddffcc", "wrong val"));
+		return flagShutDown;
+
+	}
+	
 	static public void Log(String logmessage) {		
 		try {
 			if (Preferences.remoteLog) {
