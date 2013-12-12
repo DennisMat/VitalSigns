@@ -35,7 +35,7 @@ public class PulseRateMonitor {
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		int pulseRateLow=Integer.parseInt(settings.getString("key_pulse_rate_low",context.getString(R.string.pref_pulse_rate_low)));
 		int pulseRateHigh=Integer.parseInt(settings.getString("key_pulse_rate_high",context.getString(R.string.pref_pulse_rate_high)));
-		int pulseRate= getPulseRate();
+		int pulseRate= getDummyPulseRate();
 		CommonMethods.Log("pulseRateLow=" + pulseRateLow + " pulseRate=" + pulseRate + " pulseRateHigh=" + pulseRateHigh);
 		if((pulseRate<=pulseRateLow) || (pulseRate>=pulseRateHigh)){
 			return true;
@@ -66,10 +66,17 @@ public class PulseRateMonitor {
 	}
 	
 	private int getPulseRate(){
+		return 0;
+	}
+	/**This method will return a figure and is to be used for testing only. Set up a file with a pulse rate and put it on a website where it can be read.
+	 * 
+	 * @return
+	 */
+	private int getDummyPulseRate(){
 		int pulseRate=0;
 		CommonMethods.Log("Obtaining pulse rate ...");
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(10000);// this will simulate a lag for obtaining a reading from a pulse rate monitor.
 			URL url = new URL("http://photonshift.com/pulse.txt");
 
 			BufferedReader in = new BufferedReader(

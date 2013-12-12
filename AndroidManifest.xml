@@ -2,14 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dennis.vitalsigns"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" ><!-- Increment versionCode for every install worthy release. -->
 
-    <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="true" />
+    <!-- Andriod 4.3=sdk 18. BT 4.0 had the first OS support in this version. -->
+    <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="18" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- <uses-sdk android:minSdkVersion="8" /> uncomment only if necessary. On some phone if this variable is there it does not install -->
+    <uses-permission android:name="android.permission.INTERNET" />    
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

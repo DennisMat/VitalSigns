@@ -222,8 +222,7 @@ public class CommonMethods {
 			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 			 SharedPreferences.Editor editor = settings.edit();
 			 editor.putBoolean("flagShutDown", flagShutDown);
-			 editor.putString("ddffcc", "str1");
-			 CommonMethods.Log("Value is set");
+			 editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -234,7 +233,6 @@ public class CommonMethods {
 			throws Exception {
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		boolean flagShutDown=settings.getBoolean("flagShutDown", false);
-		CommonMethods.Log("Value of ddffcc is" + settings.getString("ddffcc", "wrong val"));
 		return flagShutDown;
 
 	}
