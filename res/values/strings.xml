@@ -8,7 +8,7 @@
     <string name="pref_countdown">10</string><!-- number of beeps -->
     <string name="pref_timebetweendialing">30</string><!-- seconds -->
     <string name="pref_timebetweenmonitoring">5</string><!-- seconds -->
-    <string name="pref_hibernatetime">10</string><!-- minutes -->
+    <string name="pref_hibernatetime">1</string><!-- minutes -->
     <string name="pref_showpopup">false</string>
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string><!-- seconds -->

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+
+
+    <Button
+        android:id="@+id/buttonScan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="Scan for a heart rate monitor" />
+    	    <TextView
+        android:id="@+id/textViewDeviceSelected"
+        android:textColor="@color/redcolor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+    	    
+    	    <TextView
+        android:id="@+id/textViewHeartRate"
+        android:textColor="@color/redcolor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+    
+    	        	    <TextView
+    	        	        android:id="@+id/textViewDeviceListMessage"
+    	        	        android:layout_width="match_parent"
+    	        	        android:layout_height="wrap_content"
+    	        	        android:text="" />
+
+    <ListView 
+    android:id="@+id/listviewHearRateMonitors"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" /> 
+    
+    
+</LinearLayout>
