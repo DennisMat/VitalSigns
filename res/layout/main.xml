@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingTop="80dp" >
 
-    <LinearLayout 
+    <LinearLayout
         android:id="@+id/LinearLayoutStartStop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -30,14 +30,23 @@
         </Button>
     </LinearLayout>
 
-   
-        
-    
-    
-    
     <LinearLayout
         android:layout_width="match_parent"
-                android:layout_height="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Before you start. You need to set a heart rate monitor. Click here to set one"
+            android:visibility="gone" >
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <Button
@@ -61,15 +70,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-                android:layout_height="0dp"
+        android:layout_height="0dp"
         android:layout_weight="1" >
+
         <Button
             android:id="@+id/buttonPreference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Open Settings" >
         </Button>
-      </LinearLayout>
-    
+    </LinearLayout>
 
 </LinearLayout>

@@ -3,11 +3,9 @@ package com.dennis.vitalsigns;
 
 import java.util.Calendar;
 
-import com.dennis.vitalsigns.Monitors.Statuses;
-import android.content.*;
+
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 
 import android.content.BroadcastReceiver;
@@ -17,7 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.*;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 
@@ -36,6 +34,8 @@ public class VitalSignsActivity extends Activity {
 	 */
 	public static boolean flagShutDown=true;
 	private Button buttonPreference;
+	private LinearLayout LinearLayoutStartStop;
+	private Button buttonScan;
 	private CommonMethods mCommonMethods = null;
 	public static final String BUTTON_UPDATE = "buttonUpdate";
 	private Intent VitalSignsServiceIntent;
@@ -50,6 +50,9 @@ public class VitalSignsActivity extends Activity {
 			CommonMethods.Log("in onCreate()");
 
 			initializeVariables();
+			initializeButtonListeners();
+			checkForHeartRateDevice();
+
 
 			// get device id
 			Context context = getApplicationContext();
@@ -60,13 +63,12 @@ public class VitalSignsActivity extends Activity {
 
 			updateButtonStatus();
 			VitalSignsServiceIntent = new Intent(this, VitalSignsService.class);
-			initializeButtonListeners();
+			
 
 		} catch (Exception e) {
 		}
 
 	}
-
 
 	private BroadcastReceiver receiverButtonStatusUpdateEvent = new BroadcastReceiver() {
 		@Override
@@ -96,6 +98,8 @@ public class VitalSignsActivity extends Activity {
 		buttonStart = (Button) findViewById(R.id.buttonStart);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonPreference = (Button) findViewById(R.id.buttonPreference);
+		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);
+		buttonScan= (Button) findViewById(R.id.buttonScan);
 		mCommonMethods= new CommonMethods(this);
 	}
 
@@ -113,6 +117,15 @@ public class VitalSignsActivity extends Activity {
 			}
 		});
 
+		
+		buttonScan.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent deviceScanIntent = new Intent(VitalSignsActivity.this, DeviceScanActivity.class);
+		        startActivity(deviceScanIntent);
+			}
+		});
+		
+		
 
 		buttonPreference.setOnClickListener(new View.OnClickListener() {
 
@@ -126,7 +139,13 @@ public class VitalSignsActivity extends Activity {
 	}
 
 
-
+	private void checkForHeartRateDevice(){
+		BlueToothMethods mBlueToothMethods= new BlueToothMethods();
+		if(!mBlueToothMethods.isHeartRateDeviceSet(this)){
+			buttonScan.setVisibility(View.VISIBLE);
+			LinearLayoutStartStop.setVisibility(View.GONE);
+		}
+	}
 
 	private void startApp() {
 		try {

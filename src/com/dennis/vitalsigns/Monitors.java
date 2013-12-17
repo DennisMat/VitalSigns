@@ -56,10 +56,14 @@ public class Monitors {
 		if(VitalSignsActivity.flagShutDown){
 			return;
 		}
-
+		BlueToothMethods mBlueToothMethods= new BlueToothMethods();
+		boolean emergencyStatusPulseRate=false;
+		
 		Statuses.isPulseRateMonitorRunning=true;
-		PulseRateMonitor mPulseRateMonitor=new PulseRateMonitor(context);
-		boolean emergencyStatusPulseRate=mPulseRateMonitor.getPersonPulseEmergencyStatus();// this method may take time
+		if(mBlueToothMethods.isHeartRateDeviceSet(context)){
+			HeartRateDevice mHeartRateDevice=new HeartRateDevice(context,mBlueToothMethods.getHeartRateDeviceAddress(context));
+			emergencyStatusPulseRate=mHeartRateDevice.getPersonHeartRateEmergencyStatus();// this method may take time
+		}
 		Statuses.isPulseRateMonitorRunning=false;
 
 		Statuses.isBodyTemperatureMonitorRunning=true;//set true before reading values

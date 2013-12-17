@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-public class DeviceScanActivity extends Activity {
+public class DeviceScanActivityOldDellLater extends Activity {
 
 	private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
@@ -34,13 +34,13 @@ public class DeviceScanActivity extends Activity {
     
     
     private static final int REQUEST_ENABLE_BT = 1;
+    // Stops scanning after 10 seconds.
+    private static final long SCAN_PERIOD = 5000;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.device_scan);
-		Preferences pref=new Preferences(this);
-		pref.loadValuesFromStorage();
 		
         mHandler = new Handler();
         buttonScan = (Button) findViewById(R.id.buttonScan);
@@ -107,7 +107,7 @@ public class DeviceScanActivity extends Activity {
                 
                 
             }
-        }, Preferences.deviceScanTime*1000);
+        }, SCAN_PERIOD);
 
 
         
@@ -135,22 +135,18 @@ public class DeviceScanActivity extends Activity {
 		            //put device into storage I guess
 		            textViewDeviceSelected.setText("You have selected the device: " + device.getName() + "  " + device.getAddress());
 		            
-		            BlueToothMethods mBlueToothMethods= new BlueToothMethods();
-		            mBlueToothMethods.setHeartRateDevice(getApplicationContext(), device.getName(), device.getAddress());
+		           
 		            
-		            /* Move this code into the exact stpot where the monitoring is done
 		            final HeartRateDevice hr = new HeartRateDevice(getApplicationContext(),device.getAddress());
 		            
 		            
 		            Runnable r = new Runnable() {
 		                public void run() {
-		                	 hr.getheartRate();
+		                	 hr.getHeartRate();
 		                }
 		            };
 		
 		            new Thread(r).start();
-		            
-		            */
 		
 		            if (mScanning) {
 		                mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -174,7 +170,7 @@ public class DeviceScanActivity extends Activity {
         public LeDeviceListAdapter() {
             super();
             mLeDevices = new ArrayList<BluetoothDevice>();
-            mInflator = DeviceScanActivity.this.getLayoutInflater();
+            mInflator = DeviceScanActivityOldDellLater.this.getLayoutInflater();
         }
 
         public void addDevice(BluetoothDevice device) {

@@ -62,23 +62,18 @@
     <PreferenceScreen
         android:summary="Settings"
         android:title="Settings" >
-        
-         <EditTextPreference
-            android:defaultValue="@string/pref_pulse_rate_low"
+        <EditTextPreference
+            android:defaultValue="@string/pref_heart_rate_low"
             android:inputType="number"
-            android:key="key_pulse_rate_low"
-            android:summary="Set the pulse rate below which an alert should be sent"
+            android:key="key_heart_rate_low"
+            android:summary="Set the heart rate below which an alert should be sent"
             android:title="Lowest Pulse Rate" />
-                  
-         <EditTextPreference
-            android:defaultValue="@string/pref_pulse_rate_high"
+        <EditTextPreference
+            android:defaultValue="@string/pref_heart_rate_high"
             android:inputType="number"
-            android:key="key_pulse_rate_high"
-            android:summary="Set the pulse rate above which an alert should be sent"
+            android:key="key_heart_rate_high"
+            android:summary="Set the heart rate above which an alert should be sent"
             android:title="Highest Pulse Rate" />
-         
-
-        
         <EditTextPreference
             android:defaultValue="@string/pref_countdown"
             android:inputType="number"
@@ -91,7 +86,6 @@
             android:key="key_timebetweendialing"
             android:summary="Time between dialing attempts in seconds"
             android:title="Time between dialing attempts" />
-                
     </PreferenceScreen>
     <PreferenceScreen
         android:summary="Advanced Settings"
@@ -108,12 +102,35 @@
             android:key="key_hibernatetime"
             android:summary="Used to save battery life"
             android:title="Hibernate time in minutes" />
-          <EditTextPreference
+
+        <Preference
+            android:summary="Set Heart Rate Device"
+            android:title="Set Heart Rate Device" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.dennis.vitalsigns"                
+                android:targetClass="com.dennis.vitalsigns.DeviceScanActivity" />
+        </Preference>
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_device_scan_time"
+            android:inputType="number"
+            android:key="key_device_scan_time"
+            android:summary="Heart Rate device search timeout"
+            android:title="Heart Rate device search timeout" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_heart_rate_wait_time"
+            android:inputType="number"
+            android:key="key_heart_rate_wait_time"
+            android:summary="Heart Rate wait timeout"
+            android:title="Heart Rate wait timeout" />
+        <EditTextPreference
             android:defaultValue="@string/pref_charging_pausetime"
             android:inputType="number"
             android:key="key_chargingpausetime"
             android:summary="Pause time in minutes when phone put on charge"
             android:title="Pause time while charging" />
+
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"
             android:key="key_showpopup"

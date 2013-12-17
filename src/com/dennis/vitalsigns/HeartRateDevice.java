@@ -1,5 +1,8 @@
 package com.dennis.vitalsigns;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,10 +16,12 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class HearRateDevice {
+public class HeartRateDevice {
 
 
 	private BluetoothManager mBluetoothManager;
@@ -30,6 +35,7 @@ public class HearRateDevice {
 	private static final int STATE_CONNECTED = 2;
 	private Context mContext;
 	private String deviceAddress=null;
+	private int heartRate=0;
 
 	public final static String ACTION_GATT_CONNECTED =
 			"com.example.bluetooth.le.ACTION_GATT_CONNECTED";
@@ -43,47 +49,97 @@ public class HearRateDevice {
 			"com.example.bluetooth.le.EXTRA_DATA";
 
 	public final static UUID UUID_HEART_RATE_MEASUREMENT =
-			UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
+			UUID.fromString(GattAttributes.HEART_RATE_MEASUREMENT);
+	private CommonMethods mCommonMethods=null;
 
-	private final static String TAG = "heart rate class";
-
-
-
-
-	public HearRateDevice(Context mContext, String deviceAddress) {
-		this.mContext=mContext;
+	public HeartRateDevice(Context mContext, String deviceAddress) {
+		this.mContext=mContext;		
 		this.deviceAddress=deviceAddress;
+		mCommonMethods= new CommonMethods(mContext);
+	}
+	
+	private Context context;
+	
+
+	public boolean getPersonHeartRateEmergencyStatus() {
+	
+		int heartRate= getHeartRate();
+		CommonMethods.Log("heartRateLow=" + Preferences.heartRateLow + " heartRate=" + heartRate + " heartRateHigh=" + Preferences.heartRateHigh);
+		if((heartRate<=Preferences.heartRateLow) || (heartRate>=Preferences.heartRateHigh)){
+			return true;
+		}else{
+			return false;
+		}
+
+	} 
+	
+	
+	/**This method will return a figure and is to be used for testing only. Set up a file with a heart rate and put it on a website where it can be read.
+	 * 
+	 * @return
+	 */
+	private int getDummyHeartRate(){
+		int heartRate=0;
+		CommonMethods.Log("Obtaining heart rate ...");
+		try {
+			Thread.sleep(10000);// this will simulate a lag for obtaining a reading from a heart rate monitor.
+			URL url = new URL("http://photonshift.com/heart.txt");
+
+			BufferedReader in = new BufferedReader(
+			new InputStreamReader(url.openStream()));
+
+			String inputLine;
+			while ((inputLine = in.readLine()) != null){
+				CommonMethods.Log("heart rate read from file is " + inputLine);
+				heartRate=Integer.parseInt(inputLine);
+			}
+			in.close();
+			
+		} catch (Exception e) {
+
+		}
+		
+		return heartRate;
 	}
 
-	public void getheartRate(){
+	public int getHeartRate(){
 		if(initialize()){
 			if(connect(deviceAddress)){
 
-
 				try {
-					Thread.sleep(20000); //This is more than adequate time to read mant heart rate values
+					
+					for(int i=0;i<Preferences.heartRateWaitTime;i++)
+	
+						if(heartRate>10){
+							break;
+						}
+					Thread.sleep(1000); //This is more than adequate time to read many heart rate values
+					
+					
 				} catch (InterruptedException e) {
 				}
 
-				Log.i(TAG, "just before closing connection");
+				CommonMethods.Log( "just before closing connection");
 				disconnect() ;
 				close();
 			}
 		}
+		
+		return 0;
 	}
 
 	private void listServicesAndCharacteristics() {
 		List<BluetoothGattService> gattServices =mBluetoothGatt.getServices();
-		Log.i(TAG, "Number of services = " + gattServices.size());
+		CommonMethods.Log( "Number of services = " + gattServices.size());
 		for (BluetoothGattService gattService : gattServices) {
 			List<BluetoothGattCharacteristic> gattCharacteristics =
 					gattService.getCharacteristics();
-			Log.i(TAG, "Number of characteristics = " + gattCharacteristics.size());
+			CommonMethods.Log( "Number of characteristics = " + gattCharacteristics.size());
 			// Loops through available Characteristics.
 			for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {   	                    	                
 				final int charaProp = gattCharacteristic.getProperties();
 				if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-					//Log.i(TAG, "Uuid = " + gattCharacteristic.getUuid());
+					//CommonMethods.Log( "Uuid = " + gattCharacteristic.getUuid());
 					if (mBluetoothAdapter != null || mBluetoothGatt != null) {
 
 						//read the value at BluetoothGattCallback#onCharacteristicRead    	                	 
@@ -96,11 +152,11 @@ public class HearRateDevice {
 							 */
 							mBluetoothGatt.setCharacteristicNotification(gattCharacteristic, true);
 							BluetoothGattDescriptor descriptor = gattCharacteristic.getDescriptor(
-									UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+									UUID.fromString(GattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
 							descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 							mBluetoothGatt.writeDescriptor(descriptor);
 
-							Log.i(TAG, "about to call heart rate readCharacteristic");
+							CommonMethods.Log( "about to call heart rate readCharacteristic");
 							mBluetoothGatt.readCharacteristic(gattCharacteristic);
 						}
 					}
@@ -118,13 +174,14 @@ public class HearRateDevice {
 			int format = -1;
 			if ((flag & 0x01) != 0) {
 				format = BluetoothGattCharacteristic.FORMAT_UINT16;
-				Log.i(TAG, "Heart rate format UINT16.");
+				CommonMethods.Log( "Heart rate format UINT16.");
 			} else {
 				format = BluetoothGattCharacteristic.FORMAT_UINT8;
-				Log.i(TAG, "Heart rate format UINT8.");
+				CommonMethods.Log( "Heart rate format UINT8.");
 			}
-			final int heartRate = characteristic.getIntValue(format, 1);
-			Log.i(TAG, String.format("Received heart rate: %d", heartRate));
+			//final int heartRate = characteristic.getIntValue(format, 1);
+			//CommonMethods.Log( String.format("Received heart rate: %d", heartRate));
+			heartRate= characteristic.getIntValue(format, 1);
 		}
 
 
@@ -137,7 +194,7 @@ public class HearRateDevice {
 
 
 		if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Log.w(TAG, "Error bluetooth not supported");
+			CommonMethods.Log( "Error bluetooth not supported");
 			return false;
 		}
 
@@ -149,7 +206,7 @@ public class HearRateDevice {
 
 		// Checks if Bluetooth is supported on the device.
 		if (mBluetoothAdapter == null) {
-			Log.w(TAG, "Error bluetooth not supported");
+			CommonMethods.Log( "Error bluetooth not supported");
 			return false;
 		}
 
@@ -159,14 +216,14 @@ public class HearRateDevice {
 
 	public boolean connect(final String address) {
 		if (mBluetoothAdapter == null || address == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
+			CommonMethods.Log( "BluetoothAdapter not initialized or unspecified address.");
 			return false;
 		}
 
 		// Previously connected device.  Try to reconnect.
 		if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress)
 				&& mBluetoothGatt != null) {
-			Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
+			CommonMethods.Log( "Trying to use an existing mBluetoothGatt for connection.");
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;
@@ -177,13 +234,13 @@ public class HearRateDevice {
 
 		final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
 		if (device == null) {
-			Log.w(TAG, "Device not found.  Unable to connect.");
+			CommonMethods.Log( "Device not found.  Unable to connect.");
 			return false;
 		}
 		// We want to directly connect to the device, so we are setting the autoConnect
 		// parameter to false.
 		mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
-		Log.d(TAG, "Trying to create a new connection.");
+		CommonMethods.Log( "Trying to create a new connection.");
 		mBluetoothDeviceAddress = address;
 		mConnectionState = STATE_CONNECTING;
 		return true;
@@ -197,7 +254,7 @@ public class HearRateDevice {
 	 */
 	public void disconnect() {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized");
+			CommonMethods.Log( "BluetoothAdapter not initialized");
 			return;
 		}
 		mBluetoothGatt.disconnect();
@@ -224,7 +281,7 @@ public class HearRateDevice {
 	 */
 	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized");
+			CommonMethods.Log( "BluetoothAdapter not initialized");
 			return;
 		}
 		mBluetoothGatt.readCharacteristic(characteristic);
@@ -246,13 +303,13 @@ public class HearRateDevice {
 
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				//broadcastUpdate(intentAction);
-				Log.i(TAG, "Connected to GATT server.");
+				CommonMethods.Log( "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
-				Log.i(TAG, "Attempting to start service discovery:" +
+				CommonMethods.Log( "Attempting to start service discovery:" +
 						mBluetoothGatt.discoverServices());
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-				Log.i(TAG, "Disconnected from GATT server.");
+				CommonMethods.Log( "Disconnected from GATT server.");
 				// broadcastUpdate(intentAction);
 			}
 		}
@@ -261,10 +318,10 @@ public class HearRateDevice {
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				// broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
-				Log.i(TAG, "in onServicesDiscovered");
+				CommonMethods.Log( "in onServicesDiscovered");
 				listServicesAndCharacteristics();
 			} else {
-				Log.w(TAG, "onServicesDiscovered received: " + status);
+				CommonMethods.Log( "onServicesDiscovered received: " + status);
 			}
 		}
 
@@ -272,10 +329,10 @@ public class HearRateDevice {
 		public void onCharacteristicRead(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic,
 				int status) {
-			Log.w(TAG, "in onCharacteristicRead");
+			CommonMethods.Log( "in onCharacteristicRead");
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				//broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-				Log.w(TAG, "Characteristic sucessfully read");
+				CommonMethods.Log( "Characteristic sucessfully read");
 				printHeartRate(characteristic);
 			}
 		}
@@ -284,7 +341,7 @@ public class HearRateDevice {
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
 			// broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-			Log.w(TAG, "onCharacteristicChanged");
+			CommonMethods.Log( "onCharacteristicChanged");
 			printHeartRate(characteristic);
 		}
 	};

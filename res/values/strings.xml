@@ -17,6 +17,8 @@
     <string name="title_devices">BLE Device Scan</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="ble_not_supported">BLE is not supported</string>
-    <string name="pref_pulse_rate_low">40</string>
-    <string name="pref_pulse_rate_high">150</string>    
+    <string name="pref_heart_rate_low">40</string>
+    <string name="pref_heart_rate_high">150</string>
+    <string name="pref_device_scan_time">10</string><!-- seconds -->
+    <string name="pref_heart_rate_wait_time">20</string><!-- seconds -->
 </resources>

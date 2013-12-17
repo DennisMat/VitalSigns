@@ -47,6 +47,11 @@ public class Preferences
 	public Context context = null;
 
 	
+	public static int heartRateLow=0;
+	public static int heartRateHigh=0;
+	public static int heartRateWaitTime=0;
+	public static int deviceScanTime=0;
+	
 	
 	public Preferences(Context context) {
         this.context = context;
@@ -72,6 +77,7 @@ public class Preferences
 
     this.getPreferenceScreen().getSharedPreferences()
       .registerOnSharedPreferenceChangeListener(this);
+    loadValuesFromStorage();
     }
 
   /**
@@ -145,6 +151,13 @@ public class Preferences
 		countDown=Integer.parseInt(settings.getString("key_countdown",context.getString(R.string.pref_countdown)));
 		timeBetweenMonitoringSessions=Integer.parseInt(settings.getString("key_timebetweenmonitoring",context.getString(R.string.pref_timebetweenmonitoring)));
 
+		heartRateLow=Integer.parseInt(settings.getString("key_heart_rate_low",context.getString(R.string.pref_heart_rate_low)));
+		heartRateHigh=Integer.parseInt(settings.getString("key_heart_rate_high",context.getString(R.string.pref_heart_rate_high)));
+		heartRateWaitTime=Integer.parseInt(settings.getString("key_heart_rate_wait_time",context.getString(R.string.pref_heart_rate_wait_time)));
+		deviceScanTime=Integer.parseInt(settings.getString("key_device_scan_time",context.getString(R.string.pref_device_scan_time)));
+		
+
+		
 		messageShowInPopup=settings.getBoolean("key_showpopup", Boolean.parseBoolean(context.getString(R.string.pref_showpopup)));
 		remoteLog=settings.getBoolean("key_remotelog", Boolean.parseBoolean(context.getString(R.string.pref_remotelog)));
 

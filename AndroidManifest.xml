@@ -8,6 +8,8 @@
     <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="18" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.INTERNET" />    
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -48,8 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name=".DeviceScanActivity" >
+        </activity>
+        
         <activity android:name=".Preferences" >
         </activity>
+        
+        
     </application>
 
 </manifest>
