@@ -15,16 +15,20 @@ public class BlueToothMethods {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothGatt mBluetoothGatt;
 	private boolean isHeartRateMonitor=false;
+	private Context mContext;
 
+	public BlueToothMethods(Context mContext) {
+		this.mContext = mContext;
+	}
 
-	public boolean isHeartRateDeviceSet(Context mContext){		
-		if(getHeartRateDeviceAddress(mContext).equals("")){
+	public boolean isHeartRateDeviceSet(){		
+		if(getHeartRateDeviceAddress().equals("")){
 			return false;
 		}
 		return true;
 	}
 
-	public void setHeartRateDevice(Context mContext, String deviceName, String deviceAddress){
+	public void setHeartRateDevice(String deviceName, String deviceAddress){
 		try {
 			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(mContext);
 			SharedPreferences.Editor editor = settings.edit();
@@ -36,17 +40,29 @@ public class BlueToothMethods {
 		}
 	}
 	
-	public String getHeartRateDeviceAddress(Context mContext){
+	public String getHeartRateDeviceAddress(){
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(mContext);
 		String deviceAddress=settings.getString("key_device_heart_rate_address","");
 		return deviceAddress;
 	}
 
+	public String getHeartRateDeviceName(){
+		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(mContext);
+		String deviceAddress=settings.getString("key_device_heart_rate_name","");
+		return deviceAddress;
+	}
 
-
-	public boolean isDeviceHeartRateMonitor(Context mContext, String deviceAddress) {
+/**
+ * The rational for having this method is because a certain device which may have a heart rate service may not
+ * have that service at a latter date/time. may be other services on the device are still working but not the
+ * heart rate service
+ * 
+ * @param deviceAddress
+ * @return
+ */
+	public boolean isDeviceHeartRateMonitor(String deviceAddress) {
 		
-		if(isBlueToothLeSupported(mContext)){
+		if(isBlueToothLeSupported()){
 			BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
 			if (device == null) {
 				CommonMethods.Log("Device not found.  Unable to connect.");
@@ -76,7 +92,7 @@ public class BlueToothMethods {
 
 	}
 
-	public boolean isBlueToothLeSupported(Context mContext){
+	public boolean isBlueToothLeSupported(){
 
 		// Use this check to determine whether BLE is supported on the device.  Then you can
 		// selectively disable BLE-related features.

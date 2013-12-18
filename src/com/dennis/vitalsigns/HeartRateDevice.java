@@ -35,7 +35,7 @@ public class HeartRateDevice {
 	private static final int STATE_CONNECTED = 2;
 	private Context mContext;
 	private String deviceAddress=null;
-	private int heartRate=0;
+	private int heartRate=0;// always initilize to zero - this is important.
 
 	public final static String ACTION_GATT_CONNECTED =
 			"com.example.bluetooth.le.ACTION_GATT_CONNECTED";
@@ -52,13 +52,15 @@ public class HeartRateDevice {
 			UUID.fromString(GattAttributes.HEART_RATE_MEASUREMENT);
 	private CommonMethods mCommonMethods=null;
 
+
+	
 	public HeartRateDevice(Context mContext, String deviceAddress) {
 		this.mContext=mContext;		
 		this.deviceAddress=deviceAddress;
 		mCommonMethods= new CommonMethods(mContext);
 	}
 	
-	private Context context;
+	
 	
 
 	public boolean getPersonHeartRateEmergencyStatus() {
@@ -79,7 +81,6 @@ public class HeartRateDevice {
 	 * @return
 	 */
 	private int getDummyHeartRate(){
-		int heartRate=0;
 		CommonMethods.Log("Obtaining heart rate ...");
 		try {
 			Thread.sleep(10000);// this will simulate a lag for obtaining a reading from a heart rate monitor.
@@ -105,30 +106,32 @@ public class HeartRateDevice {
 	public int getHeartRate(){
 		if(initialize()){
 			if(connect(deviceAddress)){
+				for(int i=0;i<Preferences.heartRateWaitTime;i++){//This is more than adequate time to read many heart rate values
+					CommonMethods.Log( "loop " + i+ " heartRate="+heartRate);
+					if(heartRate>0){//as soon  as any value is available break out of loop.
+						disconnect() ;
+						close();
+						break;
+					}
+					try {
+						Thread.sleep(1000); 
+					} catch (InterruptedException e) {
+					}
 
-				try {
-					
-					for(int i=0;i<Preferences.heartRateWaitTime;i++)
-	
-						if(heartRate>10){
-							break;
-						}
-					Thread.sleep(1000); //This is more than adequate time to read many heart rate values
-					
-					
-				} catch (InterruptedException e) {
+
 				}
-
+				
 				CommonMethods.Log( "just before closing connection");
 				disconnect() ;
 				close();
+				
 			}
 		}
-		
-		return 0;
+
+		return heartRate;
 	}
 
-	private void listServicesAndCharacteristics() {
+	private void loopThroughServicesAndCharacteristics() {
 		List<BluetoothGattService> gattServices =mBluetoothGatt.getServices();
 		CommonMethods.Log( "Number of services = " + gattServices.size());
 		for (BluetoothGattService gattService : gattServices) {
@@ -144,7 +147,6 @@ public class HeartRateDevice {
 
 						//read the value at BluetoothGattCallback#onCharacteristicRead    	                	 
 						if (UUID_HEART_RATE_MEASUREMENT.equals(gattCharacteristic.getUuid())) {
-
 
 							/* Dennis: setting the descriptor before doing the read readCharacteristic is a required step.
 							 * If one doesn't do one cannot read the characteristic.
@@ -166,8 +168,7 @@ public class HeartRateDevice {
 		}
 	}
 
-	public String printHeartRate(BluetoothGattCharacteristic characteristic){
-
+	public String extractHeartRate(BluetoothGattCharacteristic characteristic){
 
 		if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
 			int flag = characteristic.getProperties();
@@ -178,10 +179,9 @@ public class HeartRateDevice {
 			} else {
 				format = BluetoothGattCharacteristic.FORMAT_UINT8;
 				CommonMethods.Log( "Heart rate format UINT8.");
-			}
-			//final int heartRate = characteristic.getIntValue(format, 1);
-			//CommonMethods.Log( String.format("Received heart rate: %d", heartRate));
+			}			
 			heartRate= characteristic.getIntValue(format, 1);
+			CommonMethods.Log( String.format("Received heart rate: %d", heartRate));
 		}
 
 
@@ -192,12 +192,10 @@ public class HeartRateDevice {
 
 	public boolean initialize() {
 
-
 		if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			CommonMethods.Log( "Error bluetooth not supported");
 			return false;
 		}
-
 		// Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
 		// BluetoothAdapter through BluetoothManager.
 		final BluetoothManager bluetoothManager =
@@ -319,7 +317,7 @@ public class HeartRateDevice {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				// broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
 				CommonMethods.Log( "in onServicesDiscovered");
-				listServicesAndCharacteristics();
+				loopThroughServicesAndCharacteristics();
 			} else {
 				CommonMethods.Log( "onServicesDiscovered received: " + status);
 			}
@@ -331,18 +329,16 @@ public class HeartRateDevice {
 				int status) {
 			CommonMethods.Log( "in onCharacteristicRead");
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				//broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 				CommonMethods.Log( "Characteristic sucessfully read");
-				printHeartRate(characteristic);
+				extractHeartRate(characteristic);
 			}
 		}
 
 		@Override
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
-			// broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 			CommonMethods.Log( "onCharacteristicChanged");
-			printHeartRate(characteristic);
+			extractHeartRate(characteristic);
 		}
 	};
 

@@ -17,6 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     <color name="redcolor">#DF0101</color>
+    <color name="list_item_background">#666666</color>
     
 
 </resources>

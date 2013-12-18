@@ -5,15 +5,24 @@ import java.util.Calendar;
 
 
 
+
+
+
+
+
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
-
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.*;
 import android.support.v4.content.LocalBroadcastManager;
@@ -39,6 +48,10 @@ public class VitalSignsActivity extends Activity {
 	private CommonMethods mCommonMethods = null;
 	public static final String BUTTON_UPDATE = "buttonUpdate";
 	private Intent VitalSignsServiceIntent;
+	private BlueToothMethods mBlueToothMethods=null;
+	
+	private Handler handlerScheduleMonitoringSessions;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +98,7 @@ public class VitalSignsActivity extends Activity {
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
 		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
+		checkForHeartRateDevice();
 	}
 
 	@Override
@@ -101,6 +115,27 @@ public class VitalSignsActivity extends Activity {
 		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);
 		buttonScan= (Button) findViewById(R.id.buttonScan);
 		mCommonMethods= new CommonMethods(this);
+		mBlueToothMethods= new BlueToothMethods(this);
+		(new Preferences(this)).loadValuesFromStorage();
+		
+		handlerScheduleMonitoringSessions = new Handler(){
+		    @Override
+		    public void handleMessage(Message msg){
+		        if(msg.what == 0){
+		        	showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
+							mBlueToothMethods.getHeartRateDeviceName() + ")" +
+							" Make sure:\n" +
+							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
+							"-That you have not changed your heart rate device. If you have changed it please set your new device through the" +
+							"advanced settings section of this app");
+		        }else{
+		        	mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
+    				mCommonMethods.playBeep(100);
+    				updateButtonStatus();
+		        }
+		    }
+		};
+	
 	}
 
 	private void initializeButtonListeners() {
@@ -139,13 +174,19 @@ public class VitalSignsActivity extends Activity {
 	}
 
 
-	private void checkForHeartRateDevice(){
-		BlueToothMethods mBlueToothMethods= new BlueToothMethods();
-		if(!mBlueToothMethods.isHeartRateDeviceSet(this)){
+	private void checkForHeartRateDevice(){		
+		if(mBlueToothMethods.isHeartRateDeviceSet()){
+			buttonScan.setVisibility(View.GONE);
+			LinearLayoutStartStop.setVisibility(View.VISIBLE);
+		}else{
 			buttonScan.setVisibility(View.VISIBLE);
 			LinearLayoutStartStop.setVisibility(View.GONE);
 		}
 	}
+	
+	
+	
+	
 
 	private void startApp() {
 		try {
@@ -161,11 +202,9 @@ public class VitalSignsActivity extends Activity {
 					stopApp();
 				}
 				flagShutDown=false;				 
-				mCommonMethods.setFlagShutDown(flagShutDown);				 
-				mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
-				mCommonMethods.playBeep(100);
-				// remove or hide the app
-				// finish();
+				mCommonMethods.setFlagShutDown(flagShutDown);				
+				scheduleMonitoringifHeartRateReceiving();
+
 			} else {
 				showMessage("This software is past it's expiration date. Please contact the developer - and part with your wealth!");
 			}
@@ -176,9 +215,41 @@ public class VitalSignsActivity extends Activity {
 			mCommonMethods.setFlagShutDown(flagShutDown);
 			CommonMethods.Log("Error: " + e);
 		}
-		updateButtonStatus();
+		
 	}
 
+	
+private void scheduleMonitoringifHeartRateReceiving(){
+		
+		final ProgressDialog progress = new ProgressDialog(this);		
+        progress.setMessage("Scanning for your heart rate device. Please wait");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+		
+		Thread t = new Thread() {
+		    @Override
+		    public void run(){
+		    	
+		    	 String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();
+	        		if(mBlueToothMethods.isDeviceHeartRateMonitor(deviceAddress)){
+	        			HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
+	        			int heartRate=hr.getHeartRate();
+	        			progress.dismiss();
+	        			if(heartRate>0){
+	        				handlerScheduleMonitoringSessions.sendEmptyMessage(1);
+	        				
+	        			}else{
+	        				handlerScheduleMonitoringSessions.sendEmptyMessage(0);
+	        			}
+	        		}
+		    	
+		    	
+		    }   
+		};
+		t.start();
+		
+	}
 
 	private void stopApp() {
 		CommonMethods.Log("stopApp called 1");

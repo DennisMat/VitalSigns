@@ -39,9 +39,7 @@ public class DeviceScanActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.device_scan);
-		Preferences pref=new Preferences(this);
-		pref.loadValuesFromStorage();
-		
+	
         mHandler = new Handler();
         buttonScan = (Button) findViewById(R.id.buttonScan);
         textViewDeviceSelected=(TextView) findViewById(R.id.textViewDeviceSelected);
@@ -85,7 +83,7 @@ public class DeviceScanActivity extends Activity {
         }
         
         
-        progress.setMessage("Scanning ");
+        progress.setMessage("Scanning for a heart rate device. Please wait");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
@@ -99,7 +97,7 @@ public class DeviceScanActivity extends Activity {
                 progress.dismiss();
                 
                 if(mLeDeviceListAdapter.getCount()>0){
-                textViewDeviceListMessage.setText("Please select a device form the list below.");
+                textViewDeviceListMessage.setText("Please select a device (by touching the device name) from the list below.");
                 }else{
                 	textViewDeviceListMessage.setText("No devices found. You may try again."); 
                 }
@@ -135,8 +133,8 @@ public class DeviceScanActivity extends Activity {
 		            //put device into storage I guess
 		            textViewDeviceSelected.setText("You have selected the device: " + device.getName() + "  " + device.getAddress());
 		            
-		            BlueToothMethods mBlueToothMethods= new BlueToothMethods();
-		            mBlueToothMethods.setHeartRateDevice(getApplicationContext(), device.getName(), device.getAddress());
+		            BlueToothMethods mBlueToothMethods= new BlueToothMethods(DeviceScanActivity.this);
+		            mBlueToothMethods.setHeartRateDevice(device.getName(), device.getAddress());
 		            
 		            /* Move this code into the exact stpot where the monitoring is done
 		            final HeartRateDevice hr = new HeartRateDevice(getApplicationContext(),device.getAddress());

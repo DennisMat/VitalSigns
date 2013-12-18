@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-
 import android.app.ActivityManager.RunningServiceInfo;
 
 
@@ -25,6 +24,7 @@ public class VitalSignsService extends Service {
 		try {
 			super.onCreate();
 			CommonMethods.Log("in VitalSignsService.onCreate()");
+			(new Preferences(this)).loadValuesFromStorage();
 			MonitorAsyncTask mMonitorAsyncTask = new MonitorAsyncTask(this);
 			mMonitorAsyncTask.execute();	
 		} catch (Exception e) {

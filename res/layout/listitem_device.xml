@@ -14,6 +14,7 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:background="@color/list_item_background"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">

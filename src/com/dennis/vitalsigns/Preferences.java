@@ -49,7 +49,13 @@ public class Preferences
 	
 	public static int heartRateLow=0;
 	public static int heartRateHigh=0;
+	/** in seconds.
+	 *  time limit waiting to recive a heart rate value.
+	 */
 	public static int heartRateWaitTime=0;
+	/** in seconds.
+	 *  time limit for the smartphone app to scan for BlueTooth Devices.
+	 */
 	public static int deviceScanTime=0;
 	
 	
@@ -131,7 +137,10 @@ public class Preferences
     Preference pref = findPreference(key);
     this.setSummary(pref);
     //if the hibernatetime has changed then we need to reschedule the alarm manager
-    mCommonMethods.scheduleRepeatingMonitoringSessions();
+	if(!VitalSignsActivity.flagShutDown){
+		mCommonMethods.scheduleRepeatingMonitoringSessions();
+	}
+    
     loadValuesFromStorage();// we want all the values to take effect right away.
   }
   

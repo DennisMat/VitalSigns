@@ -56,12 +56,12 @@ public class Monitors {
 		if(VitalSignsActivity.flagShutDown){
 			return;
 		}
-		BlueToothMethods mBlueToothMethods= new BlueToothMethods();
+		BlueToothMethods mBlueToothMethods= new BlueToothMethods(context);
 		boolean emergencyStatusPulseRate=false;
 		
 		Statuses.isPulseRateMonitorRunning=true;
-		if(mBlueToothMethods.isHeartRateDeviceSet(context)){
-			HeartRateDevice mHeartRateDevice=new HeartRateDevice(context,mBlueToothMethods.getHeartRateDeviceAddress(context));
+		if(mBlueToothMethods.isHeartRateDeviceSet()){
+			HeartRateDevice mHeartRateDevice=new HeartRateDevice(context,mBlueToothMethods.getHeartRateDeviceAddress());
 			emergencyStatusPulseRate=mHeartRateDevice.getPersonHeartRateEmergencyStatus();// this method may take time
 		}
 		Statuses.isPulseRateMonitorRunning=false;
@@ -177,8 +177,8 @@ public class Monitors {
 		pref.SMSArray= new boolean[pref.arraySize];
 		*/
 		emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));
-		pref.loadValuesFromStorage();// loads  historySize, countDown etc.
-		//setValuesForTesting();//overrrides some of the above variables.
+
+		//setValuesForTesting();//overrrides some of the  variables in pref.
 
 		beepHistory = new boolean[pref.countDown];
 
