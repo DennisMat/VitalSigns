@@ -137,8 +137,11 @@ public class VitalSignsActivity extends Activity {
 							"advanced settings section of this app");
 				}else{
 					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
-					mCommonMethods.playBeep(100);
+					//mCommonMethods.playBeep(100);
 					updateButtonStatus();
+					showMessage("This app is now monitoring your heart rate. You may now move to another screen on your phone. "
+							+ "This app will continue monitoring your heart rate even if you switch off your phone. "
+							+ "If you wnat to stop this app come back to this screen and hit the Stop button");
 				}
 			}
 		};
