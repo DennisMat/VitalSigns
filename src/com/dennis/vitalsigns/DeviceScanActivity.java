@@ -175,7 +175,7 @@ public class DeviceScanActivity extends Activity {
 						progress.dismiss();
 				
 			}// end of outer run
-		}, Preferences.deviceScanTime*10000);
+		}, Preferences.deviceScanTime*1000);
 
 		mScanning = true;
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
