@@ -12,6 +12,7 @@ import java.util.Calendar;
 
 
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -45,11 +46,14 @@ public class VitalSignsActivity extends Activity {
 	private Button buttonPreference;
 	private LinearLayout LinearLayoutStartStop;
 	private Button buttonScan;
+	private TextView textViewMessages;
+
 	private CommonMethods mCommonMethods = null;
 	public static final String BUTTON_UPDATE = "buttonUpdate";
 	private Intent VitalSignsServiceIntent;
 	private BlueToothMethods mBlueToothMethods=null;
-	
+	Preferences pref=null;
+
 	private Handler handlerScheduleMonitoringSessions;
 
 
@@ -65,7 +69,7 @@ public class VitalSignsActivity extends Activity {
 			initializeVariables();
 			initializeButtonListeners();
 			checkForHeartRateDevice();
-
+			checkForPhoneNumbers();
 
 			// get device id
 			Context context = getApplicationContext();
@@ -76,7 +80,7 @@ public class VitalSignsActivity extends Activity {
 
 			updateButtonStatus();
 			VitalSignsServiceIntent = new Intent(this, VitalSignsService.class);
-			
+
 
 		} catch (Exception e) {
 		}
@@ -88,7 +92,7 @@ public class VitalSignsActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			CommonMethods.Log("receiverButtonStatusUpdateEvent onReceive() called" );
 			updateButtonStatus();
-			
+
 		}
 	};
 
@@ -99,6 +103,7 @@ public class VitalSignsActivity extends Activity {
 		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
 		checkForHeartRateDevice();
+		checkForPhoneNumbers();
 	}
 
 	@Override
@@ -112,30 +117,32 @@ public class VitalSignsActivity extends Activity {
 		buttonStart = (Button) findViewById(R.id.buttonStart);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonPreference = (Button) findViewById(R.id.buttonPreference);
-		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);
+		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);		
 		buttonScan= (Button) findViewById(R.id.buttonScan);
+		textViewMessages=(TextView) findViewById(R.id.textViewMessages);
 		mCommonMethods= new CommonMethods(this);
 		mBlueToothMethods= new BlueToothMethods(this);
-		(new Preferences(this)).loadValuesFromStorage();
-		
+		pref = new Preferences(this);
+		pref.loadValuesFromStorage();
+
 		handlerScheduleMonitoringSessions = new Handler(){
-		    @Override
-		    public void handleMessage(Message msg){
-		        if(msg.what == 0){
-		        	showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
+			@Override
+			public void handleMessage(Message msg){
+				if(msg.what == 0){
+					showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
 							mBlueToothMethods.getHeartRateDeviceName() + ")" +
 							" Make sure:\n" +
 							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
 							"-That you have not changed your heart rate device. If you have changed it please set your new device through the" +
 							"advanced settings section of this app");
-		        }else{
-		        	mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
-    				mCommonMethods.playBeep(100);
-    				updateButtonStatus();
-		        }
-		    }
+				}else{
+					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
+					mCommonMethods.playBeep(100);
+					updateButtonStatus();
+				}
+			}
 		};
-	
+
 	}
 
 	private void initializeButtonListeners() {
@@ -152,15 +159,15 @@ public class VitalSignsActivity extends Activity {
 			}
 		});
 
-		
+
 		buttonScan.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent deviceScanIntent = new Intent(VitalSignsActivity.this, DeviceScanActivity.class);
-		        startActivity(deviceScanIntent);
+				startActivity(deviceScanIntent);
 			}
 		});
-		
-		
+
+
 
 		buttonPreference.setOnClickListener(new View.OnClickListener() {
 
@@ -183,10 +190,32 @@ public class VitalSignsActivity extends Activity {
 			LinearLayoutStartStop.setVisibility(View.GONE);
 		}
 	}
-	
-	
-	
-	
+
+	private void checkForPhoneNumbers(){
+		String message="";
+		boolean phoneNumbersExist=false;
+		
+		for (int i = 0; i < pref.phoneNumberArray.length; i++) {
+			try {
+				if (pref.phoneNumberArray[i]!=null && pref.phoneNumberArray[i].length()>1 
+						&&(pref.dialArray[i] || pref.SMSArray[i])) {// either sms or dial should be set
+					phoneNumbersExist=true;
+					break;
+				}
+			} catch (Exception e) { 
+				CommonMethods.Log("Exception " + e.getMessage());
+			}
+		}
+		if(!phoneNumbersExist){
+			message="You have not entered any phone numbers that may be alerted in an emergency.\n"
+					+"or you may not have enabled SMS or dial for that number.\n"
+					+ "Unless you are testing the app make sure that you set up phone numbers in the Settings->Contacts section";
+		}
+		textViewMessages.setText(message);
+	}
+
+
+
 
 	private void startApp() {
 		try {
@@ -215,40 +244,39 @@ public class VitalSignsActivity extends Activity {
 			mCommonMethods.setFlagShutDown(flagShutDown);
 			CommonMethods.Log("Error: " + e);
 		}
-		
+
 	}
 
-	
-private void scheduleMonitoringifHeartRateReceiving(){
-		
+
+	private void scheduleMonitoringifHeartRateReceiving(){
+
 		final ProgressDialog progress = new ProgressDialog(this);		
-        progress.setMessage("Scanning for your heart rate device. Please wait");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.show();
-		
+		progress.setMessage("Scanning for your heart rate device. Please wait");
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setIndeterminate(true);
+		progress.show();
+
 		Thread t = new Thread() {
-		    @Override
-		    public void run(){
-		    	
-		    	 String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();
-	        		if(mBlueToothMethods.isDeviceHeartRateMonitor(deviceAddress)){
-	        			HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
-	        			int heartRate=hr.getHeartRate();
-	        			progress.dismiss();
-	        			if(heartRate>0){
-	        				handlerScheduleMonitoringSessions.sendEmptyMessage(1);
-	        				
-	        			}else{
-	        				handlerScheduleMonitoringSessions.sendEmptyMessage(0);
-	        			}
-	        		}
-		    	
-		    	
-		    }   
+			@Override
+			public void run(){
+
+				String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();
+				if(mBlueToothMethods.isDeviceHeartRateMonitor(deviceAddress)){
+					HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
+					int heartRate=hr.getHeartRate();					
+					if(heartRate>0){
+						handlerScheduleMonitoringSessions.sendEmptyMessage(1);
+
+					}else{
+						handlerScheduleMonitoringSessions.sendEmptyMessage(0);
+					}
+				}
+				progress.dismiss();
+
+			}   
 		};
 		t.start();
-		
+
 	}
 
 	private void stopApp() {
@@ -284,7 +312,7 @@ private void scheduleMonitoringifHeartRateReceiving(){
 		Runnable r1=new Runnable() {// because this is always called from a thread.
 			@Override 
 			public void run() {
-		 		try {
+				try {
 					if (buttonStart != null && buttonStop != null) {				
 						buttonStart.setEnabled(!pressed);
 						buttonStop.setEnabled(pressed);
@@ -298,12 +326,12 @@ private void scheduleMonitoringifHeartRateReceiving(){
 					e.printStackTrace();
 				}
 
-		    }
+			}
 		};
 		/*
 		Handler buttonHandler = new Handler(this.getMainLooper());
 		buttonHandler.post(r1);
-		*/
+		 */
 		runOnUiThread(r1);
 
 	}
@@ -321,7 +349,7 @@ private void scheduleMonitoringifHeartRateReceiving(){
 	private void updateButtonStatus(){
 		/* the buttons may take time to update depending on what is running 
 		in the background and we don't want to hold up the UI hence the thread.
-		*/
+		 */
 		try {
 			Runnable r1=new Runnable() {
 				@Override
@@ -336,12 +364,12 @@ private void scheduleMonitoringifHeartRateReceiving(){
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This method is not on the main UI thread
 	 */
 	public void checkAllTasksAndUpdateButtons(){
-		
+
 		for (int i = 0; i < 10; i++) {// periodically monitor the variables.			
 			boolean allTasksNotRunning=false;
 			CommonMethods.Log("Service running= " + mCommonMethods.isVitalSignsServiceRunning());
@@ -367,7 +395,7 @@ private void scheduleMonitoringifHeartRateReceiving(){
 				// do not break, continue on the loop
 				CommonMethods.Log("some tasks are  still running");
 			}
-			
+
 			CommonMethods.Log("in loop " + i);
 			try {
 				Thread.sleep(10000);// 10 sec pause between checks.
@@ -377,7 +405,7 @@ private void scheduleMonitoringifHeartRateReceiving(){
 
 		}
 	}
-	
+
 	private AlertDialog.Builder showMessage(String mess){
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this); 
 		alertDialog.setMessage(mess);	      	

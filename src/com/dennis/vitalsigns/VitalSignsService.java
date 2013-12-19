@@ -11,7 +11,9 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.app.ActivityManager.RunningServiceInfo;
 
-
+/*This class is used to start the monitoring. 
+ * It's always called by the Alarm Manager - never directly by the Start button.
+ */
 public class VitalSignsService extends Service {
 
 

@@ -115,7 +115,7 @@ public class Monitors {
 			if (isNotify) {			
 				mCommonMethods.playAudio();// We need a different sound. It should wake up a dead person if necessary :)
 				CommonMethods.Log("before calling notifyPeople()");
-				CommonMethods.Log("notifyPeople() commented - uncommentlater");
+				//CommonMethods.Log("notifyPeople() commented - uncommentlater");
 				notifyPeople();//now call and sms people
 				CommonMethods.Log("after calling notifyPeople()");			
 				mCommonMethods.removeNotification();

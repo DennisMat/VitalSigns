@@ -22,8 +22,9 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.ToneGenerator;
 import android.os.Handler;
@@ -115,10 +116,39 @@ public class CommonMethods {
 	}
 
 	
+	
 	//TODO: Dennis: The notifications are not working properly. Fix them up later.
 	/**
 	 * show notification on task bar of the phone
 	 */
+	public void showNotification(){
+		
+		Intent notificationIntent = new Intent(context, VitalSignsActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(context,
+		        0, notificationIntent,
+		        PendingIntent.FLAG_CANCEL_CURRENT);
+
+		NotificationManager nm = (NotificationManager) context
+		        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+		Resources res = context.getResources();
+		Notification.Builder builder = new Notification.Builder(context);
+
+		builder.setContentIntent(contentIntent)
+		            .setSmallIcon(R.drawable.icon)
+		            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
+		            .setTicker("VitalSigns App has started")
+		            .setWhen(System.currentTimeMillis())
+		            .setAutoCancel(true)
+		            .setContentTitle("VitalSigns App has started")
+		            .setContentText("VitalSigns App has started");
+		Notification n = builder.build();
+
+		nm.notify(uniqueId, n);
+	}
+	
+
+	/* Old stuff. Hopefully the new stuff above will work
 	public void showNotification(){
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// Set the icon, scrolling text and timestamp
@@ -134,10 +164,9 @@ public class CommonMethods {
 		mNotificationManager.notify(uniqueId, notification);
 
 	}
-	
-	/**
-	 * Remove notification from task bar of the phone
-	 */
+*/		
+	//Remove notification from task bar of the phone
+
 	public void removeNotification(){
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(uniqueId);
@@ -145,6 +174,9 @@ public class CommonMethods {
 		showToast(msg,Toast.LENGTH_SHORT);
 
 	}
+	
+
+	
 
 	public void showToast(final String msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());

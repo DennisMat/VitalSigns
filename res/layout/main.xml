@@ -43,7 +43,21 @@
             android:visibility="gone" >
         </Button>
     </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
+        <TextView
+            android:id="@+id/textViewMessages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" >
+        </TextView>
+    </LinearLayout>
+    
+<!--  A snooze can be used if a person - for example wants to take a shower and does not want to wear the heart rate  monitor.
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -67,7 +81,7 @@
             android:width="150dp" >
         </EditText>
     </LinearLayout>
-
+-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
