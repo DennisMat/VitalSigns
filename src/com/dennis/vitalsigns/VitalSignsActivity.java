@@ -129,6 +129,7 @@ public class VitalSignsActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg){
 				if(msg.what == 0){
+					flagShutDown=true;
 					showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
 							mBlueToothMethods.getHeartRateDeviceName() + ")" +
 							" Make sure:\n" +
@@ -139,10 +140,12 @@ public class VitalSignsActivity extends Activity {
 					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
 					//mCommonMethods.playBeep(100);
 					updateButtonStatus();
+					flagShutDown=false;
 					showMessage("This app is now monitoring your heart rate. You may now move to another screen on your phone. "
 							+ "This app will continue monitoring your heart rate even if you switch off your phone. "
 							+ "If you wnat to stop this app come back to this screen and hit the Stop button");
 				}
+				mCommonMethods.setFlagShutDown(flagShutDown);
 			}
 		};
 
@@ -233,8 +236,8 @@ public class VitalSignsActivity extends Activity {
 					CommonMethods.Log("Stopping service");
 					stopApp();
 				}
-				flagShutDown=false;				 
-				mCommonMethods.setFlagShutDown(flagShutDown);				
+			 
+								
 				scheduleMonitoringifHeartRateReceiving();
 
 			} else {
@@ -391,6 +394,9 @@ public class VitalSignsActivity extends Activity {
 			}
 			if(allTasksNotRunning){
 				CommonMethods.Log("Hallelujah! All task have ended");
+			}
+			if(flagShutDown){
+				CommonMethods.Log("flagShutDown is true");
 			}
 
 			if(flagShutDown && allTasksNotRunning){
