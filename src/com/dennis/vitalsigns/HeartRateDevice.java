@@ -252,7 +252,7 @@ public class HeartRateDevice {
 	 */
 	public void disconnect() {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			CommonMethods.Log( "BluetoothAdapter not initialized");
+			CommonMethods.Log( "in disconnect(). BluetoothAdapter not initialized");
 			return;
 		}
 		mBluetoothGatt.disconnect();
@@ -279,7 +279,7 @@ public class HeartRateDevice {
 	 */
 	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			CommonMethods.Log( "BluetoothAdapter not initialized");
+			CommonMethods.Log( "in readCharacteristic(). BluetoothAdapter not initialized");
 			return;
 		}
 		mBluetoothGatt.readCharacteristic(characteristic);

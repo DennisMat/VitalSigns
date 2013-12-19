@@ -133,7 +133,7 @@ public class VitalSignsActivity extends Activity {
 							mBlueToothMethods.getHeartRateDeviceName() + ")" +
 							" Make sure:\n" +
 							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
-							"-That you have not changed your heart rate device. If you have changed it please set your new device through the" +
+							"-That you have not changed your heart rate device. If you have changed it please set your new device through the " +
 							"advanced settings section of this app");
 				}else{
 					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
@@ -263,14 +263,19 @@ public class VitalSignsActivity extends Activity {
 				String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();
 				if(mBlueToothMethods.isDeviceHeartRateMonitor(deviceAddress)){
 					HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
-					int heartRate=hr.getHeartRate();					
+					CommonMethods.Log("About to call hr.getHeartRate() ");
+					int heartRate=hr.getHeartRate();
+					CommonMethods.Log("after call to hr.getHeartRate() heartRate = "+heartRate);
 					if(heartRate>0){
 						handlerScheduleMonitoringSessions.sendEmptyMessage(1);
 
 					}else{
 						handlerScheduleMonitoringSessions.sendEmptyMessage(0);
 					}
+				}else{
+					handlerScheduleMonitoringSessions.sendEmptyMessage(0);
 				}
+				CommonMethods.Log("About to call progress.dismiss() ");
 				progress.dismiss();
 
 			}   

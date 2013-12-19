@@ -181,11 +181,10 @@ public class BlueToothMethods {
 	private void disconnectAndClose(){
 
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-			CommonMethods.Log( "BluetoothAdapter not initialized");
+			CommonMethods.Log( "In disconnectAndClose(). BluetoothAdapter not initialized");
 			return;
 		}
 		mBluetoothGatt.disconnect();
-
 		mBluetoothGatt.close();
 		mBluetoothGatt = null;
 
