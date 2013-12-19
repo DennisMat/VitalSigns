@@ -134,7 +134,7 @@ public class DeviceScanActivity extends Activity {
 		// Use this check to determine whether BLE is supported on the device.  Then you can
 		// selectively disable BLE-related features.
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-			showMessage("Error bluetooth not supported");
+			mCommonMethods.showAlertDialogOnUiThread("Error bluetooth not supported");
 			progress.dismiss();
 			return;
 		}
@@ -147,7 +147,7 @@ public class DeviceScanActivity extends Activity {
 
 		// Checks if Bluetooth is supported on the device.
 		if (mBluetoothAdapter == null) {
-			showMessage("Error bluetooth not supported");
+			mCommonMethods.showAlertDialogOnUiThread("Error bluetooth not supported");
 			progress.dismiss();
 
 			return;
@@ -288,15 +288,12 @@ public class DeviceScanActivity extends Activity {
 	}
 
 	
-	public void showMessage(final String mess){
+	public void showMessageOnUIThread(final String mess, final Context context){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 
-
-
-
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(DeviceScanActivity.this); 
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
 		alertDialog.setMessage(mess);	      	
 		alertDialog
 		.setIcon(0)

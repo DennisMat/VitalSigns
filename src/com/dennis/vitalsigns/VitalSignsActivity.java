@@ -132,7 +132,7 @@ public class VitalSignsActivity extends Activity {
 			public void handleMessage(Message msg){
 				if(msg.what == 0){
 					flagShutDown=true;
-					showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
+					mCommonMethods.showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
 							mBlueToothMethods.getHeartRateDeviceName() + ")" +
 							" Make sure:\n" +
 							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
@@ -143,7 +143,7 @@ public class VitalSignsActivity extends Activity {
 					//mCommonMethods.playBeep(100);
 					updateButtonStatus();
 					flagShutDown=false;
-					showMessage("This app is now monitoring your heart rate. You may now move to another screen on your phone. "
+					mCommonMethods.showMessage("This app is now monitoring your heart rate. You may now move to another screen on your phone. "
 							+ "This app will continue monitoring your heart rate even if you switch off your phone. "
 							+ "If you wnat to stop this app come back to this screen and hit the Stop button");
 				}
@@ -243,7 +243,7 @@ public class VitalSignsActivity extends Activity {
 				scheduleMonitoringifHeartRateReceiving();
 
 			} else {
-				showMessage("This software is past it's expiration date. Please contact the developer - and part with your wealth!");
+				mCommonMethods.showMessage("This software is past it's expiration date. Please contact the developer - and part with your wealth!");
 			}
 			CommonMethods.Log("VitalSignsActivity.startApp() called 2");
 		} catch (Exception e) {			
@@ -421,7 +421,7 @@ public class VitalSignsActivity extends Activity {
 
 		}
 	}
-
+/*
 	private AlertDialog.Builder showMessage(String mess){
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this); 
 		alertDialog.setMessage(mess);	      	
@@ -438,4 +438,5 @@ public class VitalSignsActivity extends Activity {
 		return alertDialog;
 	}
 
+	*/
 }

@@ -286,6 +286,33 @@ public class CommonMethods {
 		alertDialog.show();	
 		return alertDialog;
 	}
+	
+	public void showAlertDialogOnUiThread(final String mess ){
+		((Activity) context).runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showAlertDialog( mess);		
+			}
+		});
+	}
+	
+	
+
+	private void showAlertDialog(final String mess) {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
+		alertDialog.setMessage(mess);	      	
+		alertDialog
+		.setIcon(0)
+		.setTitle("")
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				return; //don't do anything.
+			}
+		})
+		.create();
+		alertDialog.show();
+	}
+
 
 	static public void Log(String logmessage) {		
 		try {
