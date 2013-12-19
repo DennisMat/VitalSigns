@@ -93,7 +93,7 @@ public class BlueToothMethods {
 	}
 
 	public boolean isBlueToothLeSupported(){
-
+		CommonMethods.Log("in isBlueToothLeSupported()");
 		// Use this check to determine whether BLE is supported on the device.  Then you can
 		// selectively disable BLE-related features.
 		if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -115,7 +115,7 @@ public class BlueToothMethods {
 
 		return true;
 	}
-
+	
 
 	private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
 		@Override

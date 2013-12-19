@@ -13,6 +13,7 @@ import java.util.Calendar;
 
 
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -120,8 +121,9 @@ public class VitalSignsActivity extends Activity {
 		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);		
 		buttonScan= (Button) findViewById(R.id.buttonScan);
 		textViewMessages=(TextView) findViewById(R.id.textViewMessages);
-		mCommonMethods= new CommonMethods(this);
+		mCommonMethods= new CommonMethods(this);		
 		mBlueToothMethods= new BlueToothMethods(this);
+
 		pref = new Preferences(this);
 		pref.loadValuesFromStorage();
 

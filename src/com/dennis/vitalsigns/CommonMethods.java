@@ -15,12 +15,14 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -268,7 +270,23 @@ public class CommonMethods {
 		return flagShutDown;
 
 	}
-	
+	// will not work - i'mnot sure how to get this working
+	public AlertDialog.Builder showMessage(String mess){
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
+		alertDialog.setMessage(mess);	      	
+		alertDialog
+		.setIcon(0)
+		.setTitle("")
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				return; //don't do anything.
+			}
+		})
+		.create();
+		alertDialog.show();	
+		return alertDialog;
+	}
+
 	static public void Log(String logmessage) {		
 		try {
 			if (Preferences.remoteLog) {

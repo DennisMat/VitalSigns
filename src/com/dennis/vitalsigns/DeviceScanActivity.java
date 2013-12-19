@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class DeviceScanActivity extends Activity {
 	private TextView textViewDeviceListMessage;
 	private ListView listviewHearRateMonitors;
 	private BlueToothMethods mBlueToothMethods;
+	private CommonMethods mCommonMethods;
 
 	private ProgressDialog progress;
 
@@ -52,7 +55,7 @@ public class DeviceScanActivity extends Activity {
 		progress = new ProgressDialog(this);
 		listviewHearRateMonitors = (ListView) findViewById(R.id.listviewHearRateMonitors);
 		mBlueToothMethods= new BlueToothMethods(DeviceScanActivity.this);
-		
+		mCommonMethods = new CommonMethods(this);
 		handlerDeviceScanResult = new Handler(){
 			@Override
 			public void handleMessage(Message msg){
@@ -131,8 +134,9 @@ public class DeviceScanActivity extends Activity {
 		// Use this check to determine whether BLE is supported on the device.  Then you can
 		// selectively disable BLE-related features.
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-			CommonMethods.Log("Error bluetooth not supported");
-			finish();
+			showMessage("Error bluetooth not supported");
+			progress.dismiss();
+			return;
 		}
 
 		// Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
@@ -143,7 +147,8 @@ public class DeviceScanActivity extends Activity {
 
 		// Checks if Bluetooth is supported on the device.
 		if (mBluetoothAdapter == null) {
-			CommonMethods.Log("Error bluetooth not supported");
+			showMessage("Error bluetooth not supported");
+			progress.dismiss();
 
 			return;
 		}else{
@@ -170,7 +175,7 @@ public class DeviceScanActivity extends Activity {
 						progress.dismiss();
 				
 			}// end of outer run
-		}, Preferences.deviceScanTime*1000);
+		}, Preferences.deviceScanTime*10000);
 
 		mScanning = true;
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
@@ -282,5 +287,31 @@ public class DeviceScanActivity extends Activity {
 		TextView deviceAddress;
 	}
 
+	
+	public void showMessage(final String mess){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+
+
+
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(DeviceScanActivity.this); 
+		alertDialog.setMessage(mess);	      	
+		alertDialog
+		.setIcon(0)
+		.setTitle("")
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				return; //don't do anything.
+			}
+		})
+		.create();
+		alertDialog.show();	
+		//return alertDialog;
+		
+			}
+		});
+	}
 
 }
