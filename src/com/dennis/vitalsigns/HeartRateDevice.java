@@ -344,14 +344,4 @@ public class HeartRateDevice {
 
 
 
-
-
-
-
-
-
-
-
-
-
 }

@@ -14,6 +14,8 @@ import java.util.Calendar;
 
 
 
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -132,20 +134,12 @@ public class VitalSignsActivity extends Activity {
 			public void handleMessage(Message msg){
 				if(msg.what == 0){
 					flagShutDown=true;
-					mCommonMethods.showMessage("This app does is currently not recieving the heart rate from your heart rate device.(" +
-							mBlueToothMethods.getHeartRateDeviceName() + ")" +
-							" Make sure:\n" +
-							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
-							"-That you have not changed your heart rate device. If you have changed it please set your new device through the " +
-							"advanced settings section of this app");
+					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.bluetooth_not_found));
 				}else{
 					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
-					//mCommonMethods.playBeep(100);
 					updateButtonStatus();
 					flagShutDown=false;
-					mCommonMethods.showMessage("This app is now monitoring your heart rate. You may now move to another screen on your phone. "
-							+ "This app will continue monitoring your heart rate even if you switch off your phone. "
-							+ "If you wnat to stop this app come back to this screen and hit the Stop button");
+					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.app_working));
 				}
 				mCommonMethods.setFlagShutDown(flagShutDown);
 			}
@@ -215,9 +209,7 @@ public class VitalSignsActivity extends Activity {
 			}
 		}
 		if(!phoneNumbersExist){
-			message="You have not entered any phone numbers that may be alerted in an emergency.\n"
-					+"or you may not have enabled SMS or dial for that number.\n"
-					+ "Unless you are testing the app make sure that you set up phone numbers in the Settings->Contacts section";
+			message=getString(R.string.missing_phone_numbers);
 		}
 		textViewMessages.setText(message);
 	}
@@ -243,7 +235,7 @@ public class VitalSignsActivity extends Activity {
 				scheduleMonitoringifHeartRateReceiving();
 
 			} else {
-				mCommonMethods.showMessage("This software is past it's expiration date. Please contact the developer - and part with your wealth!");
+				mCommonMethods.showMessage(getString(R.string.app_expired));
 			}
 			CommonMethods.Log("VitalSignsActivity.startApp() called 2");
 		} catch (Exception e) {			
@@ -259,7 +251,7 @@ public class VitalSignsActivity extends Activity {
 	private void scheduleMonitoringifHeartRateReceiving(){
 
 		final ProgressDialog progress = new ProgressDialog(this);		
-		progress.setMessage("Scanning for your heart rate device. Please wait");
+		progress.setMessage((VitalSignsActivity.this).getString(R.string.scanning_heart_device));
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progress.setIndeterminate(true);
 		progress.show();

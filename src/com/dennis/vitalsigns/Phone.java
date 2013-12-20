@@ -210,7 +210,7 @@ public class Phone {
 			
 			mCommonMethods.showToast("About to dial" +phoneNumber,Toast.LENGTH_SHORT);
 			context.startActivity(callIntent);
-			CommonMethods.Log("Dialed number successfully");
+			CommonMethods.Log("Dialed "+phoneNumber+" successfully");
 		} catch (Exception e) {
 			CommonMethods.Log("Exception in DialNumber " + e.getMessage());
 

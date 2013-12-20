@@ -124,7 +124,7 @@ public class CommonMethods {
 	 * show notification on task bar of the phone
 	 */
 	public void showNotification(){
-		
+		CommonMethods.Log("in showNotification");	
 		Intent notificationIntent = new Intent(context, VitalSignsActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context,
 		        0, notificationIntent,
@@ -170,6 +170,7 @@ public class CommonMethods {
 	//Remove notification from task bar of the phone
 
 	public void removeNotification(){
+		CommonMethods.Log("in removeNotification");	
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(uniqueId);
 		String msg="VitalSigns App has stopped. You must manually restart if you wnat the app to run again";

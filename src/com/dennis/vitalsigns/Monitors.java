@@ -1,9 +1,6 @@
 package com.dennis.vitalsigns;
 
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
@@ -115,7 +112,6 @@ public class Monitors {
 			if (isNotify) {			
 				mCommonMethods.playAudio();// We need a different sound. It should wake up a dead person if necessary :)
 				CommonMethods.Log("before calling notifyPeople()");
-				//CommonMethods.Log("notifyPeople() commented - uncommentlater");
 				notifyPeople();//now call and sms people
 				CommonMethods.Log("after calling notifyPeople()");			
 				mCommonMethods.removeNotification();
@@ -241,15 +237,21 @@ public class Monitors {
 
 		@Override
 		protected void onPreExecute(){
-
+			try {
+				CommonMethods.aquirePartialWakeLock(context);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		@Override
 		protected Void doInBackground(Void... args) {	
 			Phone phone = new Phone(context);
 			CommonMethods.Log("sms for sending = " + phone.getMessageForSMS());
-			// we send the smses first before dialing. Dialling is  to be more error prone than sms.
-			//For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialer.
+			/*we send the smses first before dialing. Dialling is  to be more error prone than sms.
+			For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialer.
+			An sms to St. Peter is also a good idea*/
 			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
 				try {
 
@@ -262,17 +264,12 @@ public class Monitors {
 				}
 			}
 			
-			//By now the horse has left the stable (via sms)- we can start leisurely  start dialling.
+			//By now the horse has left the stable (via sms)- we can start dialling leisurely.
 			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
 				try {
-					if(VitalSignsActivity.flagShutDown){
-						return null;//abruptly ending dialing/sms because stop button was clicked.
-					}
+
 					if (pref.dialArray[i]) {
 						phone.dialNumber(pref.phoneNumberArray[i]);
-					}
-					if(VitalSignsActivity.flagShutDown){
-						return null;
 					}
 
 					//TODO:put some kind of cancel dialing feature here.
@@ -294,7 +291,7 @@ public class Monitors {
 
 		@Override
 		protected void onPostExecute(Void result) {
-			//do stuff here
+			CommonMethods.releasePartialWakeLock();
 		}
 
 	}

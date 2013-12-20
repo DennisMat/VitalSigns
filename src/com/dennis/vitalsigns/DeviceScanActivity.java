@@ -61,12 +61,8 @@ public class DeviceScanActivity extends Activity {
 			public void handleMessage(Message msg){
 				if(msg.what == 0){
 					// this entire text must be placed in R.strings
-					textViewDeviceListMessage.setText("This app does is currently not recieving the heart rate from your heart rate device.(" +
-							mBlueToothMethods.getHeartRateDeviceName() + ")" +
-							" Make sure:\n" +
-							"-That your heart rate device is turned on and is transmitting the heart rate.\n" +
-							"-That you have not changed your heart rate device. If you have changed it please set your new device through the " +
-							"advanced settings section of this app"); 
+					//mBlueToothMethods.getHeartRateDeviceName()
+					textViewDeviceListMessage.setText(R.string.bluetooth_not_found); 
 				}else{
 					textViewDeviceListMessage.setText("Please select a device (by touching the device name) from the list below.");
 				}
@@ -77,7 +73,7 @@ public class DeviceScanActivity extends Activity {
 		buttonScan.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				progress.setMessage("Scanning for a heart rate device. Please wait");
+				progress.setMessage((DeviceScanActivity.this).getString(R.string.scanning_heart_device));
 				progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progress.setIndeterminate(true);
 				CommonMethods.Log("about to show progress bar");
