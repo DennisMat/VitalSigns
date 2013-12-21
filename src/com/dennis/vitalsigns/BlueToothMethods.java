@@ -61,7 +61,7 @@ public class BlueToothMethods {
  * @return
  */
 	public boolean isDeviceHeartRateMonitor(String deviceAddress) {
-		
+		CommonMethods.Log("in isDeviceHeartRateMonitor()");
 		if(isBlueToothLeSupported()){
 			BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
 			if (device == null) {
@@ -71,10 +71,10 @@ public class BlueToothMethods {
 
 			mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);// this step goes off into it's own thread.
 
-			for(int i=0;i<Preferences.deviceScanTime;i++){				
+			for(int i=0;i<Preferences.deviceScanTime;i++){
+				CommonMethods.Log( "in isDeviceHeartRateMonitor() in loop " + i+ " isHeartRateMonitor="+isHeartRateMonitor);
 				//break from loop if a heart rate monitor is found
 				if(isHeartRateMonitor){
-					disconnectAndClose();
 					break;
 				} 
 
@@ -123,8 +123,10 @@ public class BlueToothMethods {
 
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				CommonMethods.Log( "Connected to GATT server.");
+				if (mBluetoothAdapter != null && mBluetoothGatt != null) {
 				CommonMethods.Log( "Attempting to start service discovery:");
 				mBluetoothGatt.discoverServices();
+				}
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				CommonMethods.Log( "Disconnected from GATT server.");
@@ -166,12 +168,10 @@ public class BlueToothMethods {
 				if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
 					if (mBluetoothAdapter != null || mBluetoothGatt != null) { 	                	
 						if (UUID.fromString(GattAttributes.HEART_RATE_MEASUREMENT).equals(gattCharacteristic.getUuid())) {
-
 							return true;
 						}
 					}
 				}
-
 			}
 		}
 		return false;
@@ -179,7 +179,7 @@ public class BlueToothMethods {
 
 
 	private void disconnectAndClose(){
-
+		CommonMethods.Log( "In disconnectAndClose()");
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			CommonMethods.Log( "In disconnectAndClose(). BluetoothAdapter not initialized");
 			return;

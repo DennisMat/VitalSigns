@@ -16,6 +16,7 @@ import java.util.Calendar;
 
 
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -140,6 +141,7 @@ public class VitalSignsActivity extends Activity {
 					updateButtonStatus();
 					flagShutDown=false;
 					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.app_working));
+					mCommonMethods.showNotification();
 				}
 				mCommonMethods.setFlagShutDown(flagShutDown);
 			}
@@ -260,21 +262,22 @@ public class VitalSignsActivity extends Activity {
 			@Override
 			public void run(){
 
-				String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();
-				if(mBlueToothMethods.isDeviceHeartRateMonitor(deviceAddress)){
-					HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
-					CommonMethods.Log("About to call hr.getHeartRate() ");
-					int heartRate=hr.getHeartRate();
-					CommonMethods.Log("after call to hr.getHeartRate() heartRate = "+heartRate);
-					if(heartRate>0){
-						handlerScheduleMonitoringSessions.sendEmptyMessage(1);
-
-					}else{
+				String deviceAddress=mBlueToothMethods.getHeartRateDeviceAddress();					
+					try {
+						HeartRateDevice hr= new HeartRateDevice(VitalSignsActivity.this,deviceAddress);
+						CommonMethods.Log("About to call hr.getHeartRate() ");
+						int heartRate=hr.getHeartRate();
+						CommonMethods.Log("after call to hr.getHeartRate() heartRate = "+heartRate);						
+						if(heartRate>0){
+							handlerScheduleMonitoringSessions.sendEmptyMessage(1);
+						}else{
+							handlerScheduleMonitoringSessions.sendEmptyMessage(0);
+						}
+					} catch (Exception e) {
 						handlerScheduleMonitoringSessions.sendEmptyMessage(0);
+						e.printStackTrace();
 					}
-				}else{
-					handlerScheduleMonitoringSessions.sendEmptyMessage(0);
-				}
+
 				CommonMethods.Log("About to call progress.dismiss() ");
 				progress.dismiss();
 
@@ -395,6 +398,7 @@ public class VitalSignsActivity extends Activity {
 
 			if(flagShutDown && allTasksNotRunning){
 				setStartButtonPressed(false);
+				mCommonMethods.removeNotification();
 				break;
 			}else if(!flagShutDown){
 				setStartButtonPressed(true);

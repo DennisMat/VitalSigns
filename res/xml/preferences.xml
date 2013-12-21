@@ -123,7 +123,7 @@
             android:inputType="number"
             android:key="key_heart_rate_wait_time"
             android:summary="Heart Rate wait timeout"
-            android:title="Heart Rate wait timeout" />
+            android:title="Time waiting to recive a heart rate value" />
         <EditTextPreference
             android:defaultValue="@string/pref_charging_pausetime"
             android:inputType="number"

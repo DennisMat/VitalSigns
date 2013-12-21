@@ -15,7 +15,6 @@ public class Monitors {
 	private CommonMethods mCommonMethods = null;
 	private int emergencylevelThreshold=0;
 	
-	
 	public static class Statuses{
 		public static boolean isPulseRateMonitorRunning=false;
 		public static boolean isBodyTemperatureMonitorRunning=false;
@@ -33,8 +32,7 @@ public class Monitors {
 			updateButtons();//The steps below may takes time so update button before this
 			CommonMethods.Log("Monitors.start() started");
 			initializeVariables();
-			startMonitoringSession();
-			mCommonMethods.showNotification(); 
+			startMonitoringSession();			 
 		} catch (Exception e) {
 			VitalSignsActivity.flagShutDown=true;
 			mCommonMethods.setFlagShutDown(VitalSignsActivity.flagShutDown);	
@@ -44,8 +42,8 @@ public class Monitors {
 
 	}
 	
-	/**It's between the startMonitoringSession() and stopMonitoringSession() that actual monitoring is done.
-	 * After the  the stopMonitoringSession() - there may be a hibernation time before startMonitoringSession() is called again.
+	/**It's between the startMonitoringSession() and wrapUpMonitoringSession() that actual monitoring is done.
+	 * After the  the wrapUpMonitoringSession() - there may be a hibernation time before startMonitoringSession() is called again.
 	 *  This hibernation time will save on battery life. The phone is woken up from the hibernation state by the alarm manager.
 	 * 
 	 */
@@ -114,13 +112,15 @@ public class Monitors {
 				CommonMethods.Log("before calling notifyPeople()");
 				notifyPeople();//now call and sms people
 				CommonMethods.Log("after calling notifyPeople()");			
-				mCommonMethods.removeNotification();
+				
 				VitalSignsActivity.flagShutDown=true;
 				mCommonMethods.setFlagShutDown(VitalSignsActivity.flagShutDown);
 				updateButtons();			
 
 				mCommonMethods.cancelRepeatingMonitoringSessions();
-				stopMonitoringSession();
+				
+				wrapUpMonitoringSession();
+				mCommonMethods.removeNotification();
 			} else {
 				CommonMethods.Log("ContinueMonitoring called because no Vitalsigns above threshold level detected");
 				continueMonitoring();
@@ -134,7 +134,7 @@ public class Monitors {
 				}
 				continueMonitoring();
 			}else{
-				stopMonitoringSession();
+				wrapUpMonitoringSession();
 				//SimpleDateFormat timingFormat = new SimpleDateFormat("h:mm a");
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.MINUTE,pref.hibernateTime);
@@ -186,12 +186,10 @@ public class Monitors {
 
 	}
 
-	private void stopMonitoringSession() {
+	private void wrapUpMonitoringSession() {
 		CommonMethods.Log(" in stopMonitoring()");
 		try {
-
 			CommonMethods.releasePartialWakeLock();
-
 		} catch (Exception e) {
 			CommonMethods.Log("Exception in stopMonitoring()" + e.getMessage());
 		}
@@ -213,7 +211,10 @@ public class Monitors {
 	}
 
 	private void continueMonitoring() {
+		CommonMethods.Log("in continueMonitoring() 1");
 		if(VitalSignsActivity.flagShutDown){
+			CommonMethods.Log("in continueMonitoring() 2");
+			mCommonMethods.removeNotification();
 			return;
 		}
 		try {

@@ -60,9 +60,7 @@ public class DeviceScanActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg){
 				if(msg.what == 0){
-					// this entire text must be placed in R.strings
-					//mBlueToothMethods.getHeartRateDeviceName()
-					textViewDeviceListMessage.setText(R.string.bluetooth_not_found); 
+					mCommonMethods.showAlertDialog(getString(R.string.bluetooth_not_found));					
 				}else{
 					textViewDeviceListMessage.setText("Please select a device (by touching the device name) from the list below.");
 				}

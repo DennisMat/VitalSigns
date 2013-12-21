@@ -299,7 +299,7 @@ public class CommonMethods {
 	
 	
 
-	private void showAlertDialog(final String mess) {
+	public void showAlertDialog(final String mess) {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
 		alertDialog.setMessage(mess);	      	
 		alertDialog

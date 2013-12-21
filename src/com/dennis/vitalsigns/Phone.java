@@ -59,24 +59,29 @@ public class Phone {
 					switch (getResultCode())
 					{
 					case Activity.RESULT_OK:
-						Toast.makeText(context, "SMS sent", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "SMS sent", 
+								Toast.LENGTH_SHORT);
+						CommonMethods.Log( "SMS sent") ;
 						break;
 					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-						Toast.makeText(context, "Generic failure", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "Generic failure", 
+								Toast.LENGTH_SHORT);
+						CommonMethods.Log( "Generic failure") ;
 						break;
 					case SmsManager.RESULT_ERROR_NO_SERVICE:
-						Toast.makeText(context, "No service", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "No service", 
+								Toast.LENGTH_SHORT);
+						CommonMethods.Log( "No service") ;
 						break;
 					case SmsManager.RESULT_ERROR_NULL_PDU:
-						Toast.makeText(context, "Null PDU", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "Null PDU", 
+								Toast.LENGTH_SHORT);
+						CommonMethods.Log( "Null PDU") ;
 						break;
 					case SmsManager.RESULT_ERROR_RADIO_OFF:
-						Toast.makeText(context, "Radio off", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "Radio off", 
+								Toast.LENGTH_SHORT);
+						CommonMethods.Log( "Radio off") ;
 						break;
 					}
 				}
@@ -88,12 +93,12 @@ public class Phone {
 					switch (getResultCode())
 					{
 					case Activity.RESULT_OK:
-						Toast.makeText(context, "SMS delivered", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "SMS delivered", 
+								Toast.LENGTH_SHORT);
 						break;
 					case Activity.RESULT_CANCELED:
-						Toast.makeText(context, "SMS not delivered", 
-								Toast.LENGTH_SHORT).show();
+						mCommonMethods.showToast( "SMS not delivered", 
+								Toast.LENGTH_SHORT);
 						break;                        
 					}
 				}
@@ -107,7 +112,7 @@ public class Phone {
 	
 			SmsManager sms = SmsManager.getDefault();
 			sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);  
-			Toast.makeText(context,"SMS sent to " + phoneNumber +" Message:"+ message,Toast.LENGTH_LONG).show();
+			mCommonMethods.showToast("SMS sent to " + phoneNumber +" Message:"+ message,Toast.LENGTH_LONG);
 	
 			context.unregisterReceiver(smsSentReceiver);//is there a point in doing this so soon?
 			context.unregisterReceiver(smsDeliveredReceiver);//is there a point in doing this so soon?

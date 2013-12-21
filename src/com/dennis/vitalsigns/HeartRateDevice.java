@@ -104,21 +104,18 @@ public class HeartRateDevice {
 	}
 
 	public int getHeartRate(){
+		CommonMethods.Log( "in getHeartRate()");
 		if(initialize()){
 			if(connect(deviceAddress)){
 				for(int i=0;i<Preferences.heartRateWaitTime;i++){//This is more than adequate time to read many heart rate values
 					CommonMethods.Log( "loop " + i+ " heartRate="+heartRate);
 					if(heartRate>0){//as soon  as any value is available break out of loop.
-						disconnect() ;
-						close();
 						break;
 					}
 					try {
 						Thread.sleep(1000); 
 					} catch (InterruptedException e) {
 					}
-
-
 				}
 				
 				CommonMethods.Log( "just before closing connection");
@@ -191,7 +188,7 @@ public class HeartRateDevice {
 
 
 	public boolean initialize() {
-
+		CommonMethods.Log( "in initialize()");
 		if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			CommonMethods.Log( "Error bluetooth not supported");
 			return false;
@@ -213,6 +210,7 @@ public class HeartRateDevice {
 	}
 
 	public boolean connect(final String address) {
+		CommonMethods.Log( "in connect()");
 		if (mBluetoothAdapter == null || address == null) {
 			CommonMethods.Log( "BluetoothAdapter not initialized or unspecified address.");
 			return false;
@@ -287,24 +285,20 @@ public class HeartRateDevice {
 
 
 
-
-
-
-
-
-
 	// Implements callback methods for GATT events that the app cares about.  For example,
 	// connection change and services discovered.
 	private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
 		@Override
 		public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-
+			CommonMethods.Log( "in onConnectionStateChange()");
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				//broadcastUpdate(intentAction);
+				if (mBluetoothAdapter != null && mBluetoothGatt != null) {
 				CommonMethods.Log( "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
-				CommonMethods.Log( "Attempting to start service discovery:" +
-						mBluetoothGatt.discoverServices());
+				CommonMethods.Log( "Attempting to start service discovery:");
+				mBluetoothGatt.discoverServices();
+				}
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				CommonMethods.Log( "Disconnected from GATT server.");
