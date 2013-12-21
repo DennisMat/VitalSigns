@@ -137,7 +137,7 @@ public class VitalSignsActivity extends Activity {
 					flagShutDown=true;
 					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.bluetooth_not_found));
 				}else{
-					mCommonMethods.scheduleRepeatingMonitoringSessions();// call call the service right away.
+					mCommonMethods.scheduleRepeatingMonitoringSessions();// call the service right away.
 					updateButtonStatus();
 					flagShutDown=false;
 					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.app_working));
