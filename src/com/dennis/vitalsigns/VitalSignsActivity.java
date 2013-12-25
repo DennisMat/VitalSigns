@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -294,7 +295,8 @@ public class VitalSignsActivity extends Activity {
 			mCommonMethods.setFlagShutDown(flagShutDown);			 
 			mCommonMethods.playBeep(100);
 			mCommonMethods.cancelRepeatingMonitoringSessions();
-			mCommonMethods.removeNotification();	
+			mCommonMethods.removeNotification();
+			mCommonMethods.showToast(this.getString(R.string.app_stopped),Toast.LENGTH_LONG);
 
 			/* this does not stop the other methods in the service if they happened to be in a loop
 			 * So the loop must be stopped by some other manner. We use flagShutDown for this purpose. 

@@ -105,8 +105,6 @@ public class CommonMethods {
 
 	}
 
-
-
 	public void cancelRepeatingMonitoringSessions() {
 		CommonMethods.Log("cancelRepeatingMonitoringSessions has been called");
 
@@ -173,15 +171,12 @@ public class CommonMethods {
 		CommonMethods.Log("in removeNotification");	
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(uniqueId);
-		String msg="VitalSigns App has stopped. You must manually restart if you wnat the app to run again";
-		showToast(msg,Toast.LENGTH_SHORT);
-
 	}
 	
 
 	
-
-	public void showToast(final String msgstr,final int toastLength) {
+	//this takes in a String msgstr
+ 	public void showToast(final String msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());
 		toastHandler.post(new Runnable() {
 			@Override
@@ -191,6 +186,7 @@ public class CommonMethods {
 		});
 	}
 	
+ 	//this takes in a int  msgstr
 	public void showToast(final int msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());
 		toastHandler.post(new Runnable() {
@@ -204,6 +200,7 @@ public class CommonMethods {
 	public void showToast(String msgstr) {
 		showToast(msgstr,Toast.LENGTH_LONG);
 	}
+	
 	public void playAudio(){
 		MediaPlayer mMediaPlayer = MediaPlayer.create(context, R.raw.double_beep);
 		int numberOfBeeps=5;

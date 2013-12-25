@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 public class Monitors {
 
@@ -280,6 +281,9 @@ public class Monitors {
 					CommonMethods.Log("Exception " + e.getMessage());
 				}
 			}
+			CommonMethods.Log("done dialing and sending smses");
+			// this notification takes time because of pref.timeBetweenDialing and is probably not evenneeded.
+			mCommonMethods.showToast(context.getString(R.string.app_stopped),Toast.LENGTH_LONG);
 
 			return null;
 		}
