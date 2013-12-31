@@ -38,5 +38,7 @@
 	<string name="app_expired">This software is past it\'s expiration date. Please contact the developer - and part with your wealth!</string>
 	<string name="scanning_heart_device">Scanning for your heart rate device. Please wait</string>			
 	<string name="app_stopped">VitalSigns App has stopped. You must manually restart if you want the app to run again</string>
+	<string name="enable_bluetooth">Please enable bluetooth on your phone.</string>
+	<string name="bluetooth_not_supported">Bluetooth not supported on your phone. This app need bluetooth to work.</string>
 
 </resources>

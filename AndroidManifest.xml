@@ -6,7 +6,7 @@
 
     <!-- Andriod 4.3=sdk 18. BT 4.0 had the first OS support in this version.
     It appears that prior to sdk 18 the app will throw an exception even on startup
-    Currently I know of no way around this exception. The exception is calss not found exception.
+    Currently I know of no way around this exception. The exception is class not found exception.
     The classes are the various BT classes. -->
     <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="18" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />

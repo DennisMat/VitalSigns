@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -73,8 +74,7 @@ public class VitalSignsActivity extends Activity {
 
 			initializeVariables();
 			initializeButtonListeners();
-			checkForHeartRateDevice();
-			checkForPhoneNumbers();
+			allChecksPass();
 
 			// get device id
 			Context context = getApplicationContext();
@@ -107,8 +107,7 @@ public class VitalSignsActivity extends Activity {
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
 		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
-		checkForHeartRateDevice();
-		checkForPhoneNumbers();
+		allChecksPass();
 	}
 
 	@Override
@@ -185,18 +184,31 @@ public class VitalSignsActivity extends Activity {
 
 	}
 
+	private boolean  allChecksPass(){
+		if(checkForHeartRateDevice()){
+			if(mBlueToothMethods.isBlueToothEnabled()){
+				checkForPhoneNumbers();// this check needn't prevent the app form proceeding.
+				return true;
+			}else{
+				mCommonMethods.showAlertDialogOnUiThread(getString(R.string.enable_bluetooth));				
+			}
+		}
+		return false;
+	}
 
-	private void checkForHeartRateDevice(){		
+	private boolean checkForHeartRateDevice(){		
 		if(mBlueToothMethods.isHeartRateDeviceSet()){
 			buttonScan.setVisibility(View.GONE);
 			LinearLayoutStartStop.setVisibility(View.VISIBLE);
+			return true;
 		}else{
 			buttonScan.setVisibility(View.VISIBLE);
 			LinearLayoutStartStop.setVisibility(View.GONE);
+			return false;
 		}
 	}
 
-	private void checkForPhoneNumbers(){
+	private boolean checkForPhoneNumbers(){
 		String message="";
 		boolean phoneNumbersExist=false;
 		
@@ -215,6 +227,7 @@ public class VitalSignsActivity extends Activity {
 			message=getString(R.string.missing_phone_numbers);
 		}
 		textViewMessages.setText(message);
+		return phoneNumbersExist;
 	}
 
 
@@ -234,8 +247,9 @@ public class VitalSignsActivity extends Activity {
 					stopApp();
 				}
 			 
-								
-				scheduleMonitoringifHeartRateReceiving();
+				if(allChecksPass()){				
+					scheduleMonitoringifHeartRateReceiving();
+				}
 
 			} else {
 				mCommonMethods.showMessage(getString(R.string.app_expired));

@@ -128,7 +128,7 @@ public class DeviceScanActivity extends Activity {
 		// Use this check to determine whether BLE is supported on the device.  Then you can
 		// selectively disable BLE-related features.
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-			mCommonMethods.showAlertDialogOnUiThread("Error bluetooth not supported");
+			mCommonMethods.showAlertDialogOnUiThread(getString(R.string.bluetooth_not_supported));
 			progress.dismiss();
 			return;
 		}
@@ -141,12 +141,16 @@ public class DeviceScanActivity extends Activity {
 
 		// Checks if Bluetooth is supported on the device.
 		if (mBluetoothAdapter == null) {
-			mCommonMethods.showAlertDialogOnUiThread("Error bluetooth not supported");
+			mCommonMethods.showAlertDialogOnUiThread(getString(R.string.bluetooth_not_supported));
 			progress.dismiss();
 
 			return;
 		}else{
 			CommonMethods.Log("BlueTooth supported!");
+		}
+		if(!mBluetoothAdapter.isEnabled()){
+			mCommonMethods.showAlertDialogOnUiThread(getString(R.string.enable_bluetooth));
+			return;
 		}
 
 		mLeDeviceListAdapter.clear();
@@ -172,6 +176,7 @@ public class DeviceScanActivity extends Activity {
 		}, Preferences.deviceScanTime*1000);
 
 		mScanning = true;
+		CommonMethods.Log("Scan about to start");
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
 
 	}
@@ -282,27 +287,5 @@ public class DeviceScanActivity extends Activity {
 	}
 
 	
-	public void showMessageOnUIThread(final String mess, final Context context){
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
-		alertDialog.setMessage(mess);	      	
-		alertDialog
-		.setIcon(0)
-		.setTitle("")
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				return; //don't do anything.
-			}
-		})
-		.create();
-		alertDialog.show();	
-		//return alertDialog;
-		
-			}
-		});
-	}
 
 }

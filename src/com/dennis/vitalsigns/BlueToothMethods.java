@@ -51,10 +51,21 @@ public class BlueToothMethods {
 		String deviceAddress=settings.getString("key_device_heart_rate_name","");
 		return deviceAddress;
 	}
+	
+	public boolean isBlueToothEnabled(){
+		final BluetoothManager bluetoothManager =
+				(BluetoothManager)mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
+		if(mBluetoothAdapter!=null && mBluetoothAdapter.isEnabled()){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 /**
  * The rational for having this method is because a certain device which may have a heart rate service may not
- * have that service at a latter date/time. may be other services on the device are still working but not the
+ * have that service at a latter date/time. May be other services on the device are still working but not the
  * heart rate service
  * 
  * @param deviceAddress
