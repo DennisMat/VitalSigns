@@ -10,9 +10,11 @@ import android.os.PowerManager;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 public class Preferences 
     extends PreferenceActivity 
@@ -58,6 +60,8 @@ public class Preferences
 	 */
 	public static int deviceScanTime=0;
 	
+	private EditTextPreference[] editTextPreferencePhoneNumbers= new EditTextPreference[arraySize];
+	
 	
 	public Preferences(Context context) {
         this.context = context;
@@ -79,6 +83,7 @@ public class Preferences
        super.onCreate(savedInstanceState);
 
     this.addPreferencesFromResource(R.xml.preferences);
+    initVariables();    
     this.initSummaries(this.getPreferenceScreen());
 
     this.getPreferenceScreen().getSharedPreferences()
@@ -144,7 +149,40 @@ public class Preferences
     loadValuesFromStorage();// we want all the values to take effect right away.
   }
   
-  
+
+
+private void  initVariables(){
+
+	   for (int i = 0; i < editTextPreferencePhoneNumbers.length; ++i) {
+		   editTextPreferencePhoneNumbers[i]=(EditTextPreference)getPreferenceScreen().findPreference("key_ph"+(i+1));
+		   final int j=i;
+		   editTextPreferencePhoneNumbers[i].setOnPreferenceChangeListener(new OnPreferenceChangeListener(){			   
+			   @Override
+	    	      public boolean onPreferenceChange(Preference preference,Object newValue) {
+				   String phoneNumberDigitsOnly = ((String)newValue).replaceAll("\\D+","");
+	    	        /*exclude state assigned emergency numbers. We don't want the app to call these numbers if people
+				   key in these numbers. Since there are enormous regional variations in these numbers all that I can do is to 
+				   exclude numbers below 4 digits. Source: http://en.wikipedia.org/wiki/Emergency_telephone_number
+				   */
+				   	if (phoneNumberDigitsOnly.length()==0 ||  phoneNumberDigitsOnly.length()>3) {				   			
+	    	                return true;
+	    	           }
+	    	           else{
+	    	        	   mCommonMethods.showAlertDialogOnUiThread(getString(R.string.phone_number_digit_count_error));
+	    	                return false;
+	    	           }
+	    	    }
+			   
+		   });// end of setOnPreferenceChangeListener
+	    	          
+	   }
+
+	
+ }
+	
+
+
+          
 	public void loadValuesFromStorage() {
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		for(int i=0;i<arraySize;i++){

@@ -40,5 +40,6 @@
 	<string name="app_stopped">VitalSigns App has stopped. You must manually restart if you want the app to run again</string>
 	<string name="enable_bluetooth">Please enable bluetooth on your phone.</string>
 	<string name="bluetooth_not_supported">Bluetooth not supported on your phone. This app need bluetooth to work.</string>
+	<string name="phone_number_digit_count_error">Please key in a phone number with more than 4 digits</string>
 
 </resources>
