@@ -7,6 +7,7 @@
         <PreferenceCategory android:title="Phone number 1" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
+                android:inputType="phone"
                 android:key="key_ph1"
                 android:summary=""
                 android:title="Phone number" />
@@ -25,6 +26,7 @@
         <PreferenceCategory android:title="Phone number 2" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
+                android:inputType="phone"
                 android:key="key_ph2"
                 android:summary=""
                 android:title="Phone number" />
@@ -43,6 +45,7 @@
         <PreferenceCategory android:title="Phone number 3" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
+                android:inputType="phone"
                 android:key="key_ph3"
                 android:summary=""
                 android:title="Phone number" />
