@@ -16,9 +16,11 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class HeartRateDevice {
@@ -67,6 +69,9 @@ public class HeartRateDevice {
 	
 		int heartRate= getHeartRate();
 		CommonMethods.Log("heartRateLow=" + Preferences.heartRateLow + " heartRate=" + heartRate + " heartRateHigh=" + Preferences.heartRateHigh);
+		Intent intent = new Intent(VitalSignsActivity.HEART_RATE_DISPLAY_UPDATE);
+		intent.putExtra("heartRate",heartRate);
+		LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 		if((heartRate<=Preferences.heartRateLow) || (heartRate>=Preferences.heartRateHigh)){
 			return true;
 		}else{

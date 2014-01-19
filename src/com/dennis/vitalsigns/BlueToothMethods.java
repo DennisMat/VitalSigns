@@ -28,7 +28,7 @@ public class BlueToothMethods {
 		return true;
 	}
 
-	public void setHeartRateDevice(String deviceName, String deviceAddress){
+	public boolean setHeartRateDevice(String deviceName, String deviceAddress){
 		try {
 			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(mContext);
 			SharedPreferences.Editor editor = settings.edit();
@@ -37,7 +37,9 @@ public class BlueToothMethods {
 			editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	public String getHeartRateDeviceAddress(){

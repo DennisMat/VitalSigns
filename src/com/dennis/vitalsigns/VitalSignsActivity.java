@@ -1,30 +1,15 @@
 
 package com.dennis.vitalsigns;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import java.util.Date;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -52,10 +37,12 @@ public class VitalSignsActivity extends Activity {
 	private Button buttonPreference;
 	private LinearLayout LinearLayoutStartStop;
 	private Button buttonScan;
-	private TextView textViewMessages;
+	private Button buttonWarning;
+	private TextView textViewHeartRate;
 
 	private CommonMethods mCommonMethods = null;
 	public static final String BUTTON_UPDATE = "buttonUpdate";
+	public static final String HEART_RATE_DISPLAY_UPDATE = "heartRateDisplayUpdate";
 	private Intent VitalSignsServiceIntent;
 	private BlueToothMethods mBlueToothMethods=null;
 	Preferences pref=null;
@@ -100,11 +87,29 @@ public class VitalSignsActivity extends Activity {
 
 		}
 	};
+	
+	private BroadcastReceiver receiverHeartRateDisplayUpdateEvent = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			CommonMethods.Log("receiverHeartRateDisplayUpdateEvent onReceive() called" );
+			
+			Bundle extras = intent.getExtras();
+			if (extras != null) {
+			    int heartRate = extras.getInt("heartRate");
+			    SimpleDateFormat timeFormat=new SimpleDateFormat("h:mm a");
+			    textViewHeartRate.setText("Last received heart rate is " + heartRate + " beats per minute at "+
+			    		timeFormat.format(new Date()) +". The next heart rate will be read at around "
+			    		+ timeFormat.format(new Date(System.currentTimeMillis()+Preferences.hibernateTime*60*1000)) +".");
+			    
+			}			
+		}
+	};
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiverButtonStatusUpdateEvent, new IntentFilter(BUTTON_UPDATE));
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiverHeartRateDisplayUpdateEvent, new IntentFilter(HEART_RATE_DISPLAY_UPDATE));
 		CommonMethods.Log("onResume called" );
 		updateButtonStatus();
 		allChecksPass();
@@ -114,6 +119,7 @@ public class VitalSignsActivity extends Activity {
 	protected void onPause() {
 		CommonMethods.Log("onPause called" );
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverButtonStatusUpdateEvent);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverHeartRateDisplayUpdateEvent);
 		super.onPause();
 	}
 
@@ -123,7 +129,9 @@ public class VitalSignsActivity extends Activity {
 		buttonPreference = (Button) findViewById(R.id.buttonPreference);
 		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);		
 		buttonScan= (Button) findViewById(R.id.buttonScan);
-		textViewMessages=(TextView) findViewById(R.id.textViewMessages);
+		buttonWarning= (Button) findViewById(R.id.buttonWarning);
+		textViewHeartRate=(TextView) findViewById(R.id.textViewHeartRate);
+		
 		mCommonMethods= new CommonMethods(this);		
 		mBlueToothMethods= new BlueToothMethods(this);
 
@@ -171,6 +179,11 @@ public class VitalSignsActivity extends Activity {
 			}
 		});
 
+		buttonWarning.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				mCommonMethods.showAlertDialog(getString(R.string.missing_phone_numbers));	
+			}
+		});
 
 
 		buttonPreference.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +222,6 @@ public class VitalSignsActivity extends Activity {
 	}
 
 	private boolean checkForPhoneNumbers(){
-		String message="";
 		boolean phoneNumbersExist=false;
 		
 		for (int i = 0; i < pref.phoneNumberArray.length; i++) {
@@ -223,10 +235,12 @@ public class VitalSignsActivity extends Activity {
 				CommonMethods.Log("Exception " + e.getMessage());
 			}
 		}
-		if(!phoneNumbersExist){
-			message=getString(R.string.missing_phone_numbers);
+		if(phoneNumbersExist){			
+			buttonWarning.setVisibility(View.GONE);
+		}else{
+			buttonWarning.setVisibility(View.VISIBLE);
 		}
-		textViewMessages.setText(message);
+		
 		return phoneNumbersExist;
 	}
 

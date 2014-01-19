@@ -56,6 +56,13 @@ public class DeviceScanActivity extends Activity {
 		listviewHearRateMonitors = (ListView) findViewById(R.id.listviewHearRateMonitors);
 		mBlueToothMethods= new BlueToothMethods(DeviceScanActivity.this);
 		mCommonMethods = new CommonMethods(this);
+		
+		if(mBlueToothMethods.isHeartRateDeviceSet()){
+			textViewDeviceSelected.setText("Your current heart rate monitoring device is: \n" +mBlueToothMethods.getHeartRateDeviceName() 
+					+ " " + mBlueToothMethods.getHeartRateDeviceAddress() + "\n" +getString(R.string.retain_device) );
+			buttonScan.setText(getString(R.string.scan_another_device));
+		}
+		
 		handlerDeviceScanResult = new Handler(){
 			@Override
 			public void handleMessage(Message msg){
@@ -63,6 +70,7 @@ public class DeviceScanActivity extends Activity {
 					mCommonMethods.showAlertDialog(getString(R.string.bluetooth_not_found));					
 				}else{
 					textViewDeviceListMessage.setText("Please select a device (by touching the device name) from the list below.");
+					
 				}
 				 
 			}
@@ -107,11 +115,17 @@ public class DeviceScanActivity extends Activity {
 							return;
 						}
 
-						//put device into storage I guess
-						textViewDeviceSelected.setText("You have selected the device: " + device.getName() + "  " + device.getAddress());
-
+						//store device into storage I guess
+	
 						
-						mBlueToothMethods.setHeartRateDevice(device.getName(), device.getAddress());		            
+						if(mBlueToothMethods.setHeartRateDevice(device.getName(), device.getAddress())){
+							textViewDeviceSelected.setText("You have selected the device:\n" + device.getName() +
+									"  " + device.getAddress() + "\n " +getString(R.string.retain_device));
+							mLeDeviceListAdapter.clear();
+							mLeDeviceListAdapter.notifyDataSetChanged();
+							textViewDeviceListMessage.setText("");
+							buttonScan.setText(getString(R.string.scan_another_device));
+						}
 
 						if (mScanning) {
 							mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -150,6 +164,7 @@ public class DeviceScanActivity extends Activity {
 		}
 		if(!mBluetoothAdapter.isEnabled()){
 			mCommonMethods.showAlertDialogOnUiThread(getString(R.string.enable_bluetooth));
+			progress.dismiss();
 			return;
 		}
 

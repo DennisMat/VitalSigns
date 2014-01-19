@@ -32,7 +32,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <Button
             android:id="@+id/buttonScan"
             android:layout_width="match_parent"
@@ -40,19 +39,26 @@
             android:text="Before you start. You need to set a heart rate monitor. Click here to set one"
             android:visibility="gone" >
         </Button>
+        <TextView
+        android:id="@+id/textViewHeartRate"
+        android:textColor="@color/redcolor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="" />
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textViewMessages"
+        <Button
+            android:id="@+id/buttonWarning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="" >
-        </TextView>
+            android:text="You have some warning messages. This app may not work as intended. Click here to see the messages"
+            android:visibility="gone" >
+        </Button>
     </LinearLayout>
     
 <!--  A snooze can be used if a person - for example wants to take a shower and does not want to wear the heart rate  monitor.

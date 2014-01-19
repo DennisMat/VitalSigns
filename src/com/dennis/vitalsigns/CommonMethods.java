@@ -83,16 +83,16 @@ public class CommonMethods {
 		long checkInterval = hibernateTime * 60 * 1000;//  this figure is in minutes so convert it into milliseconds
 		if(triggerAtTime==0){//start right away, like yesterday :)
 			triggerAtTime = System.currentTimeMillis();
-		}
+		} 
 		
 		//for logging
-		SimpleDateFormat timingFormat = new SimpleDateFormat("h:mm a");
-		CommonMethods.Log("in scheduleRepeatingMonitoringSessions. The VitalSignsService will be started at " + timingFormat.format(new Date(triggerAtTime)));
+		SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+		CommonMethods.Log("in scheduleRepeatingMonitoringSessions. The VitalSignsService will be started at " + timeFormat.format(new Date(triggerAtTime)));
 		
 		AlarmManager mAlarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent monitorIntent = new Intent(context,
-				MonitorSessionInitBroadcastReciever.class);
+				MonitorSessionInitBroadcastReceiver.class);
 		PendingIntent monitorPendingIntent = PendingIntent.getBroadcast(context,
 				0, monitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		if (checkInterval == 0) {
@@ -108,7 +108,7 @@ public class CommonMethods {
 	public void cancelRepeatingMonitoringSessions() {
 		CommonMethods.Log("cancelRepeatingMonitoringSessions has been called");
 
-		Intent moinitorIntent = new Intent(context,	MonitorSessionInitBroadcastReciever.class);
+		Intent moinitorIntent = new Intent(context,	MonitorSessionInitBroadcastReceiver.class);
 		PendingIntent monitorPendingIntent = PendingIntent.getBroadcast(context,0, moinitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager AlarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
