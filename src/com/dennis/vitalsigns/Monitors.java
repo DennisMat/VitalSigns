@@ -26,7 +26,7 @@ public class Monitors {
 		this.pref = pref;
 	}
 
-	public void start() {
+	public void start() {		
 		try {
 			CommonMethods.aquirePartialWakeLock(context);
 			VitalSignsActivity.flagShutDown=false;
@@ -82,7 +82,7 @@ public class Monitors {
 
 		if(emergencylevel>=emergencylevelThreshold){
 
-			mCommonMethods.playBeep(100);
+			mCommonMethods.playSounds();
 			// shift beep history values
 			for (int i = 0; i < beepHistory.length; i++) {
 				if ((i - 1) >= 0) {
@@ -109,7 +109,7 @@ public class Monitors {
 			mCommonMethods.showToast("Count down="+(pref.countDown-beepCount)+" . When the count down become zero your phone will start dialing");
 
 			if (isNotify) {			
-				mCommonMethods.playAudio();// We need a different sound. It should wake up a dead person if necessary :)
+				mCommonMethods.playSoundBeforeAlertsAreSent();// We need a different sound. It should wake up a dead person if necessary :)
 				CommonMethods.Log("before calling notifyPeople()");
 				notifyPeople();//now call and sms people
 				CommonMethods.Log("after calling notifyPeople()");			

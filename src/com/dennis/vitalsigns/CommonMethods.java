@@ -27,8 +27,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.media.ToneGenerator;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -60,7 +65,22 @@ public class CommonMethods {
 		return isRunning;
 	}
 
-	public void playBeep(int durationMs) {
+	public void playSounds(){
+		/*Mutiple sounds are played over here because the volume of each sound 
+		is set differently on the phone. Some of them sound may be muted.
+		We have to make sure that something is heard.
+		*/
+		playSound1(100);
+		playSound2();
+		playSound3();
+	}
+	
+	/**
+	 * This is a beep
+	 * @param durationMs
+	 */
+	public void playSound1(int durationMs) {
+		CommonMethods.Log("playSound1(dtmf tone)" );
 		try {
 			ToneGenerator tg = new ToneGenerator(
 					android.media.AudioManager.STREAM_SYSTEM,
@@ -72,6 +92,92 @@ public class CommonMethods {
 			CommonMethods.Log(e.getMessage());
 		}
 	}
+	
+	public void playSound2(){
+		CommonMethods.Log("playSound2A(double beep)" );
+		MediaPlayer mMediaPlayer = MediaPlayer.create(context, R.raw.double_beep);
+		mMediaPlayer.setVolume(1.0f, 1.0f);
+
+			mMediaPlayer.start();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		mMediaPlayer.reset();//for whatever reason not calling gives the error:mediaplayer went away with unhandled events
+		mMediaPlayer.release();
+	}
+	
+	/**
+	 * Same as about but 5 of them instead of 1
+	 */
+	public void playSound2A(){
+		CommonMethods.Log("playSound2A(double beep)" );
+		MediaPlayer mMediaPlayer = MediaPlayer.create(context, R.raw.double_beep);
+		mMediaPlayer.setVolume(1.0f, 1.0f);
+		int numberOfBeeps=5;
+		for (int i = 0; i < numberOfBeeps; i++) {
+			if(VitalSignsActivity.flagShutDown){
+				return;
+			}
+			mMediaPlayer.start();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		mMediaPlayer.reset();//for whatever reason not calling gives the error:mediaplayer went away with unhandled events
+		mMediaPlayer.release();
+	}
+	
+
+	public void playSound3() {
+		try {
+			CommonMethods.Log("playSound3(SMS notification sound)" );
+			/*
+	        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	        MediaPlayer mMediaPlayer = new MediaPlayer();
+	        mMediaPlayer.setDataSource(context, soundUri);
+	        final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+	        if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+	            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+	            mMediaPlayer.setLooping(false);
+	            mMediaPlayer.prepare();
+	            mMediaPlayer.start();
+	        }
+	        */
+			/*
+		      Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); 
+		        Ringtone r = RingtoneManager.getRingtone(context, soundUri);
+		        r.play();
+		        
+		        */
+			Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			MediaPlayer mMediaPlayer= MediaPlayer.create(context, alert); 
+			mMediaPlayer.setVolume(1.0f, 1.0f);
+			mMediaPlayer.start();
+			mMediaPlayer.setOnCompletionListener(new OnCompletionListener(){
+			@Override
+			public void onCompletion(MediaPlayer mp){
+				mp.release();
+			}
+			});
+
+		} catch (Exception e) {
+			CommonMethods.Log(e.getMessage());
+		}
+	}
+	
+	public void playSoundBeforeAlertsAreSent(){
+		playSound2A();
+	}
+	
 	public void scheduleRepeatingMonitoringSessions() {
 		scheduleRepeatingMonitoringSessions(0);
 	}
@@ -201,25 +307,7 @@ public class CommonMethods {
 		showToast(msgstr,Toast.LENGTH_LONG);
 	}
 	
-	public void playAudio(){
-		MediaPlayer mMediaPlayer = MediaPlayer.create(context, R.raw.double_beep);
-		int numberOfBeeps=5;
-		for (int i = 0; i < numberOfBeeps; i++) {
-			if(VitalSignsActivity.flagShutDown){
-				return;
-			}
-			mMediaPlayer.start();
 
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		mMediaPlayer.reset();//for whatever reason not calling gives the error:mediaplayer went away with unhandled events
-		mMediaPlayer.release();
-	}
 
 	public static void releasePartialWakeLock() {
 		try {

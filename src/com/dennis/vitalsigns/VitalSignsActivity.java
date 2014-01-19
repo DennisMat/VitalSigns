@@ -320,8 +320,7 @@ public class VitalSignsActivity extends Activity {
 		CommonMethods.Log("stopApp called 1");
 		try {
 			flagShutDown=true;
-			mCommonMethods.setFlagShutDown(flagShutDown);			 
-			mCommonMethods.playBeep(100);
+			mCommonMethods.setFlagShutDown(flagShutDown);
 			mCommonMethods.cancelRepeatingMonitoringSessions();
 			mCommonMethods.removeNotification();
 			mCommonMethods.showToast(this.getString(R.string.app_stopped),Toast.LENGTH_LONG);
