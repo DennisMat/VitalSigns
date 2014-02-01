@@ -250,15 +250,19 @@ public class Monitors {
 		@Override
 		protected Void doInBackground(Void... args) {	
 			Phone phone = new Phone(context);
-			CommonMethods.Log("sms for sending = " + phone.getMessageForSMS());
-			/*we send the smses first before dialing. Dialling is  to be more error prone than sms.
-			For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialer.
+			CommonMethods.Log("common sms for sending = " + phone.getMessageForSMS());
+			CommonMethods.Log("additional sms 1 for sending = " + phone.getMessageAdditionalForSMS(0));
+			CommonMethods.Log("additional sms 2 for sending = " + phone.getMessageAdditionalForSMS(1));
+			CommonMethods.Log("additional sms 3 for sending = " + phone.getMessageAdditionalForSMS(2));
+			/*we send the smses first before dialling. Dialling is  to be more error prone than sms.
+			For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialler.
 			An sms to St. Peter at Pearly Gates is also a good idea*/
 			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
 				try {
 
 					if (pref.SMSArray[i]) {
 						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
+						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageAdditionalForSMS(i));
 					}
 
 				} catch (Exception e) {

@@ -7,12 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
-
+import android.preference.PreferenceManager;
 import android.net.Uri;
-
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
-
 import android.widget.Toast;
 import android.location.Criteria;
 import android.location.Location;
@@ -173,6 +171,11 @@ public class Phone {
 		}
 	
 		return message;
+	}
+	
+	String getMessageAdditionalForSMS(int i){
+		String messageAdditional=PreferenceManager.getDefaultSharedPreferences(context).getString("key_sms_additional" + i,"");
+		return messageAdditional;
 	}
 
 	private  class mLocationListener implements LocationListener {

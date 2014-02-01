@@ -2,68 +2,83 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceScreen
-        android:summary="Phone Numbers"
+        android:summary="This is where you set the phone numbers and sms(phone text) messages"
         android:title="Contacts" >
-        <PreferenceCategory android:title="Phone number 1" >
+        
+           <PreferenceCategory android:title="Phone number 1" >
+                        <EditTextPreference
+                android:defaultValue="@string/pref_ph"
+                android:inputType="phone"
+                android:key="key_ph0"
+                android:summary=""
+                android:title="@string/phone_number" />
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_dial"
+                android:key="key_dial0"
+                android:summary="@string/dial_message"
+                android:title="Dial" />
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_sms"
+                android:key="key_sms0"
+                android:summary="@string/sms_coordinates"
+                android:title="SMS" />
+             <EditTextPreference
+                android:maxLength="160"
+                android:key="key_sms_additional0"
+                android:summary="@string/additional_sms_message_summary"
+                android:title="@string/additional_sms_message" />
+        </PreferenceCategory>
+        
+        <PreferenceCategory android:title="Phone number 2" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
                 android:inputType="phone"
                 android:key="key_ph1"
                 android:summary=""
-                android:title="Phone number" />
-
+                android:title="@string/phone_number" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_dial"
                 android:key="key_dial1"
-                android:summary=""
+                android:summary="@string/dial_message"
                 android:title="Dial" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_sms"
                 android:key="key_sms1"
-                android:summary=""
+                android:summary="@string/sms_coordinates"
                 android:title="SMS" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="Phone number 2" >
-            <EditTextPreference
-                android:defaultValue="@string/pref_ph"
-                android:inputType="phone"
-                android:key="key_ph2"
-                android:summary=""
-                android:title="Phone number" />
-
-            <CheckBoxPreference
-                android:defaultValue="@string/pref_dial"
-                android:key="key_dial2"
-                android:summary=""
-                android:title="Dial" />
-            <CheckBoxPreference
-                android:defaultValue="@string/pref_sms"
-                android:key="key_sms2"
-                android:summary=""
-                android:title="SMS" />
+             <EditTextPreference
+                android:maxLength="160"
+                android:key="key_sms_additional1"
+                android:summary="@string/additional_sms_message_summary"
+                android:title="@string/additional_sms_message" />
         </PreferenceCategory>
         <PreferenceCategory android:title="Phone number 3" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
                 android:inputType="phone"
-                android:key="key_ph3"
+                android:key="key_ph2"
                 android:summary=""
-                android:title="Phone number" />
-
+                android:title="@string/phone_number" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_dial"
-                android:key="key_dial3"
-                android:summary=""
+                android:key="key_dial2"
+                android:summary="@string/dial_message"
                 android:title="Dial" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_sms"
-                android:key="key_sms3"
-                android:summary=""
+                android:key="key_sms2"
+                android:summary="@string/sms_coordinates"
                 android:title="SMS" />
+             <EditTextPreference
+                android:maxLength="160"
+                android:key="key_sms_additional2"
+                android:summary="@string/additional_sms_message_summary"
+                android:title="@string/additional_sms_message" />
         </PreferenceCategory>
+
     </PreferenceScreen>
     <PreferenceScreen
-        android:summary="Settings"
+        android:summary="This is where your heart rate device, heart rates, etc. is set"
         android:title="Settings" >
         
          <Preference

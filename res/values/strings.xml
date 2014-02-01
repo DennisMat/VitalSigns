@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Vital Signs</string>
     <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
+    
+  <!-- default value for preferences -->
     <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
@@ -20,6 +22,15 @@
     <string name="pref_heart_rate_wait_time">10</string><!-- seconds -->
     
     <!-- Messages -->
+   
+    <string name="phone_number">Phone number.</string>
+    <string name="dial_message">If you check this checkbox the above number will be dialed in an emergency.</string>
+ 	<string name="sms_coordinates">If you check this checkbox, an SMS(i.e a text message) with your GPS co-ordinates will be sent to the the above number in an emergency.</string>
+    <string name="additional_sms_message">Additional SMS message.</string>
+     <string name="additional_sms_message_summary">Touch to change. The text you type in here will be sent as an SMS message to 
+         the above number in addition to your GPS co-ordinates. There is a character limit of 160 characters</string>
+   
+    
     <string name="bluetooth_not_found">This app is currently not receiving the heart rate from your heart rate device.
 							 Make sure:\n
 							-That your heart rate device is turned on and is transmitting the heart rate.\n

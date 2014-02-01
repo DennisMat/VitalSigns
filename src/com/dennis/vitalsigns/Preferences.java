@@ -154,7 +154,7 @@ public class Preferences
 private void  initVariables(){
 
 	   for (int i = 0; i < editTextPreferencePhoneNumbers.length; ++i) {
-		   editTextPreferencePhoneNumbers[i]=(EditTextPreference)getPreferenceScreen().findPreference("key_ph"+(i+1));
+		   editTextPreferencePhoneNumbers[i]=(EditTextPreference)getPreferenceScreen().findPreference("key_ph"+i);
 		   final int j=i;
 		   editTextPreferencePhoneNumbers[i].setOnPreferenceChangeListener(new OnPreferenceChangeListener(){			   
 			   @Override
@@ -187,9 +187,9 @@ private void  initVariables(){
 		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
 		for(int i=0;i<arraySize;i++){
 
-			phoneNumberArray[i]=settings.getString("key_ph"+(i+1),context.getString(R.string.pref_ph));
-			dialArray[i]=settings.getBoolean("key_dial"+(i+1),Boolean.parseBoolean(context.getString(R.string.pref_dial)));
-			SMSArray[i]=settings.getBoolean("key_sms"+(i+1),Boolean.parseBoolean(context.getString(R.string.pref_sms)));
+			phoneNumberArray[i]=settings.getString("key_ph"+i,context.getString(R.string.pref_ph));
+			dialArray[i]=settings.getBoolean("key_dial"+i,Boolean.parseBoolean(context.getString(R.string.pref_dial)));
+			SMSArray[i]=settings.getBoolean("key_sms"+i,Boolean.parseBoolean(context.getString(R.string.pref_sms)));
 		}
 
 
