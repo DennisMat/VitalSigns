@@ -43,7 +43,7 @@ public class DeviceScanActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.device_scan);
+		setContentView(R.layout.activity_device_scan);
 		initializeVariables();
 	}
 	private void initializeVariables(){
@@ -198,7 +198,9 @@ public class DeviceScanActivity extends Activity {
 
 	private void stopScan(){
 		mScanning = false;
-		mBluetoothAdapter.stopLeScan(mLeScanCallback);
+		if(mBluetoothAdapter!=null){
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+		}
 
 	}
 

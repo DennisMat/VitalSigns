@@ -12,7 +12,7 @@ import android.content.Intent;
 public class BootupBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
-	public void onReceive(Context context, Intent intent) {		
+	public void onReceive(Context context, Intent intent) {
 		try {
 			CommonMethods mCommonMethods=new CommonMethods(context);
 			CommonMethods.aquirePartialWakeLock(context);

@@ -123,8 +123,7 @@ public class Phone {
 
 	String getMessageForSMS(){
 	
-		long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 0; // in Meters
-		long MINIMUM_TIME_BETWEEN_UPDATES = 10000; // in Milliseconds
+
 		String message=null;
 		try{
 			
@@ -134,17 +133,38 @@ public class Phone {
 				phoneNumber="";
 			}
 			message= String.format("Please Call:%1$s",phoneNumber);
-			Double lat=0.0;
-			Double lon=0.0;
+			Double[] latLong=getCurrentLatLong();
 	
+			message= String.format("Emergency. Please Call:"+phoneNumber+". To find the location of the person in google MAPS, search for "+latLong[0]+", "+ latLong[1]);
+		} catch (Exception e) {
+			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
 	
+		}
+		if(message.length()>160){
+			message=message.substring(0, 160);//if the string is more than 160 characters then an exception will be thrown while sending the SMS. So limit the size
+		}
+	
+		return message;
+	}
+	
+	Double[] getCurrentLatLong(){		
+		Double lat=0.0;
+		Double lon=0.0;
+		Double[] latLong={lat,lon};
+		try {
+			long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 0; // in Meters
+			long MINIMUM_TIME_BETWEEN_UPDATES = 10000; // in Milliseconds
+
+
+
+
 			LocationManager locationManager=(LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-	
+
 			Criteria criteria = new Criteria ();
 			String bestProvider = locationManager.getBestProvider (criteria, true); //true returns a provider that is enabled
 			LocationListener mlocListener = new mLocationListener();
 			locationManager.requestLocationUpdates( bestProvider, MINIMUM_TIME_BETWEEN_UPDATES, MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, mlocListener,context.getMainLooper());
-	
+
 			Location location=null;
 			for(int i=0;i<10;i++){// dennis: waiting for a location value. But will timeout after a certain time defined by the loop
 				//CommonMethods.Log("In wait loop");
@@ -155,22 +175,20 @@ public class Phone {
 				Thread.sleep(Integer.parseInt(context.getString(R.string.pref_countdown))*1000);
 			}
 			if(location!=null){
-				lat=location.getLatitude();
-				lon=location.getLongitude();
-	
+				latLong[0]=location.getLatitude();
+				latLong[1]=location.getLongitude();
+
 			}
 			locationManager.removeUpdates(mlocListener);// if this is not done battery may drain faster
-	
-			message= String.format("Emergency. Please Call:"+phoneNumber+". To find the location of the person in google MAPS, search for "+lat+", "+ lon);
-		} catch (Exception e) {
-			CommonMethods.Log("Exception in sendSMS "+e.getMessage());
-	
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if(message.length()>160){
-			message=message.substring(0, 160);//if the string is more than 160 characters then an exception will be thrown while sending the SMS. So limit the size
-		}
-	
-		return message;
+		return latLong;
+		
 	}
 	
 	String getMessageAdditionalForSMS(int i){

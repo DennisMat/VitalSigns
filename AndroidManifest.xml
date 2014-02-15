@@ -60,6 +60,10 @@
         <activity android:name=".Preferences" >
         </activity>
         
+		<activity
+            android:name="com.dennis.vitalsigns.CurrentLocationActivity"
+            android:label="Current Location and SMS" >
+        </activity>
         
     </application>
 

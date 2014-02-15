@@ -203,7 +203,7 @@ public class CommonMethods {
 				0, monitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		if (checkInterval == 0) {
 			mAlarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtTime,
-					monitorPendingIntent); // Call this again when the monitoring is done so we have it repeating without overlapps
+					monitorPendingIntent); // Call this again when the monitoring is done so we have it repeating without overlap
 		} else {
 			mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
 					triggerAtTime, checkInterval, monitorPendingIntent);

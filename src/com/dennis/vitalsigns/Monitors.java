@@ -30,7 +30,7 @@ public class Monitors {
 		try {
 			CommonMethods.aquirePartialWakeLock(context);
 			VitalSignsActivity.flagShutDown=false;
-			updateButtons();//The steps below may takes time so update button before this
+			updateButtons();//The steps below may take time so update buttons before this
 			CommonMethods.Log("Monitors.start() started");
 			initializeVariables();
 			startMonitoringSession();			 
@@ -286,7 +286,7 @@ public class Monitors {
 				}
 			}
 			CommonMethods.Log("done dialing and sending smses");
-			// this notification takes time because of pref.timeBetweenDialing and is probably not evenneeded.
+			// this notification takes time because of pref.timeBetweenDialing and is probably not even needed.
 			mCommonMethods.showToast(context.getString(R.string.app_stopped),Toast.LENGTH_LONG);
 
 			return null;

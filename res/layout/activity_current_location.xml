@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The current sms send to people in an emergency is:" />
+    
+        <TextView
+        android:id="@+id/textViewSMSMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="" />
+
+            <Button
+        android:id="@+id/buttonCopyLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Click here to copy part of the above message to your clipboard" >
+    </Button>
+    
+    <Button
+        android:id="@+id/buttonMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Click here to see your current location on a map (TODO)" >
+    </Button>
+
+</LinearLayout>

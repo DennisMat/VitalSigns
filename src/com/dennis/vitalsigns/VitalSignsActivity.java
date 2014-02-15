@@ -55,7 +55,7 @@ public class VitalSignsActivity extends Activity {
 		try {
 
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.main);
+			setContentView(R.layout.activity_main);
 
 			CommonMethods.Log("in onCreate()");
 

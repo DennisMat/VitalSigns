@@ -132,6 +132,16 @@ public class Preferences
           pref.setSummary(summary); 
       }
       
+      if (pref instanceof Preference) {
+    	  String summary=null;
+    	 if(pref.getKey()!=null && pref.getKey().equals("key_device_heart_rate_name")){
+    		 BlueToothMethods mBlueToothMethods= new BlueToothMethods(context);
+    		 summary="The current heart rate monitoring device is " + mBlueToothMethods.getHeartRateDeviceName() 
+ 					+ " " + mBlueToothMethods.getHeartRateDeviceAddress();
+    		 pref.setSummary(summary);
+    	 }
+      }
+      
   }
 
   /**

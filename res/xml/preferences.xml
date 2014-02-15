@@ -79,17 +79,16 @@
     </PreferenceScreen>
     <PreferenceScreen
         android:summary="This is where your heart rate device, heart rates, etc. is set"
-        android:title="Settings" >
-        
+        android:title="Settings" >        
          <Preference
             android:summary="Set Heart Rate Device"
-            android:title="Set Heart Rate Device" >
+            android:key="key_device_heart_rate_name"
+            android:title="Set Heart Rate Device" >             
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.dennis.vitalsigns"                
                 android:targetClass="com.dennis.vitalsigns.DeviceScanActivity" />
-        </Preference>
-        
+        </Preference>        
         <EditTextPreference
             android:defaultValue="@string/pref_heart_rate_low"
             android:inputType="number"
@@ -128,7 +127,7 @@
             android:defaultValue="@string/pref_hibernatetime"
             android:inputType="number"
             android:key="key_hibernatetime"
-            android:summary="Used to save battery life. Yur Andriod device will read the heart rate from the heart rate monitor at this set interval"
+            android:summary="Used to save battery life. Your Android device will read the heart rate from the heart rate monitor at this set interval"
             android:title="Hibernate time in minutes" />
 
         <EditTextPreference
@@ -148,8 +147,15 @@
             android:inputType="number"
             android:key="key_chargingpausetime"
             android:summary="Pause time in minutes when phone put on charge"
-            android:title="Pause time while charging" />
-
+            android:title="Pause time while charging - TODO" />
+		 <Preference
+            android:summary="Show the sms that would be sent and your current location on a map"
+            android:title="Current Location and Map" >             
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.dennis.vitalsigns"                
+                android:targetClass="com.dennis.vitalsigns.CurrentLocationActivity" />
+        </Preference>
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"
             android:key="key_showpopup"

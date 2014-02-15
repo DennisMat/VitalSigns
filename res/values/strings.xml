@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Vital Signs</string>
     <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
-    
-  <!-- default value for preferences -->
+
+    <!-- default value for preferences -->
     <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
-    <string name="pref_countdown">3</string><!-- number of beeps -->
-    <string name="pref_timebetweendialing">30</string><!-- seconds -->
-    <string name="pref_timebetweenmonitoring">5</string><!-- seconds -->
-    <string name="pref_hibernatetime">1</string><!-- minutes -->
+    <string name="pref_countdown">3</string>
+ <!-- number of beeps -->
+    <string name="pref_timebetweendialing">30</string>
+ <!-- seconds -->
+    <string name="pref_timebetweenmonitoring">5</string>
+ <!-- seconds -->
+    <string name="pref_hibernatetime">1</string>
+ <!-- minutes -->
     <string name="pref_showpopup">false</string>
     <string name="pref_remotelog">false</string>
-    <string name="pref_gpswait">10</string><!-- seconds -->
-    <string name="pref_charging_pausetime">30</string><!-- minutes -->
-    <string name="emergency_threshhold_level">1</string><!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->    
+    <string name="pref_gpswait">10</string>
+ <!-- seconds -->
+    <string name="pref_charging_pausetime">30</string>
+ <!-- minutes -->
+    <string name="emergency_threshhold_level">1</string>
+ <!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->
     <string name="pref_heart_rate_low">40</string>
     <string name="pref_heart_rate_high">150</string>
-    <string name="pref_device_scan_time">10</string><!-- seconds -->
-    <string name="pref_heart_rate_wait_time">10</string><!-- seconds -->
-    
+    <string name="pref_device_scan_time">10</string>
+ <!-- seconds -->
+    <string name="pref_heart_rate_wait_time">10</string>
+ <!-- seconds -->
+
+
     <!-- Messages -->
-   
+
     <string name="phone_number">Phone number.</string>
     <string name="dial_message">If you check this checkbox the above number will be dialed in an emergency.</string>
- 	<string name="sms_coordinates">If you check this checkbox, an SMS(i.e a text message) with your GPS co-ordinates will be sent to the the above number in an emergency.</string>
+    <string name="sms_coordinates">If you check this checkbox, an SMS(i.e a text message) with your GPS co-ordinates will be sent to the the above number in an emergency.</string>
     <string name="additional_sms_message">Additional SMS message.</string>
-     <string name="additional_sms_message_summary">Touch to change. The text you type in here will be sent as an SMS message to 
+    <string name="additional_sms_message_summary">Touch to change. The text you type in here will be sent as an SMS message to 
          the above number in addition to your GPS co-ordinates. There is a character limit of 160 characters</string>
-   
-    
     <string name="bluetooth_not_found">This app is currently not receiving the heart rate from your heart rate device.
 							 Make sure:\n
 							-That your heart rate device is turned on and is transmitting the heart rate.\n
 							-That you have not changed your heart rate device. If you have changed it please set your new device through the
 							advanced settings section of this app</string>
-
     <string name="app_working">This app is now monitoring your heart rate. You may now move to another screen on your phone.
 							This app will continue monitoring your heart rate even if you switch off your phone.
-							If you want to stop this app come back to this screen and hit the "Stop" button</string>							
-    
+							If you want to stop this app come back to this screen and hit the "Stop" button</string>
     <string name="missing_phone_numbers">\nThis app may not work as intended because:\n
        				-You may have not entered any phone numbers that may be alerted in an emergency.\n
 					-Or you may not have enabled SMS or dial for that number.\n
 					-Unless you are testing the app make sure that you set up phone numbers in the Settings->Contacts section. The dial and SMS checkboxes besides the phone numbers must be checked.</string>
-
-	<string name="app_expired">This software is past it\'s expiration date. Please contact the developer - and part with your wealth!</string>
-	<string name="scanning_heart_device">Scanning for your heart rate device. Please wait</string>			
-	<string name="app_stopped">VitalSigns App has stopped. You must manually restart if you want the app to run again</string>
-	<string name="enable_bluetooth">Please enable bluetooth on your phone for this app to work.</string>
-	<string name="bluetooth_not_supported">Bluetooth not supported on your phone. This app need bluetooth to work.</string>
-	<string name="phone_number_digit_count_error">Please key in a phone number with more than 4 digits</string>
-	<string name="retain_device">You may retain this device or you can set another device by using the button above.</string>
-	<string name="scan_another_device">Scan for another heart rate device</string>
-
+    <string name="app_expired">This software is past it\'s expiration date. Please contact the developer - and part with your wealth!</string>
+    <string name="scanning_heart_device">Scanning for your heart rate device. Please wait</string>
+    <string name="app_stopped">VitalSigns App has stopped. You must manually restart if you want the app to run again</string>
+    <string name="enable_bluetooth">Please enable bluetooth on your phone for this app to work.</string>
+    <string name="bluetooth_not_supported">Bluetooth not supported on your phone. This app need bluetooth to work.</string>
+    <string name="phone_number_digit_count_error">Please key in a phone number with more than 4 digits</string>
+    <string name="retain_device">You may retain this device or you can set another device by using the button above.</string>
+    <string name="scan_another_device">Scan for another heart rate device</string>
+    <string name="title_activity_current_location">Current Location</string>
+    <string name="location_copy_paste">The latitude and longitude of your current location has been copied, you may now paste it in google maps and 
+        do a search to see your current location in a map.</string>
 
 </resources>
