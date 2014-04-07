@@ -46,7 +46,7 @@
 							-That you have not changed your heart rate device. If you have changed it please set your new device through the
 							advanced settings section of this app</string>
     <string name="app_working">This app is now monitoring your heart rate. You may now move to another screen on your phone.
-							This app will continue monitoring your heart rate even if you switch off your phone.
+							This app will continue monitoring your heart rate even if you switch off your phone screen.
 							If you want to stop this app come back to this screen and hit the "Stop" button</string>
     <string name="missing_phone_numbers">\nThis app may not work as intended because:\n
        				-You may have not entered any phone numbers that may be alerted in an emergency.\n
