@@ -4,31 +4,59 @@
     <PreferenceScreen
         android:summary="This is where you set the phone numbers and sms(phone text) messages"
         android:title="Contacts" >
-        
-           <PreferenceCategory android:title="Phone number 1" >
-                        <EditTextPreference
+        <PreferenceScreen
+            android:summary=""
+            android:title="@string/send_to_server_title" >
+            <CheckBoxPreference
+                android:defaultValue="@string/pref_send_to_server"
+                android:key="key_send_to_server"
+                android:summary="@string/send_to_server_summary"
+                android:title="@string/send_to_server_title" />            
+            <EditTextPreference
+            android:key="key_server_url"
+            android:title="@string/server_url_title"
+            android:summary="@string/server_url_summary"
+            android:inputType="textUri"
+            android:dependency="key_send_to_server"
+            android:defaultValue="http://" />
+            <ListPreference
+                android:defaultValue="0"
+                android:dependency="key_send_to_server"
+                android:entries="@array/pref_connection_entries"
+                android:entryValues="@array/pref_connection_values"
+                android:key="key_connection_mode"
+                android:summary="@string/connection_mode_summary"
+                android:title="@string/connection_mode_title" />            
+        </PreferenceScreen>
+
+        <PreferenceCategory android:title="Phone number 1" >
+            <EditTextPreference
                 android:defaultValue="@string/pref_ph"
                 android:inputType="phone"
                 android:key="key_ph0"
                 android:summary=""
                 android:title="@string/phone_number" />
+
             <CheckBoxPreference
                 android:defaultValue="@string/pref_dial"
                 android:key="key_dial0"
                 android:summary="@string/dial_message"
-                android:title="Dial" />
+                android:title="Dial"
+                android:dependency="key_ph0" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_sms"
                 android:key="key_sms0"
                 android:summary="@string/sms_coordinates"
-                android:title="SMS" />
-             <EditTextPreference
-                android:maxLength="160"
+                android:title="SMS"
+                android:dependency="key_ph0" />
+
+            <EditTextPreference
                 android:key="key_sms_additional0"
+                android:maxLength="160"
                 android:summary="@string/additional_sms_message_summary"
-                android:title="@string/additional_sms_message" />
+                android:title="@string/additional_sms_message"
+                android:dependency="key_ph0" />
         </PreferenceCategory>
-        
         <PreferenceCategory android:title="Phone number 2" >
             <EditTextPreference
                 android:defaultValue="@string/pref_ph"
@@ -36,21 +64,26 @@
                 android:key="key_ph1"
                 android:summary=""
                 android:title="@string/phone_number" />
+
             <CheckBoxPreference
                 android:defaultValue="@string/pref_dial"
                 android:key="key_dial1"
                 android:summary="@string/dial_message"
-                android:title="Dial" />
+                android:title="Dial"
+                android:dependency="key_ph1" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_sms"
                 android:key="key_sms1"
                 android:summary="@string/sms_coordinates"
-                android:title="SMS" />
-             <EditTextPreference
-                android:maxLength="160"
+                android:title="SMS"
+                android:dependency="key_ph1" />
+
+            <EditTextPreference
                 android:key="key_sms_additional1"
+                android:maxLength="160"
                 android:summary="@string/additional_sms_message_summary"
-                android:title="@string/additional_sms_message" />
+                android:title="@string/additional_sms_message"
+                android:dependency="key_ph1" />
         </PreferenceCategory>
         <PreferenceCategory android:title="Phone number 3" >
             <EditTextPreference
@@ -59,36 +92,41 @@
                 android:key="key_ph2"
                 android:summary=""
                 android:title="@string/phone_number" />
+
             <CheckBoxPreference
                 android:defaultValue="@string/pref_dial"
                 android:key="key_dial2"
                 android:summary="@string/dial_message"
-                android:title="Dial" />
+                android:title="Dial"
+                android:dependency="key_ph2" />
             <CheckBoxPreference
                 android:defaultValue="@string/pref_sms"
                 android:key="key_sms2"
                 android:summary="@string/sms_coordinates"
-                android:title="SMS" />
-             <EditTextPreference
-                android:maxLength="160"
-                android:key="key_sms_additional2"
-                android:summary="@string/additional_sms_message_summary"
-                android:title="@string/additional_sms_message" />
-        </PreferenceCategory>
+                android:title="SMS"
+                android:dependency="key_ph2" />
 
+            <EditTextPreference
+                android:key="key_sms_additional2"
+                android:maxLength="160"
+                android:summary="@string/additional_sms_message_summary"
+                android:title="@string/additional_sms_message"
+                android:dependency="key_ph2" />
+        </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen
         android:summary="This is where your heart rate device, heart rates, etc. is set"
-        android:title="Settings" >        
-         <Preference
-            android:summary="Set Heart Rate Device"
+        android:title="Settings" >
+        <Preference
             android:key="key_device_heart_rate_name"
-            android:title="Set Heart Rate Device" >             
+            android:summary="Set Heart Rate Device"
+            android:title="Set Heart Rate Device" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetPackage="com.dennis.vitalsigns"                
-                android:targetClass="com.dennis.vitalsigns.DeviceScanActivity" />
-        </Preference>        
+                android:targetClass="com.dennis.vitalsigns.DeviceScanActivity"
+                android:targetPackage="com.dennis.vitalsigns" />
+        </Preference>
+
         <EditTextPreference
             android:defaultValue="@string/pref_heart_rate_low"
             android:inputType="number"
@@ -129,7 +167,6 @@
             android:key="key_hibernatetime"
             android:summary="Used to save battery life. Your Android device will read the heart rate from the heart rate monitor at this set interval"
             android:title="Hibernate time in minutes" />
-
         <EditTextPreference
             android:defaultValue="@string/pref_device_scan_time"
             android:inputType="number"
@@ -148,14 +185,16 @@
             android:key="key_chargingpausetime"
             android:summary="Pause time in minutes when phone put on charge"
             android:title="Pause time while charging - TODO" />
-		 <Preference
+
+        <Preference
             android:summary="Show the sms that would be sent and your current location on a map"
-            android:title="Current Location and Map" >             
+            android:title="Current Location and Map" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetPackage="com.dennis.vitalsigns"                
-                android:targetClass="com.dennis.vitalsigns.CurrentLocationActivity" />
+                android:targetClass="com.dennis.vitalsigns.CurrentLocationActivity"
+                android:targetPackage="com.dennis.vitalsigns" />
         </Preference>
+
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"
             android:key="key_showpopup"

@@ -5,38 +5,60 @@
     <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
 
     <!-- default value for preferences -->
+    <string name="pref_send_to_server">false</string>
     <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
     <string name="pref_countdown">3</string>
- <!-- number of beeps -->
+    <!-- number of beeps -->
     <string name="pref_timebetweendialing">30</string>
- <!-- seconds -->
+    <!-- seconds -->
     <string name="pref_timebetweenmonitoring">5</string>
- <!-- seconds -->
+    <!-- seconds -->
     <string name="pref_hibernatetime">1</string>
- <!-- minutes -->
+    <!-- minutes -->
     <string name="pref_showpopup">false</string>
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string>
- <!-- seconds -->
+    <!-- seconds -->
     <string name="pref_charging_pausetime">30</string>
- <!-- minutes -->
+    <!-- minutes -->
     <string name="emergency_threshhold_level">1</string>
- <!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->
+    <!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->
     <string name="pref_heart_rate_low">40</string>
     <string name="pref_heart_rate_high">150</string>
     <string name="pref_device_scan_time">10</string>
- <!-- seconds -->
+    <!-- seconds -->
     <string name="pref_heart_rate_wait_time">10</string>
- <!-- seconds -->
+    <!-- seconds -->
 
 
     <!-- Messages -->
 
-    <string name="phone_number">Phone number.</string>
+    <string name="phone_number">Phone number. Touch to change.</string>
     <string name="dial_message">If you check this checkbox the above number will be dialed in an emergency.</string>
     <string name="sms_coordinates">If you check this checkbox, an SMS(i.e a text message) with your GPS co-ordinates will be sent to the the above number in an emergency.</string>
+    
+    <string name="send_to_server_title">(TODO) Send data to internet </string>
+    <string name="send_to_server_summary">(TODO- this feature has not yet been implemented.) This feature will allow your vital signs to be tracked by a server on the internet. The server will send out an alert if vital signs data is less than optimum or if no data is detected</string>
+    <string name="connection_mode_title">(TODO) Connect to the internet</string>
+    <string name="connection_mode_summary">(TODO) Select ways of connecting to the internet</string>
+    <string name="server_url_title">(TODO) Server address.</string>
+    <string name="server_url_summary">(TODO) This is where you key in the address of the server</string>
+ 
+    <string-array name="pref_connection_entries">
+        <item>Use WiFi only</item>
+        <item>Use WiFi if available, else use my Data Plan</item>
+        <item>Use my Data Plan (3G, 4G etc.) only</item>
+        <item>Use my Data Plan if available, else use WiFi</item>
+    </string-array>
+    <string-array name="pref_connection_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="additional_sms_message">Additional SMS message.</string>
     <string name="additional_sms_message_summary">Touch to change. The text you type in here will be sent as an SMS message to 
          the above number in addition to your GPS co-ordinates. There is a character limit of 160 characters</string>

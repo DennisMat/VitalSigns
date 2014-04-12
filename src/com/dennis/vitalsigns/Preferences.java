@@ -122,7 +122,12 @@ public class Preferences
           
           String strShowValue="Current Value=";
           
-          String summary=pref.getSummary().toString();
+          String summary="";
+          
+          if(pref.getSummary()!=null){
+        	  summary=pref.getSummary().toString();
+          }
+          
           if(summary.indexOf("("+strShowValue)!=-1){
         	  summary=summary.substring(0,summary.indexOf("("+strShowValue))+ "("+strShowValue + editTextPref.getText() + ")";
           }else{
@@ -151,7 +156,7 @@ public class Preferences
   public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
     Preference pref = findPreference(key);
     this.setSummary(pref);
-    //if the hibernatetime has changed then we need to reschedule the alarm manager
+    //if the hibernate time has changed then we need to reschedule the alarm manager
 	if(!VitalSignsActivity.flagShutDown){
 		mCommonMethods.scheduleRepeatingMonitoringSessions();
 	}
