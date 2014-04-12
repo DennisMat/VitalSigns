@@ -15,7 +15,7 @@ What you will need
 
 Installation
 =============
-To install the app, click the link: https://github.com/DennisMat/VitalSigns/blob/master/bin/VitalSigns.apk?raw=true in your smart phone browser. Then go to download section and install this file. The downloads section may be found either in your browser's option or as an icon among other apps of your smartphone apps. You may have to change the security settings on your phone to allow the installation of this file.
+To install the app, click the [link](github.com/DennisMat/VitalSigns/blob/master/bin/VitalSigns.apk?raw=true) in your smart phone browser. Then go to download section and install this file. The downloads section may be found either in your browser's option or as an icon among other apps of your smartphone apps. You may have to change the security settings on your phone to allow the installation of this file.
 
 Know limitations (you may skip this section)
 ================
@@ -24,6 +24,5 @@ Know limitations (you may skip this section)
 - When the heart rate monitor is being charged it is likely that the heart rate is not being monitored (for various reasons). In order for the app not to send out a false alarm currently it must be stopped and started again when the heart rate monitor is monitoring again. Potential solutions:  There are 2 ways to get around this problem, one way is to have multiple heart rate monitors so that at a given time the person would be wearing at least one heart rate monitor at a time. The app would have to be significantly modified to accommodate such a configuration. The second way is to have a sort of 'snooze' button with a certain duration (say an hour) in the app. During this time the app should ignore the lack of signals from the heart rate monitor. After this duration the app should start interpreting signals from the heart rate monitor i.e work normally. By this time the heart rate monitor would have been fully charged and the heart rate monitor would be transmitting the heart rate data wirelessly again.  
 
 
-For those who are feeling generous, a bitcoin address can be found at:
-http://tinyurl.com/nntl6pd
+For those who are feeling generous, a bitcoin address can be found [here](http://tinyurl.com/nntl6pd)
 
