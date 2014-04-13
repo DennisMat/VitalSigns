@@ -2,10 +2,8 @@ What the app does
 =================
 This Android application interprets  signals from a heart rate monitor which transmits in Bluetooth 4.0. If the application interprets the heart rate to be something that requires attention it will SMS (SMS includes the GPS co-ordinates of the phone) and dial out pre-set numbers of people who may be able to attend to the person who may need medical help.
 
- ____________________         
-|                    |        ---------
-| Heart rate monitor |---BT-->| phone |---> SMS(phone text) and dialling alerts.
-|--------------------|        ---------
+|Heart rate monitor|---BT-->|phone|---> SMS(phone text) and dialling alerts.
+
 
 
 What you will need
@@ -15,7 +13,7 @@ What you will need
 
 Installation
 =============
-To install the app, click the [link](https://github.com/DennisMat/VitalSigns/blob/master/bin/VitalSigns.apk?raw=true) in your smart phone browser. Then go to download section and install this file. The downloads section may be found either in your browser's option or as an icon among other apps of your smartphone apps. You may have to change the security settings on your phone to allow the installation of this file.
+To install the app, click the [link](https://github.com/DennisMat/VitalSigns/blob/master/bin/VitalSigns.apk?raw=true) in your smart phone browser. Then go to download section and install the file VitalSigns.apk. The downloads section may be found either in your browser's option or as an icon among other apps of your smartphone apps. You may have to change the security settings on your phone to allow the installation of this file. On some phones the file may be downloaded with a .zip instead of a .apk extension. In that case rename VitalSigns.zip to VitalSigns.apk using another app like the ES File explorer which can be found for free in the google play store.
 
 Know limitations (you may skip this section)
 ================
