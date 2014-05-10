@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
-import android.widget.TextView;
 
 public class Preferences 
     extends PreferenceActivity 
@@ -208,21 +205,29 @@ private void  initVariables(){
 		}
 
 
-		timeBetweenDialing=Integer.parseInt(settings.getString("key_timebetweendialing",context.getString(R.string.pref_timebetweendialing)));
-		hibernateTime=Integer.parseInt(settings.getString("key_hibernatetime",context.getString(R.string.pref_hibernatetime)));
-		countDown=Integer.parseInt(settings.getString("key_countdown",context.getString(R.string.pref_countdown)));
-		timeBetweenMonitoringSessions=Integer.parseInt(settings.getString("key_timebetweenmonitoring",context.getString(R.string.pref_timebetweenmonitoring)));
+		timeBetweenDialing=parseInt(settings,"key_timebetweendialing",R.string.pref_timebetweendialing);
+		hibernateTime=parseInt(settings,"key_hibernatetime",R.string.pref_hibernatetime);
+		countDown=parseInt(settings,"key_countdown",R.string.pref_countdown);
+		timeBetweenMonitoringSessions=parseInt(settings,"key_timebetweenmonitoring",R.string.pref_timebetweenmonitoring);
 
-		heartRateLow=Integer.parseInt(settings.getString("key_heart_rate_low",context.getString(R.string.pref_heart_rate_low)));
-		heartRateHigh=Integer.parseInt(settings.getString("key_heart_rate_high",context.getString(R.string.pref_heart_rate_high)));
-		heartRateWaitTime=Integer.parseInt(settings.getString("key_heart_rate_wait_time",context.getString(R.string.pref_heart_rate_wait_time)));
-		deviceScanTime=Integer.parseInt(settings.getString("key_device_scan_time",context.getString(R.string.pref_device_scan_time)));
+		heartRateLow=parseInt(settings,"key_heart_rate_low",R.string.pref_heart_rate_low);
+		heartRateHigh=parseInt(settings,"key_heart_rate_high",R.string.pref_heart_rate_high);
+		heartRateWaitTime=parseInt(settings,"key_heart_rate_wait_time",R.string.pref_heart_rate_wait_time);
+		deviceScanTime=parseInt(settings,"key_device_scan_time",R.string.pref_device_scan_time);
 		
 
 		
 		messageShowInPopup=settings.getBoolean("key_showpopup", Boolean.parseBoolean(context.getString(R.string.pref_showpopup)));
 		remoteLog=settings.getBoolean("key_remotelog", Boolean.parseBoolean(context.getString(R.string.pref_remotelog)));
 
+	}
+	
+	private int parseInt(SharedPreferences settings, String key, int defaultValue){
+		String intString=settings.getString("key_countdown",context.getString(defaultValue));
+		if(intString==null || intString.equals("")){
+			intString=context.getString(defaultValue);
+		}
+		return Integer.parseInt(intString);
 	}
 
 }

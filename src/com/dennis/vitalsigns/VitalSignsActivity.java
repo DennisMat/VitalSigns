@@ -34,7 +34,7 @@ public class VitalSignsActivity extends Activity {
 	 *  <br/> <br/> This variable is also stored in the local storage, in case the phone is rebooted.
 	 */
 	public static boolean flagShutDown=true;
-	private Button buttonPreference;
+	private Button buttonSettings;
 	private LinearLayout LinearLayoutStartStop;
 	private Button buttonScan;
 	private Button buttonWarning;
@@ -75,6 +75,7 @@ public class VitalSignsActivity extends Activity {
 
 
 		} catch (Exception e) {
+			CommonMethods.Log("Exception " + e.getMessage());
 		}
 
 	}
@@ -126,7 +127,7 @@ public class VitalSignsActivity extends Activity {
 	private void initializeVariables() throws Exception {
 		buttonStart = (Button) findViewById(R.id.buttonStart);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
-		buttonPreference = (Button) findViewById(R.id.buttonPreference);
+		buttonSettings = (Button) findViewById(R.id.buttonSettings);
 		LinearLayoutStartStop=(LinearLayout) findViewById(R.id.LinearLayoutStartStop);		
 		buttonScan= (Button) findViewById(R.id.buttonScan);
 		buttonWarning= (Button) findViewById(R.id.buttonWarning);
@@ -186,8 +187,7 @@ public class VitalSignsActivity extends Activity {
 		});
 
 
-		buttonPreference.setOnClickListener(new View.OnClickListener() {
-
+		buttonSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent settingsActivity = new Intent(VitalSignsActivity.this,
 						Preferences.class);
