@@ -9,7 +9,7 @@
     <string name="pref_ph"></string>
     <string name="pref_dial">true</string>
     <string name="pref_sms">true</string>
-    <string name="pref_countdown">3</string>
+    <string name="pref_countdown">5</string>
     <!-- number of beeps -->
     <string name="pref_timebetweendialing">30</string>
     <!-- seconds -->
