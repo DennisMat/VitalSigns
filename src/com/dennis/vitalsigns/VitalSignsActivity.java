@@ -25,15 +25,15 @@ import android.telephony.TelephonyManager;
 public class VitalSignsActivity extends Activity {
 
 
-	private static Button buttonStart;
-	private static Button buttonStop;
+	private static volatile Button buttonStart;
+	private static volatile Button buttonStop;
 	/**
 	 * A global variable used to co-ordinate various things throughout the app, for example:
 	 * <br/> The enabled/disabled states of the start and stop button.
 	 * <br/>The running of the services in the background
 	 *  <br/> <br/> This variable is also stored in the local storage, in case the phone is rebooted.
 	 */
-	public static boolean flagShutDown=true;
+	public static volatile boolean flagShutDown=true;
 	private Button buttonSettings;
 	private LinearLayout LinearLayoutStartStop;
 	private Button buttonScan;

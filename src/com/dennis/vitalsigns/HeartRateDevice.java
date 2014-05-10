@@ -25,7 +25,7 @@ public class HeartRateDevice {
 	private static final int STATE_CONNECTED = 2;
 	private Context mContext;
 	private String deviceAddress=null;
-	private int heartRate=0;// always initilize to zero - this is important.
+	private int heartRate=0;// always initilize to zero - this is important. Should this be volatie?
 
 	public final static String ACTION_GATT_CONNECTED =
 			"com.example.bluetooth.le.ACTION_GATT_CONNECTED";
@@ -55,7 +55,7 @@ public class HeartRateDevice {
 
 	public boolean getPersonHeartRateEmergencyStatus() {
 	
-		int heartRate= getHeartRate();
+		int heartRate= getHeartRate();//this may take time.
 		CommonMethods.Log("heartRateLow=" + Preferences.heartRateLow + " heartRate=" + heartRate + " heartRateHigh=" + Preferences.heartRateHigh);
 		Intent intent = new Intent(VitalSignsActivity.HEART_RATE_DISPLAY_UPDATE);
 		intent.putExtra("heartRate",heartRate);

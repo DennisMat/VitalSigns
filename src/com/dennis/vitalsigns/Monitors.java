@@ -17,8 +17,8 @@ public class Monitors {
 	private int emergencylevelThreshold=0;
 	
 	public static class Statuses{
-		public static boolean isPulseRateMonitorRunning=false;
-		public static boolean isBodyTemperatureMonitorRunning=false;
+		public volatile static boolean isPulseRateMonitorRunning=false;
+		public volatile static boolean isBodyTemperatureMonitorRunning=false;
 	}
 
 	public Monitors(Context context, Preferences pref) {

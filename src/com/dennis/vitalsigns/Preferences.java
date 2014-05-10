@@ -33,7 +33,7 @@ public class Preferences
 
 	/** The number of beeps before which the dialing and sms'ing starts.
 	 */
-	public static int countDown = 0; // Count down before dialing.
+	public volatile static int countDown = 0; // Count down before dialing.
 	/** in seconds.
 	 *  time between monitoring session when in continous monitoring mode.
 	 */
