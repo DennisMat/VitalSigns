@@ -1,4 +1,3 @@
-
 package com.dennis.vitalsigns;
 
 import java.text.SimpleDateFormat;
@@ -132,6 +131,7 @@ public class VitalSignsActivity extends Activity {
 		buttonScan= (Button) findViewById(R.id.buttonScan);
 		buttonWarning= (Button) findViewById(R.id.buttonWarning);
 		textViewHeartRate=(TextView) findViewById(R.id.textViewHeartRate);
+		textViewHeartRate.setText("");
 		
 		mCommonMethods= new CommonMethods(this);		
 		mBlueToothMethods= new BlueToothMethods(this);
@@ -150,7 +150,6 @@ public class VitalSignsActivity extends Activity {
 					updateButtonStatus();
 					flagShutDown=false;
 					mCommonMethods.showMessage((VitalSignsActivity.this).getString(R.string.app_working));
-					mCommonMethods.showNotification();
 				}
 				mCommonMethods.setFlagShutDown(flagShutDown);
 			}

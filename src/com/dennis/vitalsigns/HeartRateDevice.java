@@ -57,9 +57,7 @@ public class HeartRateDevice {
 	
 		int heartRate= getHeartRate();//this may take time.
 		CommonMethods.Log("heartRateLow=" + Preferences.heartRateLow + " heartRate=" + heartRate + " heartRateHigh=" + Preferences.heartRateHigh);
-		Intent intent = new Intent(VitalSignsActivity.HEART_RATE_DISPLAY_UPDATE);
-		intent.putExtra("heartRate",heartRate);
-		LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+		showHeartRateOnMainScreen(heartRate);
 		if((heartRate<=Preferences.heartRateLow) || (heartRate>=Preferences.heartRateHigh)){
 			return true;
 		}else{
@@ -67,6 +65,13 @@ public class HeartRateDevice {
 		}
 
 	} 
+	
+	private void showHeartRateOnMainScreen(int heartRate){
+		Intent intent = new Intent(VitalSignsActivity.HEART_RATE_DISPLAY_UPDATE);
+		intent.putExtra("heartRate",heartRate);
+		LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+		
+	}
 	
 	
 	/**This method will return a figure and is to be used for testing only. Set up a file with a heart rate and put it on a website where it can be read.

@@ -173,6 +173,7 @@ public class CommonMethods {
 	}
 	
 	public void scheduleRepeatingMonitoringSessions() {
+		showNotification();// Dennis: This is the best place to show the notification
 		scheduleRepeatingMonitoringSessions(0);
 	}
 
@@ -207,7 +208,8 @@ public class CommonMethods {
 
 	public void cancelRepeatingMonitoringSessions() {
 		CommonMethods.Log("cancelRepeatingMonitoringSessions has been called");
-
+		removeNotification();// Dennis: This is the best place to cancel the notification
+		
 		Intent moinitorIntent = new Intent(context,	MonitorSessionInitBroadcastReceiver.class);
 		PendingIntent monitorPendingIntent = PendingIntent.getBroadcast(context,0, moinitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager AlarmManager = (AlarmManager) context
