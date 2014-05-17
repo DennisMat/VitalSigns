@@ -89,7 +89,7 @@ public class Monitors {
 					beepHistory[i - 1] = beepHistory[i];
 				}
 			}
-			if(pref.countDown>0){
+			if(Preferences.countDown>0){
 				beepHistory[beepHistory.length - 1] = true;
 			}
 
@@ -106,7 +106,7 @@ public class Monitors {
 					beepCount++;
 				}
 			}
-			mCommonMethods.showToast("Count down="+(pref.countDown-beepCount)+" . When the count down become zero your phone will start dialing");
+			mCommonMethods.showToast("Count down="+(Preferences.countDown-beepCount)+" . When the count down become zero your phone will start dialing");
 
 			if (isNotify) {			
 				mCommonMethods.playSoundBeforeAlertsAreSent();// We need a different sound. It should wake up a dead person if necessary :)
@@ -127,7 +127,7 @@ public class Monitors {
 				continueMonitoring();
 			}
 		} else {
-			if (pref.hibernateTime == 0) {
+			if (Preferences.hibernateTime == 0) {
 				CommonMethods.Log("continueMonitoring called because of 0 hibernate time");
 				//clear all past beep history.
 				for (int i = 0; i < beepHistory.length; i++) {
@@ -138,7 +138,7 @@ public class Monitors {
 				wrapUpMonitoringSession();
 				//SimpleDateFormat timingFormat = new SimpleDateFormat("h:mm a");
 				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.MINUTE,pref.hibernateTime);
+				cal.add(Calendar.MINUTE,Preferences.hibernateTime);
 				CommonMethods.Log("VitalSignsService will be called again by alarm manager at approximately " + cal.getTime());
 			}
 
@@ -150,17 +150,17 @@ public class Monitors {
 
 	private void setValuesForTesting() {
 		
-		pref.timeBetweenDialing=30;
-		pref.hibernateTime=1;
-		pref.countDown=4;
-		pref.timeBetweenMonitoringSessions=10;
-		for(int i=0;i<pref.arraySize;i++){
+		Preferences.timeBetweenDialing=30;
+		Preferences.hibernateTime=1;
+		Preferences.countDown=4;
+		Preferences.timeBetweenMonitoringSessions=10;
+		for(int i=0;i<Preferences.arraySize;i++){
 
-			pref.dialArray[i]=false;
+			Preferences.dialArray[i]=false;
 			pref.SMSArray[i]=false;
 		}
-		pref.messageShowInPopup=true;
-		pref.remoteLog=false;
+		Preferences.messageShowInPopup=true;
+		Preferences.remoteLog=false;
 		emergencylevelThreshold=1;
 	}
 
@@ -177,7 +177,7 @@ public class Monitors {
 
 		//setValuesForTesting();//overrrides some of the  variables in pref.
 
-		beepHistory = new boolean[pref.countDown];
+		beepHistory = new boolean[Preferences.countDown];
 
 		for (int i = 0; i < beepHistory.length; i++) {
 			beepHistory[i] = false;
@@ -221,7 +221,7 @@ public class Monitors {
 		try {
 			CommonMethods.Log("Time between monitoring sessions =" + pref.timeBetweenMonitoringSessions + " seconds.\n "
 					+ "This is non-zero even for a zero hibernate time.");
-			Thread.sleep(pref.timeBetweenMonitoringSessions * 1000);
+			Thread.sleep(Preferences.timeBetweenMonitoringSessions * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,12 +257,12 @@ public class Monitors {
 			/*we send the smses first before dialling. Dialling is  to be more error prone than sms.
 			For example somebody might notice the phone trying to call and might hit the "hangup" button of the dialler.
 			An sms to St. Peter at Pearly Gates is also a good idea*/
-			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
+			for (int i = 0; i < Preferences.phoneNumberArray.length; i++) {
 				try {
 
-					if (pref.SMSArray[i]) {
-						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageForSMS());
-						phone.sendSMS(pref.phoneNumberArray[i], phone.getMessageAdditionalForSMS(i));
+					if (Preferences.SMSArray[i]) {
+						phone.sendSMS(Preferences.phoneNumberArray[i], phone.getMessageForSMS());
+						phone.sendSMS(Preferences.phoneNumberArray[i], phone.getMessageAdditionalForSMS(i));
 					}
 
 				} catch (Exception e) {
@@ -271,15 +271,15 @@ public class Monitors {
 			}
 			
 			//By now the horse has left the stable (via sms)- we can start dialling leisurely.
-			for (int i = 0; i < pref.phoneNumberArray.length; i++) {
+			for (int i = 0; i < Preferences.phoneNumberArray.length; i++) {
 				try {
 
-					if (pref.dialArray[i]) {
-						phone.dialNumber(pref.phoneNumberArray[i]);
+					if (Preferences.dialArray[i]) {
+						phone.dialNumber(Preferences.phoneNumberArray[i]);
 					}
 
 					//TODO:put some kind of cancel dialing feature here.
-					Thread.sleep(pref.timeBetweenDialing * 1000);
+					Thread.sleep(Preferences.timeBetweenDialing * 1000);
 
 				} catch (Exception e) {
 					CommonMethods.Log("Exception " + e.getMessage());

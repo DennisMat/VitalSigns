@@ -2,9 +2,7 @@ package com.dennis.vitalsigns;
 
 
 import android.app.Service;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.BatteryManager;
+import android.content.*;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.widget.Toast;

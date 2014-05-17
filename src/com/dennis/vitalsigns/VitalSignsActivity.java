@@ -224,10 +224,10 @@ public class VitalSignsActivity extends Activity {
 	private boolean checkForPhoneNumbers(){
 		boolean phoneNumbersExist=false;
 		
-		for (int i = 0; i < pref.phoneNumberArray.length; i++) {
+		for (int i = 0; i < Preferences.phoneNumberArray.length; i++) {
 			try {
-				if (pref.phoneNumberArray[i]!=null && pref.phoneNumberArray[i].length()>1 
-						&&(pref.dialArray[i] || pref.SMSArray[i])) {// either sms or dial should be set
+				if (Preferences.phoneNumberArray[i]!=null && Preferences.phoneNumberArray[i].length()>1 
+						&&(Preferences.dialArray[i] || Preferences.SMSArray[i])) {// either sms or dial should be set
 					phoneNumbersExist=true;
 					break;
 				}
