@@ -223,7 +223,7 @@ private void  initVariables(){
 	}
 	
 	private int parseInt(SharedPreferences settings, String key, int defaultValue){
-		String intString=settings.getString("key_countdown",context.getString(defaultValue));
+		String intString=settings.getString(key,context.getString(defaultValue));
 		if(intString==null || intString.equals("")){
 			intString=context.getString(defaultValue);
 		}
