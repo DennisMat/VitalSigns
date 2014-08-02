@@ -21,8 +21,8 @@
     <string name="pref_remotelog">false</string>
     <string name="pref_gpswait">10</string>
     <!-- seconds -->
-    <string name="pref_charging_pausetime">30</string>
-    <!-- minutes -->
+    <string name="pref_update_location_frequency">60</string><!-- minutes -->
+    <string name="pref_charging_pausetime">30</string><!-- minutes -->    
     <string name="emergency_threshhold_level">1</string>
     <!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->
     <string name="pref_heart_rate_low">40</string>

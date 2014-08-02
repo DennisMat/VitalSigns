@@ -21,6 +21,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.*;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -219,7 +220,7 @@ public class CommonMethods {
 
 	
 	
-	//TODO: Dennis: The notifications are not working properly. Fix them up later.
+
 	/**
 	 * show notification on task bar of the phone
 	 */
@@ -248,27 +249,11 @@ public class CommonMethods {
 
 		nm.notify(uniqueId, n);
 	}
-	
+			
 
-	/* Old stuff. Hopefully the new stuff above will work
-	public void showNotification(){
-		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-		// Set the icon, scrolling text and timestamp
-		Notification notification = new Notification(R.drawable.icon, "VitalSigns App has started",
-				System.currentTimeMillis());
-		// The PendingIntent to launch our activity if the user selects this
-		// notification
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-				new Intent(context, VitalSignsActivity.class), 0);
-		// Set the info for the views that show in the notification panel.
-		notification.setLatestEventInfo(context,"VitalSigns App running", "VitalSigns App running", contentIntent);
-		// Send the notification.
-		mNotificationManager.notify(uniqueId, notification);
-
-	}
-*/		
-	//Remove notification from task bar of the phone
-
+	/**
+	 * Remove notification from task bar of the phone
+	 */
 	public void removeNotification(){
 		CommonMethods.Log("in removeNotification");	
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -277,7 +262,10 @@ public class CommonMethods {
 	
 
 	
-	//this takes in a String msgstr
+
+	/**
+	 * this takes in a String message
+	 */
  	public void showToast(final String msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());
 		toastHandler.post(new Runnable() {
@@ -288,7 +276,9 @@ public class CommonMethods {
 		});
 	}
 	
- 	//this takes in a int  msgstr
+	/**
+	 * this takes in a int message
+	 */
 	public void showToast(final int msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());
 		toastHandler.post(new Runnable() {
@@ -395,7 +385,60 @@ public class CommonMethods {
 		alertDialog.show();
 	}
 
+	/** there is no explicit way to store double in the SharedPreferences
+	 * So we convert the double to its 'raw long bits' equivalent and store that long. When you're reading the value, convert back to double.
+	Because the two data types have the same size you don't lose precision.
+	 */
 
+		public void putDouble(Editor editor, String key, double value) {
+			
+			editor.putLong(key, Double.doubleToRawLongBits(value));
+		}
+
+		double getDouble(SharedPreferences prefs, String key, double defaultValue) {
+			return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+		}
+
+		
+		String latitude="latitude";
+		String longitude="longitude";
+		
+		public void updateLatLong(){
+			if(System.currentTimeMillis()>(Preferences.timeGPSLocationRecorded + Preferences.updateLocationFrequency*60*1000)){				
+				Phone phone = new Phone(context);
+				Double[] latLong=phone.getCurrentLatLong();
+				
+				if(Double.compare(latLong[0], 0.00)!=0 && Double.compare(latLong[1], 0.00)!=0){
+					SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+					SharedPreferences.Editor editor = settings.edit();
+					
+					putDouble(editor,latitude, latLong[0]);
+					putDouble(editor,longitude, latLong[1]);
+					editor.putLong("timeGPSLocationRecorded", System.currentTimeMillis());
+					editor.commit();
+
+					CommonMethods.Log("updated latlong , lat="+latLong[0] +" lon="+latLong[1] );
+				}else{
+					CommonMethods.Log("lat lon is zero hence the lat lon has not been updated");
+				}
+			}
+		}
+		
+		
+		
+		Double[] getStoredLatLong(){		
+			Double lat=0.0;
+			Double lon=0.0;
+			Double[] latLong={lat,lon};
+			
+			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+			
+			latLong[0]=getDouble(settings,latitude,0.00 );
+			latLong[1]=getDouble(settings,longitude,0.00 );
+			return latLong;
+			
+		}
+	
 	static public void Log(String logmessage) {		
 		try {
 			if (Preferences.remoteLog) {

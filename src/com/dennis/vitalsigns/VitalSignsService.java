@@ -27,8 +27,8 @@ public class VitalSignsService extends Service {
 			super.onCreate();
 			CommonMethods.Log("in VitalSignsService.onCreate()");
 			(new Preferences(this)).loadValuesFromStorage();
-			MonitorAsyncTask mMonitorAsyncTask = new MonitorAsyncTask(this);
-			mMonitorAsyncTask.execute();	
+			BackgroundAsyncTask mBackgroundAsyncTask = new BackgroundAsyncTask(this);
+			mBackgroundAsyncTask.execute();	
 		} catch (Exception e) {
 			CommonMethods.Log("Exception: " + e.getMessage());
 		}
@@ -42,11 +42,11 @@ public class VitalSignsService extends Service {
 	}
 
 
-	private class MonitorAsyncTask extends AsyncTask<Void, Void, Void> {
+	private class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 
 		private Context mContext;
 		Preferences pref=null; 
-		public MonitorAsyncTask(Context context) {
+		public BackgroundAsyncTask(Context context) {
 			mContext = context;
 		} 
 
@@ -60,6 +60,8 @@ public class VitalSignsService extends Service {
 
 		@Override
 		protected Void doInBackground(Void... args) {
+			CommonMethods mCommonMethods= new CommonMethods(mContext);
+			mCommonMethods.updateLatLong();
 			Monitors mMonitors=new Monitors(mContext,pref);
 			mMonitors.start();//this step takes time
 			CommonMethods.Log("MonitorAsyncTask.doInBackground() completed");

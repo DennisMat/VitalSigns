@@ -55,7 +55,7 @@ public class CurrentLocationActivity extends Activity {
 	{
 		Phone phone = new Phone(this);
 	
-	Double[] latLong=phone.getCurrentLatLong();
+	Double[] latLong=phone.getLatLong();
 	String geoAddress = latLong[0] + "," + latLong[1]; 
 	
 	android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CurrentLocationActivity.CLIPBOARD_SERVICE); 

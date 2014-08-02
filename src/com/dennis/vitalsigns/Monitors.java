@@ -182,8 +182,6 @@ public class Monitors {
 		for (int i = 0; i < beepHistory.length; i++) {
 			beepHistory[i] = false;
 		}
-		
-		
 
 	}
 
@@ -288,7 +286,6 @@ public class Monitors {
 			CommonMethods.Log("done dialing and sending smses");
 			// this notification takes time because of pref.timeBetweenDialing and is probably not even needed.
 			mCommonMethods.showToast(context.getString(R.string.app_stopped),Toast.LENGTH_LONG);
-
 			return null;
 		}
 

@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.net.Uri;
@@ -133,7 +132,7 @@ public class Phone {
 				phoneNumber="";
 			}
 			message= String.format("Please Call:%1$s",phoneNumber);
-			Double[] latLong=getCurrentLatLong();
+			Double[] latLong=getLatLong();
 	
 			message= String.format("Emergency. Please Call:"+phoneNumber+". To find the location of the person in google MAPS, search for "+latLong[0]+", "+ latLong[1]);
 		} catch (Exception e) {
@@ -147,6 +146,22 @@ public class Phone {
 		return message;
 	}
 	
+	Double[] getLatLong(){
+		Double[] latLong=getCurrentLatLong();
+		
+		/*Dennis: 0.00 lat and 0.00 lon does exit somewhere in the sea, in the Gulf of Guinea below the country of Ghana in Africa
+		 * Ofcourse by the time someone reads this note, the country of Ghana won't exit :)
+		 * Given that a user is extremely likely to be at 0.0,0.0 we can safely assume such a value to be unlikely.
+		 * TODO: a better method I think is to look if the location object is null. At 0.0,0.0 maybe it's not null.
+		*/
+		if(Double.compare(latLong[0], 0.00)==0 && Double.compare(latLong[1], 0.00)==0){
+			CommonMethods.Log("current lat long is zero, looking into storage" );
+			latLong=mCommonMethods.getStoredLatLong();
+			CommonMethods.Log("stored  lat long has the following values: lat="+latLong[0] +" lon="+latLong[1] );
+		}
+		return latLong;
+	}
+	
 	Double[] getCurrentLatLong(){		
 		Double lat=0.0;
 		Double lon=0.0;
@@ -154,9 +169,6 @@ public class Phone {
 		try {
 			long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 0; // in Meters
 			long MINIMUM_TIME_BETWEEN_UPDATES = 10000; // in Milliseconds
-
-
-
 
 			LocationManager locationManager=(LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -180,6 +192,19 @@ public class Phone {
 
 			}
 			locationManager.removeUpdates(mlocListener);// if this is not done battery may drain faster
+	
+			/*for testing only - triggers lat long to be zero after a certain count
+			CommonMethods.Log("countTest is " + Preferences.countTest);
+			if(Preferences.countTest>1){
+				CommonMethods.Log("testing lat lon, lat lon set to zero" );
+				latLong[0]=0.0;//for testing only
+				latLong[1]=0.0;
+			}else{
+				Preferences.countTest++;
+			}
+			*/
+			CommonMethods.Log("current lat ="+latLong[0] +" lon="+latLong[1] );
+			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -188,7 +213,6 @@ public class Phone {
 			e.printStackTrace();
 		}
 		return latLong;
-		
 	}
 	
 	String getMessageAdditionalForSMS(int i){

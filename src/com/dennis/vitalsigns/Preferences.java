@@ -23,6 +23,7 @@ public class Preferences
 	public static String[] phoneNumberArray=new String[arraySize];
 	public static boolean[] dialArray= new boolean[arraySize];
 	public static boolean[] SMSArray= new boolean[arraySize];
+	//public static int countTest=0;//For testing only - triggers lat long to be zero after a certain count
 	
 	/** in seconds.	 * 
 	 */
@@ -30,6 +31,9 @@ public class Preferences
 	public static boolean messageShowInPopup = false;
 	public static String logTag = "VitalSignsTag";
 	public static boolean  remoteLog;
+	
+	public static long timeGPSLocationRecorded;
+	public static int updateLocationFrequency;
 
 	/** The number of beeps before which the dialing and sms'ing starts.
 	 */
@@ -219,6 +223,10 @@ private void  initVariables(){
 		
 		messageShowInPopup=settings.getBoolean("key_showpopup", Boolean.parseBoolean(context.getString(R.string.pref_showpopup)));
 		remoteLog=settings.getBoolean("key_remotelog", Boolean.parseBoolean(context.getString(R.string.pref_remotelog)));
+		
+		timeGPSLocationRecorded=settings.getLong("timeGPSLocationRecorded", 0l);
+		updateLocationFrequency=parseInt(settings,"key_update_location_frequency",R.string.pref_update_location_frequency);
+		
 
 	}
 	

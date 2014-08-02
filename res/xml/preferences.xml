@@ -180,6 +180,13 @@
             android:summary="Time waiting in seconds to recive a heart rate value form a device"
             android:title="Heart Rate wait timeout" />
         <EditTextPreference
+            android:defaultValue="@string/pref_update_location_frequency"
+            android:inputType="number"
+            android:key="key_update_location_frequency"
+            android:summary="Sometimes the GPS location may not be available on your device, in that case the GPS is obtained from the app which stores it in memory the last time it was obtained. Specify the frequency in minutes that the app must record the GPS location in memory"
+            android:title="Update stored location frequency" />
+        
+                <EditTextPreference
             android:defaultValue="@string/pref_charging_pausetime"
             android:inputType="number"
             android:key="key_chargingpausetime"

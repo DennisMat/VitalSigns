@@ -24,3 +24,8 @@ Know limitations (you may skip this section)
 
 For those who are feeling generous, a bitcoin address can be found [here](http://tinyurl.com/nntl6pd)
 
+TODO
+======
+Attempt to dial a number - at least 4 times.
+
+
