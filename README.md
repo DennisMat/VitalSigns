@@ -1,5 +1,6 @@
 What the app does
 =================
+(Scroll below and/or click on "View all of README.md" to install this app)
 This Android application interprets  signals from a heart rate monitor which transmits in Bluetooth 4.0. If the application interprets the heart rate to be something that requires attention it will SMS (SMS includes the GPS co-ordinates of the phone) and dial out pre-set numbers of people who may be able to attend to the person who may need medical help.
 
 |Heart rate monitor|---BT-->|phone|---> SMS(phone text) and dialling alerts.
