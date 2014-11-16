@@ -173,12 +173,30 @@
             android:key="key_device_scan_time"
             android:summary="Heart Rate device search timeout in seconds"
             android:title="Heart Rate device search timeout" />
+        
         <EditTextPreference
             android:defaultValue="@string/pref_heart_rate_wait_time"
             android:inputType="number"
             android:key="key_heart_rate_wait_time"
-            android:summary="Time waiting in seconds to recive a heart rate value form a device"
+            android:summary="Time waiting in seconds to receive a heart rate value from a device"
             android:title="Heart Rate wait timeout" />
+        
+        <Preference
+            android:summary="Show the sms that would be sent and your current location on a map"
+            android:title="Current Location and Map" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.dennis.vitalsigns.CurrentLocationActivity"
+                android:targetPackage="com.dennis.vitalsigns" />
+        </Preference>
+        
+         <EditTextPreference
+            android:defaultValue="@string/pref_gps_wait_time"
+            android:inputType="number"
+            android:key="key_gps_wait_time"
+            android:summary="Time waiting in seconds to receive the gps co-ordinates from the device"
+            android:title="GPS timeout" />
+        
         <EditTextPreference
             android:defaultValue="@string/pref_update_location_frequency"
             android:inputType="number"
@@ -193,14 +211,7 @@
             android:summary="Pause time in minutes when phone put on charge"
             android:title="Pause time while charging - TODO" />
 
-        <Preference
-            android:summary="Show the sms that would be sent and your current location on a map"
-            android:title="Current Location and Map" >
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetClass="com.dennis.vitalsigns.CurrentLocationActivity"
-                android:targetPackage="com.dennis.vitalsigns" />
-        </Preference>
+
 
         <CheckBoxPreference
             android:defaultValue="@string/pref_showpopup"

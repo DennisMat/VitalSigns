@@ -18,11 +18,14 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Dennis: includes permission both for NETWORK_PROVIDER and GPS_PROVIDER -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--Dennis: Requesting ACCESS_FINE_LOCATION implies a request for ACCESS_COARSE_LOCATION. so I blanked it out. -->
+    <!--Dennis: includes permission only for NETWORK_PROVIDER -->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Dennis added to start app if necessary after rebooting -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Dennis: added to start app if necessary after rebooting -->
 
     <application
         android:icon="@drawable/icon"

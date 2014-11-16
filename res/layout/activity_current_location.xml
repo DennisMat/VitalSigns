@@ -8,7 +8,7 @@
         
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The current sms send to people in an emergency is:" />
+        android:text="The sms that will be sent to people in an emergency will look like this:" />
     
         <TextView
         android:id="@+id/textViewSMSMessage"
@@ -21,7 +21,7 @@
         android:id="@+id/buttonCopyLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Click here to copy part of the above message to your clipboard" >
+        android:text="Click here to copy part of the above message to your clipboard, so that you can check out the location on Google maps" >
     </Button>
     
     <Button

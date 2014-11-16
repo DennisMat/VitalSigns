@@ -173,9 +173,9 @@ public class Monitors {
 		pref.dialArray= new boolean[pref.arraySize];
 		pref.SMSArray= new boolean[pref.arraySize];
 		*/
-		emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));
+		emergencylevelThreshold=Integer.parseInt(context.getString(R.string.emergency_threshhold_level));// emergency_threshhold_level is hard coded for now 
 
-		//setValuesForTesting();//overrrides some of the  variables in pref.
+		//setValuesForTesting();//overrides some of the  variables in pref.
 
 		beepHistory = new boolean[Preferences.countDown];
 

@@ -19,7 +19,7 @@ public class BootupBroadcastReceiver extends BroadcastReceiver {
 			CommonMethods.Log("in BootupBroadcastReceiver");
 			if(!(mCommonMethods.isVitalSignsServiceRunning())){
 				if(!mCommonMethods.getFlagShutDown()){
-					mCommonMethods.scheduleRepeatingMonitoringSessions();
+					mCommonMethods.scheduleRepeatingMonitoringSessions();					
 				}
 			}
 		} catch (Exception e) {

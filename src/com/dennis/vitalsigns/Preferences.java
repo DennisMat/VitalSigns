@@ -34,6 +34,7 @@ public class Preferences
 	
 	public static long timeGPSLocationRecorded;
 	public static int updateLocationFrequency;
+	public static int gpsWaitTime;
 
 	/** The number of beeps before which the dialing and sms'ing starts.
 	 */
@@ -171,7 +172,6 @@ private void  initVariables(){
 
 	   for (int i = 0; i < editTextPreferencePhoneNumbers.length; ++i) {
 		   editTextPreferencePhoneNumbers[i]=(EditTextPreference)getPreferenceScreen().findPreference("key_ph"+i);
-		   final int j=i;
 		   editTextPreferencePhoneNumbers[i].setOnPreferenceChangeListener(new OnPreferenceChangeListener(){			   
 			   @Override
 	    	      public boolean onPreferenceChange(Preference preference,Object newValue) {
@@ -225,6 +225,7 @@ private void  initVariables(){
 		remoteLog=settings.getBoolean("key_remotelog", Boolean.parseBoolean(context.getString(R.string.pref_remotelog)));
 		
 		timeGPSLocationRecorded=settings.getLong("timeGPSLocationRecorded", 0l);
+		gpsWaitTime=parseInt(settings,"key_gps_wait_time",R.string.pref_gps_wait_time);
 		updateLocationFrequency=parseInt(settings,"key_update_location_frequency",R.string.pref_update_location_frequency);
 		
 

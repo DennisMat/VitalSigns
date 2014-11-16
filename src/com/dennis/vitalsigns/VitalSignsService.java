@@ -17,10 +17,6 @@ import android.app.ActivityManager.RunningServiceInfo;
 public class VitalSignsService extends Service {
 
 
-
-	private static boolean remoteLog = false;
-
-
 	@Override
 	public void onCreate() {
 		try {
@@ -61,7 +57,7 @@ public class VitalSignsService extends Service {
 		@Override
 		protected Void doInBackground(Void... args) {
 			CommonMethods mCommonMethods= new CommonMethods(mContext);
-			mCommonMethods.updateLatLong();
+			mCommonMethods.updateLocation();
 			Monitors mMonitors=new Monitors(mContext,pref);
 			mMonitors.start();//this step takes time
 			CommonMethods.Log("MonitorAsyncTask.doInBackground() completed");

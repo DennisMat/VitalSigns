@@ -3,6 +3,7 @@
 
     <string name="app_name">Vital Signs</string>
     <string name="for_unique_number">This is a random string used for the sole purpose of generating a unique integer for notification</string>
+     <string name="emergency_threshhold_level">1</string> <!-- hard coded for now -->
 
     <!-- default value for preferences -->
     <string name="pref_send_to_server">false</string>
@@ -23,13 +24,14 @@
     <!-- seconds -->
     <string name="pref_update_location_frequency">60</string><!-- minutes -->
     <string name="pref_charging_pausetime">30</string><!-- minutes -->    
-    <string name="emergency_threshhold_level">1</string>
+   
     <!-- how many vitalssigns have to be missing/low before phone calls/sms are initiated -->
     <string name="pref_heart_rate_low">40</string>
     <string name="pref_heart_rate_high">150</string>
     <string name="pref_device_scan_time">10</string>
     <!-- seconds -->
     <string name="pref_heart_rate_wait_time">10</string>
+    <string name="pref_gps_wait_time">120</string>
     <!-- seconds -->
 
 
@@ -68,14 +70,15 @@
 							-That you have not changed your heart rate device. If you have changed it please set your new device through the
 							advanced settings section of this app</string>
     <string name="app_working">This app is now monitoring your heart rate. You may now move to another screen on your phone.
-							This app will continue monitoring your heart rate even if you switch off your phone screen.
+							This app will continue monitoring your heart rate even if you turn off your phone screen.
 							If you want to stop this app come back to this screen and hit the "Stop" button</string>
     <string name="missing_phone_numbers">\nThis app may not work as intended because:\n
        				-You may have not entered any phone numbers that may be alerted in an emergency.\n
 					-Or you may not have enabled SMS or dial for that number.\n
 					-Unless you are testing the app make sure that you set up phone numbers in the Settings->Contacts section. The dial and SMS checkboxes besides the phone numbers must be checked.</string>
-    <string name="app_expired">This software is past it\'s expiration date. Please contact the developer - and part with your wealth!</string>
+    <string name="app_expired">This software is past it\'s expiration date. Please contact the developer - and part with your money :)</string>
     <string name="scanning_heart_device">Scanning for your heart rate device. Please wait</string>
+    <string name="fetch_gps">Reading your GPS location.This may take some time.</string>
     <string name="app_stopped">VitalSigns App has stopped. You must manually restart if you want the app to run again</string>
     <string name="enable_bluetooth">Please enable bluetooth on your phone for this app to work.</string>
     <string name="bluetooth_not_supported">Bluetooth not supported on your phone. This app need bluetooth to work.</string>

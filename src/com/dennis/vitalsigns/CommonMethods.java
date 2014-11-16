@@ -24,6 +24,7 @@ import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RingtoneManager;
@@ -64,12 +65,12 @@ public class CommonMethods {
 		/*Mutiple sounds are played over here because the volume of each sound 
 		is set differently on the phone. Some of them sound may be muted.
 		We have to make sure that something is heard.
-		*/
+		 */
 		playSound1(100);
 		playSound2();
 		playSound3();
 	}
-	
+
 	/**
 	 * This is a beep
 	 * @param durationMs
@@ -87,25 +88,25 @@ public class CommonMethods {
 			CommonMethods.Log(e.getMessage());
 		}
 	}
-	
+
 	public void playSound2(){
 		CommonMethods.Log("playSound2A(double beep)" );
 		MediaPlayer mMediaPlayer = MediaPlayer.create(context, R.raw.double_beep);
 		mMediaPlayer.setVolume(1.0f, 1.0f);
 
-			mMediaPlayer.start();
+		mMediaPlayer.start();
 
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		mMediaPlayer.reset();//for whatever reason not calling gives the error:mediaplayer went away with unhandled events
 		mMediaPlayer.release();
 	}
-	
+
 	/**
 	 * Same as about but 5 of them instead of 1
 	 */
@@ -130,7 +131,7 @@ public class CommonMethods {
 		mMediaPlayer.reset();//for whatever reason not calling gives the error:mediaplayer went away with unhandled events
 		mMediaPlayer.release();
 	}
-	
+
 
 	public void playSound3() {
 		try {
@@ -146,51 +147,51 @@ public class CommonMethods {
 	            mMediaPlayer.prepare();
 	            mMediaPlayer.start();
 	        }
-	        */
+			 */
 			/*
 		      Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); 
 		        Ringtone r = RingtoneManager.getRingtone(context, soundUri);
 		        r.play();
-		        
-		        */
+
+			 */
 			Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 			MediaPlayer mMediaPlayer= MediaPlayer.create(context, alert); 
 			mMediaPlayer.setVolume(1.0f, 1.0f);
 			mMediaPlayer.start();
 			mMediaPlayer.setOnCompletionListener(new OnCompletionListener(){
-			@Override
-			public void onCompletion(MediaPlayer mp){
-				mp.release();
-			}
+				@Override
+				public void onCompletion(MediaPlayer mp){
+					mp.release();
+				}
 			});
 
 		} catch (Exception e) {
 			CommonMethods.Log(e.getMessage());
 		}
 	}
-	
+
 	public void playSoundBeforeAlertsAreSent(){
 		playSound2A();
 	}
-	
+
 	public void scheduleRepeatingMonitoringSessions() {
 		showNotification();// Dennis: This is the best place to show the notification
 		scheduleRepeatingMonitoringSessions(0);
 	}
 
 	public void scheduleRepeatingMonitoringSessions(long triggerAtTime) {
-		
+
 		int hibernateTime=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("key_hibernatetime",context.getString(R.string.pref_hibernatetime)));
 		//hibernateTime=1;//for testing only.
 		long checkInterval = hibernateTime * 60 * 1000;//  this figure is in minutes so convert it into milliseconds
 		if(triggerAtTime==0){//start right away, like yesterday :)
 			triggerAtTime = System.currentTimeMillis();
 		} 
-		
+
 		//for logging
 		SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
 		CommonMethods.Log("in scheduleRepeatingMonitoringSessions. The VitalSignsService will be started at " + timeFormat.format(new Date(triggerAtTime)));
-		
+
 		AlarmManager mAlarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent monitorIntent = new Intent(context,
@@ -210,7 +211,7 @@ public class CommonMethods {
 	public void cancelRepeatingMonitoringSessions() {
 		CommonMethods.Log("cancelRepeatingMonitoringSessions has been called");
 		removeNotification();// Dennis: This is the best place to cancel the notification
-		
+
 		Intent moinitorIntent = new Intent(context,	MonitorSessionInitBroadcastReceiver.class);
 		PendingIntent monitorPendingIntent = PendingIntent.getBroadcast(context,0, moinitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager AlarmManager = (AlarmManager) context
@@ -218,8 +219,8 @@ public class CommonMethods {
 		AlarmManager.cancel(monitorPendingIntent);
 	}
 
-	
-	
+
+
 
 	/**
 	 * show notification on task bar of the phone
@@ -228,28 +229,30 @@ public class CommonMethods {
 		CommonMethods.Log("in showNotification");	
 		Intent notificationIntent = new Intent(context, VitalSignsActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context,
-		        0, notificationIntent,
-		        PendingIntent.FLAG_CANCEL_CURRENT);
+				0, notificationIntent,
+				PendingIntent.FLAG_CANCEL_CURRENT);
 
 		NotificationManager nm = (NotificationManager) context
-		        .getSystemService(Context.NOTIFICATION_SERVICE);
+				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Resources res = context.getResources();
 		Notification.Builder builder = new Notification.Builder(context);
-
+		String notificationMessage="VitalSigns App is now running";
+		
 		builder.setContentIntent(contentIntent)
-		            .setSmallIcon(R.drawable.icon)
-		            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
-		            .setTicker("VitalSigns App has started")
-		            .setWhen(System.currentTimeMillis())
-		            .setAutoCancel(true)
-		            .setContentTitle("VitalSigns App has started")
-		            .setContentText("VitalSigns App has started");
-		Notification n = builder.build();
-
-		nm.notify(uniqueId, n);
+		.setSmallIcon(R.drawable.icon)
+		.setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
+		.setTicker(notificationMessage)
+		.setWhen(System.currentTimeMillis())
+		.setOngoing(true)
+		.setContentTitle(notificationMessage)
+		.setContentText(notificationMessage);
+		Notification notification = builder.build();
+		// the user will not be able to clear this notification. This probably has the same effect as setOngoing(true).
+		notification.flags = Notification.FLAG_ONGOING_EVENT;
+		nm.notify(uniqueId, notification);
 	}
-			
+
 
 	/**
 	 * Remove notification from task bar of the phone
@@ -259,14 +262,14 @@ public class CommonMethods {
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(uniqueId);
 	}
-	
 
-	
+
+
 
 	/**
 	 * this takes in a String message
 	 */
- 	public void showToast(final String msgstr,final int toastLength) {
+	public void showToast(final String msgstr,final int toastLength) {
 		Handler toastHandler = new Handler(context.getMainLooper());
 		toastHandler.post(new Runnable() {
 			@Override
@@ -275,7 +278,7 @@ public class CommonMethods {
 			}
 		});
 	}
-	
+
 	/**
 	 * this takes in a int message
 	 */
@@ -292,7 +295,7 @@ public class CommonMethods {
 	public void showToast(String msgstr) {
 		showToast(msgstr,Toast.LENGTH_LONG);
 	}
-	
+
 
 
 	public static void releasePartialWakeLock() {
@@ -324,11 +327,11 @@ public class CommonMethods {
 	 * @throws Exception
 	 */
 	public void setFlagShutDown(boolean flagShutDown){
-		 try {
+		try {
 			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
-			 SharedPreferences.Editor editor = settings.edit();
-			 editor.putBoolean("flagShutDown", flagShutDown);
-			 editor.commit();
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean("flagShutDown", flagShutDown);
+			editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -358,7 +361,7 @@ public class CommonMethods {
 		alertDialog.show();	
 		return alertDialog;
 	}
-	
+
 	public void showAlertDialogOnUiThread(final String mess ){
 		((Activity) context).runOnUiThread(new Runnable() {
 			@Override
@@ -367,8 +370,8 @@ public class CommonMethods {
 			}
 		});
 	}
-	
-	
+
+
 
 	public void showAlertDialog(final String mess) {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context); 
@@ -390,55 +393,57 @@ public class CommonMethods {
 	Because the two data types have the same size you don't lose precision.
 	 */
 
-		public void putDouble(Editor editor, String key, double value) {
-			
-			editor.putLong(key, Double.doubleToRawLongBits(value));
+	public void putDouble(Editor editor, String key, double value) {
+
+		editor.putLong(key, Double.doubleToRawLongBits(value));
+	}
+
+	double getDouble(SharedPreferences prefs, String key, double defaultValue) {
+		return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+	}
+
+
+	String latitude="latitude";
+	String longitude="longitude";
+
+	public void updateLocation(){
+		if(System.currentTimeMillis()>(Preferences.timeGPSLocationRecorded + Preferences.updateLocationFrequency*60*1000)){				
+			GPSLocation mGPSLocation = new GPSLocation(context);
+			Location location=mGPSLocation.getLocation();
+			updateLocation(location);
 		}
+	}
 
-		double getDouble(SharedPreferences prefs, String key, double defaultValue) {
-			return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
-		}
 
-		
-		String latitude="latitude";
-		String longitude="longitude";
-		
-		public void updateLatLong(){
-			if(System.currentTimeMillis()>(Preferences.timeGPSLocationRecorded + Preferences.updateLocationFrequency*60*1000)){				
-				Phone phone = new Phone(context);
-				Double[] latLong=phone.getCurrentLatLong();
-				
-				if(Double.compare(latLong[0], 0.00)!=0 && Double.compare(latLong[1], 0.00)!=0){
-					SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
-					SharedPreferences.Editor editor = settings.edit();
-					
-					putDouble(editor,latitude, latLong[0]);
-					putDouble(editor,longitude, latLong[1]);
-					editor.putLong("timeGPSLocationRecorded", System.currentTimeMillis());
-					editor.commit();
+	public void updateLocation(Location location) {
+		if(location!=null){
+			if(Double.compare(location.getLatitude(), 0.00)!=0 && Double.compare(location.getLongitude(), 0.00)!=0){
+				SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+				SharedPreferences.Editor editor = settings.edit();
 
-					CommonMethods.Log("updated latlong , lat="+latLong[0] +" lon="+latLong[1] );
-				}else{
-					CommonMethods.Log("lat lon is zero hence the lat lon has not been updated");
-				}
+				putDouble(editor,latitude, location.getLatitude());
+				putDouble(editor,longitude, location.getLongitude());
+				editor.putLong("timeGPSLocationRecorded", System.currentTimeMillis());
+				editor.commit();
+
+				CommonMethods.Log("updated latlong , lat="+location.getLatitude() +" lon="+location.getLongitude() );
+			}else{
+				CommonMethods.Log("lat lon is zero hence the lat lon has not been updated");
 			}
 		}
-		
-		
-		
-		Double[] getStoredLatLong(){		
-			Double lat=0.0;
-			Double lon=0.0;
-			Double[] latLong={lat,lon};
-			
-			SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
-			
-			latLong[0]=getDouble(settings,latitude,0.00 );
-			latLong[1]=getDouble(settings,longitude,0.00 );
-			return latLong;
-			
-		}
+	}
 	
+	
+	
+
+	Location getStoredLocation(){		
+		Location location=new Location("stored");//and arbitrary name of no particular significance
+		SharedPreferences settings=PreferenceManager.getDefaultSharedPreferences(context);
+		location.setLatitude(getDouble(settings,latitude,0.00 ));
+		location.setLongitude(getDouble(settings,longitude,0.00));
+		return location;
+	}
+
 	static public void Log(String logmessage) {		
 		try {
 			if (Preferences.remoteLog) {
