@@ -1,0 +1,1 @@
+This folder is not needed for the source code to compile, and may be removed.
