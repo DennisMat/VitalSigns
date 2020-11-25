@@ -250,7 +250,7 @@ public class VitalSignsActivity extends Activity {
 		try {
 			CommonMethods.Log("VitalSignsActivity.startApp() called 1");
 			Calendar calExpiry = Calendar.getInstance();
-			calExpiry.set(2020, Calendar.APRIL, 10);
+			calExpiry.set(2050, Calendar.APRIL, 10);
 			Calendar currentcal = Calendar.getInstance();
 
 			if (currentcal.before(calExpiry)) {
